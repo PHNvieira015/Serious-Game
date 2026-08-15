@@ -41,3 +41,14 @@ MonoBehaviour:
     AICheckExplanation: 
     SpecialistCheckExplanation: 
     FalacyCheckExplanation: 
+  - Type: 0
+    Text: 
+    Image: {fileID: 0}
+    IsFalseInformation: 0
+    Hint: 
+    CorrectCheckType: 0
+    LabelCheckExplanation: 
+    SourceCheckExplanation: 
+    AICheckExplanation: 
+    SpecialistCheckExplanation: 
+    FalacyCheckExplanation: 
