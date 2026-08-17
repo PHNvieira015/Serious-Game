@@ -3,62 +3,75 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 public class ArticleViewer : MonoBehaviour
 {
     [Header("Article Data")]
     public ArticleData currentArticle;
-    public int currentBlockIndex = 0;
 
-    [Header("UI Elements")]
+    [Header("Article Header")]
     public TMP_Text titleText;
     public TMP_Text subtitleText;
     public TMP_Text authorNameText;
     public TMP_Text authorDescText;
     public Image authorPhotoImage;
 
-    [Header("Block Content")]
-    public TMP_Text blockContentText;
-    public Image blockImage;
-    public GameObject imageContainer;
-    public GameObject textContainer;
+    [Header("Article Content")]
+    [Tooltip("The Content transform inside your ScrollView.")]
+    public Transform articleContent;
 
-    [Header("Dynamic Image Layout")]
-    public LayoutElement imageLayoutElement;
-    public RectTransform articleContent;
+    [Tooltip("Prefab containing ArticleBlockView.")]
+    public ArticleBlockView articleBlockPrefab;
 
-    [Header("Block Navigation")]
-    public TMP_Text blockCounterText;
-    public Button nextButton;
-    public Button previousButton;
-
-    [Header("Check System")]
+    [Header("Check Panel")]
     public GameObject checkPanel;
     public TMP_Text hintText;
+
+    [Header("Check Buttons")]
     public Button labelCheckButton;
     public Button sourceCheckButton;
     public Button aiCheckButton;
     public Button specialistCheckButton;
     public Button falacyCheckButton;
 
+    [Header("Article Verification")]
+    public Button verifyArticleButton;
+
     [Header("Feedback")]
     public GameObject feedbackPanel;
     public TMP_Text feedbackText;
     public Button continueButton;
 
+    [Header("Scoring")]
+    public int pointsPerCorrect = 10;
+    public int penaltyPerWrong = 5;
+    public int penaltyPerMissed = 5;
+
     private Dictionary<CheckType, Button> checkButtons;
 
-    void Start()
+    private readonly List<ArticleBlockView> blockViews =
+        new List<ArticleBlockView>();
+
+    private ArticleBlockView currentlySelectedBlock;
+
+    // ============================================================
+    // START
+    // ============================================================
+
+    private void Start()
     {
         SetupButtons();
-        LoadArticle(currentArticle);
+
+        if (currentArticle != null)
+            LoadArticle(currentArticle);
     }
 
     // ============================================================
     // BUTTON SETUP
     // ============================================================
 
-    void SetupButtons()
+    private void SetupButtons()
     {
         checkButtons = new Dictionary<CheckType, Button>
         {
@@ -69,421 +82,541 @@ public class ArticleViewer : MonoBehaviour
             { CheckType.FalacyCheck, falacyCheckButton }
         };
 
-        foreach (var btn in checkButtons)
+        foreach (var pair in checkButtons)
         {
-            CheckType type = btn.Key;
-            btn.Value.onClick.AddListener(() => OnCheckSelected(type));
+            CheckType type = pair.Key;
+            Button button = pair.Value;
+
+            if (button == null)
+                continue;
+
+            button.onClick.RemoveAllListeners();
+
+            button.onClick.AddListener(
+                () => OnCheckSelected(type)
+            );
         }
 
-        nextButton.onClick.AddListener(NextBlock);
-        previousButton.onClick.AddListener(PreviousBlock);
-        continueButton.onClick.AddListener(CloseFeedback);
+        if (verifyArticleButton != null)
+        {
+            verifyArticleButton.onClick.RemoveAllListeners();
+
+            verifyArticleButton.onClick.AddListener(
+                VerifyArticle
+            );
+        }
+
+        if (continueButton != null)
+        {
+            continueButton.onClick.RemoveAllListeners();
+
+            continueButton.onClick.AddListener(
+                CloseFeedback
+            );
+        }
     }
 
     // ============================================================
-    // ARTICLE
+    // LOAD ARTICLE
     // ============================================================
 
     public void LoadArticle(ArticleData article)
     {
         if (article == null)
         {
-            Debug.LogError("ArticleViewer: Article is null.");
+            Debug.LogError(
+                "ArticleViewer: Article is null."
+            );
+
             return;
         }
 
         currentArticle = article;
-        currentBlockIndex = 0;
+        currentlySelectedBlock = null;
+
+        ClearArticleContent();
 
         DisplayArticleInfo();
-        DisplayCurrentBlock();
+        BuildArticleBlocks();
+
+        HideCheckPanel();
+        HideFeedback();
     }
 
-    void DisplayArticleInfo()
+    // ============================================================
+    // ARTICLE HEADER
+    // ============================================================
+
+    private void DisplayArticleInfo()
     {
-        titleText.text = currentArticle.Titulo;
-        subtitleText.text = currentArticle.Subtitulo;
+        if (titleText != null)
+            titleText.text = currentArticle.Title;
 
-        authorNameText.text = currentArticle.Autor.NomeAutor;
-        authorDescText.text = currentArticle.Autor.DescriçãoAutor;
+        if (subtitleText != null)
+            subtitleText.text = currentArticle.Subtitle;
 
-        authorPhotoImage.sprite = currentArticle.Autor.FotoAutor;
+        if (currentArticle.Writer != null)
+        {
+            if (authorNameText != null)
+            {
+                authorNameText.text =
+                    currentArticle.Writer.WriterName;
+            }
 
-        // Make sure TMP recalculates its preferred size.
-        titleText.ForceMeshUpdate();
-        subtitleText.ForceMeshUpdate();
-        authorNameText.ForceMeshUpdate();
-        authorDescText.ForceMeshUpdate();
+            if (authorDescText != null)
+            {
+                authorDescText.text =
+                    currentArticle.Writer.WriterDescription;
+            }
+
+            if (authorPhotoImage != null)
+            {
+                authorPhotoImage.sprite =
+                    currentArticle.Writer.WriterPhoto;
+            }
+        }
 
         ForceLayoutUpdate();
     }
 
     // ============================================================
-    // BLOCK DISPLAY
+    // BUILD WHOLE ARTICLE
     // ============================================================
 
-    void DisplayCurrentBlock()
+    private void BuildArticleBlocks()
+    {
+        if (articleContent == null)
+        {
+            Debug.LogError(
+                "ArticleViewer: Article Content is not assigned."
+            );
+
+            return;
+        }
+
+        if (articleBlockPrefab == null)
+        {
+            Debug.LogError(
+                "ArticleViewer: Article Block Prefab is not assigned."
+            );
+
+            return;
+        }
+
+        if (currentArticle.Blocks == null)
+        {
+            Debug.LogWarning(
+                "ArticleViewer: Article has no blocks."
+            );
+
+            return;
+        }
+
+        foreach (ArticleBlock block in currentArticle.Blocks)
+        {
+            if (block == null)
+                continue;
+
+            ArticleBlockView blockView =
+                Instantiate(
+                    articleBlockPrefab,
+                    articleContent
+                );
+
+            blockView.Initialize(
+                block,
+                this
+            );
+
+            blockViews.Add(blockView);
+        }
+
+        StartCoroutine(
+            RefreshArticleLayout()
+        );
+    }
+
+    // ============================================================
+    // CLEAR ARTICLE
+    // ============================================================
+
+    private void ClearArticleContent()
+    {
+        currentlySelectedBlock = null;
+
+        foreach (ArticleBlockView view in blockViews)
+        {
+            if (view != null)
+                Destroy(view.gameObject);
+        }
+
+        blockViews.Clear();
+
+        if (articleContent == null)
+            return;
+
+        // Remove old block instances.
+        for (int i = articleContent.childCount - 1; i >= 0; i--)
+        {
+            Destroy(
+                articleContent.GetChild(i).gameObject
+            );
+        }
+    }
+
+    // ============================================================
+    // SELECT BLOCK
+    // ============================================================
+
+    public void SelectBlock(ArticleBlockView blockView)
+    {
+        if (blockView == null)
+            return;
+
+        currentlySelectedBlock = blockView;
+
+        ShowCheckPanel(blockView);
+    }
+
+    // ============================================================
+    // SHOW CHECK PANEL
+    // ============================================================
+
+    private void ShowCheckPanel(
+        ArticleBlockView blockView)
+    {
+        if (checkPanel != null)
+            checkPanel.SetActive(true);
+
+        ArticleBlock block = blockView.Block;
+
+        if (hintText != null)
+        {
+            hintText.text = block.Hint;
+
+            hintText.gameObject.SetActive(
+                !string.IsNullOrEmpty(block.Hint)
+            );
+
+            hintText.ForceMeshUpdate();
+        }
+
+        foreach (Button button in checkButtons.Values)
+        {
+            if (button != null)
+                button.interactable = true;
+        }
+
+        ForceLayoutUpdate();
+    }
+
+    // ============================================================
+    // PLAYER CHOOSES A CHECK
+    // ============================================================
+
+    private void OnCheckSelected(CheckType selectedCheck)
+    {
+        if (currentlySelectedBlock == null)
+            return;
+
+        currentlySelectedBlock.SetPlayerCheckType(
+            selectedCheck
+        );
+
+        HideCheckPanel();
+    }
+
+    // ============================================================
+    // VERIFY ENTIRE ARTICLE
+    // ============================================================
+
+    public void VerifyArticle()
     {
         if (currentArticle == null)
             return;
 
-        if (currentArticle.Bloco == null || currentArticle.Bloco.Count == 0)
+        int correct = 0;
+        int wrong = 0;
+        int missed = 0;
+
+        int score = 0;
+
+        StringBuilder results =
+            new StringBuilder();
+
+        results.AppendLine("ARTICLE RESULTS");
+        results.AppendLine();
+
+        for (int i = 0; i < blockViews.Count; i++)
         {
-            Debug.LogWarning("ArticleViewer: Article has no blocks.");
-            return;
+            ArticleBlockView view = blockViews[i];
+
+            if (view == null || view.Block == null)
+                continue;
+
+            ArticleBlock block = view.Block;
+
+            // ====================================================
+            // NONE
+            // ====================================================
+            //
+            // None means the block is empty / unused.
+            // It has no verification meaning at all.
+            //
+
+            if (block.CheckType == CheckType.None)
+            {
+                continue;
+            }
+
+            // ====================================================
+            // TRUE CHECK
+            // ====================================================
+            //
+            // TrueCheck means:
+            //
+            // "This block is true."
+            //
+            // The player does NOT need to mark it.
+            //
+
+            if (block.CheckType == CheckType.TrueCheck)
+            {
+                if (!view.IsMarked)
+                {
+                    // Correct behavior:
+                    // player left a true block alone.
+                    continue;
+                }
+
+                // Player incorrectly marked a true block.
+                wrong++;
+                score -= penaltyPerWrong;
+
+                results.AppendLine(
+                    $"Block {i + 1}: WRONG"
+                );
+
+                results.AppendLine(
+                    "This block was true and should not have been marked."
+                );
+
+                if (!string.IsNullOrEmpty(block.Explanation))
+                {
+                    results.AppendLine(
+                        block.Explanation
+                    );
+                }
+
+                results.AppendLine();
+
+                continue;
+            }
+
+            // ====================================================
+            // FALSE / PROBLEMATIC BLOCK
+            // ====================================================
+            //
+            // Any CheckType other than None or TrueCheck means
+            // the player is expected to find this block.
+            //
+
+            if (!view.IsMarked)
+            {
+                // Player failed to identify it.
+                missed++;
+                score -= penaltyPerMissed;
+
+                results.AppendLine(
+                    $"Block {i + 1}: MISSED"
+                );
+
+                results.AppendLine(
+                    $"Correct check: " +
+                    $"{GetCheckTypeName(block.CheckType)}"
+                );
+
+                if (!string.IsNullOrEmpty(block.Explanation))
+                {
+                    results.AppendLine(
+                        block.Explanation
+                    );
+                }
+
+                results.AppendLine();
+
+                continue;
+            }
+
+            // ====================================================
+            // PLAYER MARKED THE BLOCK
+            // ====================================================
+
+            CheckType playerChoice =
+                view.PlayerCheckType;
+
+            if (playerChoice == block.CheckType)
+            {
+                // Correct block AND correct check.
+                correct++;
+                score += pointsPerCorrect;
+
+                results.AppendLine(
+                    $"Block {i + 1}: CORRECT"
+                );
+
+                results.AppendLine(
+                    $"Check: " +
+                    $"{GetCheckTypeName(block.CheckType)}"
+                );
+
+                if (!string.IsNullOrEmpty(block.Explanation))
+                {
+                    results.AppendLine(
+                        block.Explanation
+                    );
+                }
+
+                results.AppendLine();
+            }
+            else
+            {
+                // Correctly or incorrectly identified as something
+                // suspicious, but chose the wrong verification type.
+                wrong++;
+                score -= penaltyPerWrong;
+
+                results.AppendLine(
+                    $"Block {i + 1}: WRONG"
+                );
+
+                results.AppendLine(
+                    $"Your check: " +
+                    $"{GetCheckTypeName(playerChoice)}"
+                );
+
+                results.AppendLine(
+                    $"Correct check: " +
+                    $"{GetCheckTypeName(block.CheckType)}"
+                );
+
+                if (!string.IsNullOrEmpty(block.Explanation))
+                {
+                    results.AppendLine(
+                        block.Explanation
+                    );
+                }
+
+                results.AppendLine();
+            }
         }
 
-        if (currentBlockIndex >= currentArticle.Bloco.Count)
-            return;
+        // ========================================================
+        // SUMMARY
+        // ========================================================
 
-        ArticleBlock block = currentArticle.Bloco[currentBlockIndex];
-
-        // --------------------------------------------------------
-        // IMAGE BLOCK
-        // --------------------------------------------------------
-
-        if (block.Type == BlockType.Image && block.Image != null)
-        {
-            textContainer.SetActive(false);
-            imageContainer.SetActive(true);
-
-            blockImage.sprite = block.Image;
-
-            // Preserve the image's aspect ratio.
-            StartCoroutine(UpdateImageLayout(block.Image));
-        }
-
-        // --------------------------------------------------------
-        // TEXT BLOCK
-        // --------------------------------------------------------
-
-        else
-        {
-            imageContainer.SetActive(false);
-            textContainer.SetActive(true);
-
-            blockContentText.text = block.Text;
-
-            // Tell TMP to update its preferred size.
-            blockContentText.ForceMeshUpdate();
-
-            // Rebuild after changing the text.
-            StartCoroutine(RefreshLayoutNextFrame());
-        }
-
-        // --------------------------------------------------------
-        // COUNTER
-        // --------------------------------------------------------
-
-        blockCounterText.text =
-            $"{currentBlockIndex + 1} / {currentArticle.Bloco.Count}";
-
-        // --------------------------------------------------------
-        // CHECK PANEL
-        // --------------------------------------------------------
-
-        UpdateCheckPanel(block);
-
-        // --------------------------------------------------------
-        // NAVIGATION
-        // --------------------------------------------------------
-
-        previousButton.interactable = currentBlockIndex > 0;
-
-        nextButton.interactable =
-            currentBlockIndex < currentArticle.Bloco.Count - 1;
-
-        // --------------------------------------------------------
-        // FEEDBACK
-        // --------------------------------------------------------
-
-        feedbackPanel.SetActive(false);
-        checkPanel.SetActive(true);
-    }
-
-    // ============================================================
-    // IMAGE LAYOUT
-    // ============================================================
-
-    IEnumerator UpdateImageLayout(Sprite sprite)
-    {
-        // Wait for Unity to update the activated container.
-        yield return null;
-
-        if (sprite == null)
-            yield break;
-
-        RectTransform imageContainerRect =
-            imageContainer.GetComponent<RectTransform>();
-
-        if (imageContainerRect == null)
-            yield break;
-
-        // Make sure the layout has been calculated first.
-        Canvas.ForceUpdateCanvases();
-
-        float imageWidth = imageContainerRect.rect.width;
-
-        if (imageWidth <= 0)
-        {
-            Debug.LogWarning(
-                "ArticleViewer: Image container has no width."
-            );
-
-            yield break;
-        }
-
-        // Calculate aspect ratio from the sprite.
-        float aspectRatio =
-            (float)sprite.rect.width / sprite.rect.height;
-
-        // Calculate the required height.
-        float imageHeight = imageWidth / aspectRatio;
-
-        // Tell the Vertical Layout Group how much space the image needs.
-        if (imageLayoutElement != null)
-        {
-            imageLayoutElement.preferredHeight = imageHeight;
-        }
-
-        // Also make sure the Image itself has the correct size.
-        RectTransform imageRect = blockImage.rectTransform;
-
-        imageRect.SetSizeWithCurrentAnchors(
-            RectTransform.Axis.Vertical,
-            imageHeight
+        results.AppendLine(
+            "--------------------------------"
         );
 
-        ForceLayoutUpdate();
-    }
+        results.AppendLine("SUMMARY");
+        results.AppendLine();
 
-    // ============================================================
-    // LAYOUT REFRESH
-    // ============================================================
+        results.AppendLine(
+            $"Correct: {correct}"
+        );
 
-    IEnumerator RefreshLayoutNextFrame()
-    {
-        yield return null;
+        results.AppendLine(
+            $"Wrong: {wrong}"
+        );
 
-        Canvas.ForceUpdateCanvases();
+        results.AppendLine(
+            $"Missed: {missed}"
+        );
 
-        if (blockContentText != null)
-            blockContentText.ForceMeshUpdate();
+        results.AppendLine(
+            $"Score: {score}"
+        );
 
-        ForceLayoutUpdate();
-    }
-
-    void ForceLayoutUpdate()
-    {
-        Canvas.ForceUpdateCanvases();
-
-        if (articleContent != null)
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(
-                articleContent
-            );
-        }
-    }
-
-    // ============================================================
-    // CHECK PANEL
-    // ============================================================
-
-    void UpdateCheckPanel(ArticleBlock block)
-    {
-        if (block.IsFalseInformation &&
-            !string.IsNullOrEmpty(block.Hint))
-        {
-            hintText.text = block.Hint;
-            hintText.gameObject.SetActive(true);
-
-            hintText.ForceMeshUpdate();
-        }
-        else
-        {
-            hintText.gameObject.SetActive(false);
-        }
-
-        // Enable all check buttons.
-        foreach (var btn in checkButtons.Values)
-        {
-            btn.interactable = true;
-        }
-
-        ForceLayoutUpdate();
-    }
-
-    // ============================================================
-    // CHECK SELECTION
-    // ============================================================
-
-    void OnCheckSelected(CheckType selectedCheck)
-    {
-        ArticleBlock currentBlock =
-            currentArticle.Bloco[currentBlockIndex];
-
-        // Block is actually true.
-        if (!currentBlock.IsFalseInformation)
-        {
-            ShowFeedback(
-                "This information appears to be correct.\nNo issues found.",
-                false
-            );
-
-            return;
-        }
-
-        // Get explanation for selected check.
-        string explanation =
-            currentBlock.GetExplanationForCheck(selectedCheck);
-
-        // Player selected the correct check.
-        if (selectedCheck == currentBlock.CorrectCheckType)
-        {
-            ShowFeedback(
-                $"CORRECT! {explanation}",
-                true
-            );
-        }
-
-        // Player selected the wrong check.
-        else
-        {
-            string correctExplanation =
-                currentBlock.GetExplanationForCheck(
-                    currentBlock.CorrectCheckType
-                );
-
-            string correctName =
-                GetCheckTypeName(
-                    currentBlock.CorrectCheckType
-                );
-
-            ShowFeedback(
-                $"WRONG. {explanation}\n\n" +
-                $"The correct check is {correctName}: " +
-                $"{correctExplanation}",
-                false
-            );
-        }
+        ShowFeedback(
+            results.ToString()
+        );
     }
 
     // ============================================================
     // FEEDBACK
     // ============================================================
 
-    void ShowFeedback(string message, bool isCorrect)
+    private void ShowFeedback(string message)
     {
-        feedbackText.text = message;
-
-        feedbackPanel.SetActive(true);
-        checkPanel.SetActive(false);
-
-        feedbackText.ForceMeshUpdate();
-
-        // Disable check buttons while feedback is showing.
-        foreach (var btn in checkButtons.Values)
+        if (feedbackText != null)
         {
-            btn.interactable = false;
+            feedbackText.text = message;
+            feedbackText.ForceMeshUpdate();
         }
 
-        // Rebuild feedback layout.
-        StartCoroutine(RefreshFeedbackLayout());
+        if (feedbackPanel != null)
+            feedbackPanel.SetActive(true);
 
-        // Score / penalty logic.
-        if (isCorrect)
-        {
-            Debug.Log("+10 points");
-        }
-        else
-        {
-            Debug.Log("-5 points");
-        }
+        HideCheckPanel();
+
+        StartCoroutine(
+            RefreshFeedbackLayout()
+        );
     }
 
-    IEnumerator RefreshFeedbackLayout()
+    private IEnumerator RefreshFeedbackLayout()
     {
         yield return null;
 
         Canvas.ForceUpdateCanvases();
 
-        feedbackText.ForceMeshUpdate();
+        if (feedbackText != null)
+            feedbackText.ForceMeshUpdate();
 
         ForceLayoutUpdate();
     }
 
-    void CloseFeedback()
+    private void CloseFeedback()
     {
-        feedbackPanel.SetActive(false);
-        checkPanel.SetActive(true);
-
-        // Re-enable check buttons.
-        foreach (var btn in checkButtons.Values)
-        {
-            btn.interactable = true;
-        }
+        HideFeedback();
 
         ForceLayoutUpdate();
     }
 
     // ============================================================
-    // NAVIGATION
+    // HIDE CHECK PANEL
     // ============================================================
 
-    void NextBlock()
+    private void HideCheckPanel()
     {
-        if (currentBlockIndex <
-            currentArticle.Bloco.Count - 1)
-        {
-            currentBlockIndex++;
+        if (checkPanel != null)
+            checkPanel.SetActive(false);
 
-            DisplayCurrentBlock();
-        }
-        else
-        {
-            OnArticleComplete();
-        }
-    }
-
-    void PreviousBlock()
-    {
-        if (currentBlockIndex > 0)
-        {
-            currentBlockIndex--;
-
-            DisplayCurrentBlock();
-        }
+        currentlySelectedBlock = null;
     }
 
     // ============================================================
-    // ARTICLE COMPLETE
+    // HIDE FEEDBACK
     // ============================================================
 
-    void OnArticleComplete()
+    private void HideFeedback()
     {
-        ShowFeedback(
-            "Article review complete!\nProceed to next article.",
-            true
-        );
-
-        continueButton.onClick.RemoveListener(CloseFeedback);
-        continueButton.onClick.AddListener(LoadNextArticle);
-    }
-
-    void LoadNextArticle()
-    {
-        // Load your next article here.
-        Debug.Log("Loading next article...");
+        if (feedbackPanel != null)
+            feedbackPanel.SetActive(false);
     }
 
     // ============================================================
     // CHECK TYPE NAME
     // ============================================================
 
-    string GetCheckTypeName(CheckType checkType)
+    public string GetCheckTypeName(CheckType type)
     {
-        switch (checkType)
+        switch (type)
         {
+            case CheckType.TrueCheck:
+                return "True Check";
+
             case CheckType.LabelCheck:
                 return "Label Check";
 
@@ -497,10 +630,36 @@ public class ArticleViewer : MonoBehaviour
                 return "Specialist Check";
 
             case CheckType.FalacyCheck:
-                return "Falacy Check";
+                return "Fallacy Check";
 
+            case CheckType.None:
             default:
                 return "None";
+        }
+    }
+
+    // ============================================================
+    // LAYOUT
+    // ============================================================
+
+    private IEnumerator RefreshArticleLayout()
+    {
+        yield return null;
+
+        Canvas.ForceUpdateCanvases();
+
+        ForceLayoutUpdate();
+    }
+
+    private void ForceLayoutUpdate()
+    {
+        Canvas.ForceUpdateCanvases();
+
+        if (articleContent is RectTransform rect)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(
+                rect
+            );
         }
     }
 }

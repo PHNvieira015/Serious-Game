@@ -1,13 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "FakeNews/Article")]
+[CreateAssetMenu(
+    fileName = "NewArticle",
+    menuName = "Articles/Article Data"
+)]
 public class ArticleData : ScriptableObject
 {
-    public string Titulo;
-    public string Subtitulo;
+    [Header("Article")]
+    public string Title;
 
-    public AuthorData Autor;
+    public string Subtitle;
 
-    public List<ArticleBlock> Bloco;
+    [Header("Author")]
+    public WriterData Writer;
+
+    [Header("Blocks")]
+    public List<ArticleBlock> Blocks = new List<ArticleBlock>();
 }

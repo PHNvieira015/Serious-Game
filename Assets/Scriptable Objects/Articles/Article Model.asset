@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
-  m_Name: Election Scandal
+  m_Name: Article Model
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
   Titulo: 
   Subtitulo: 
@@ -19,13 +19,12 @@ MonoBehaviour:
     FotoAutor: {fileID: 0}
     "Descri\xE7\xE3oAutor": 
   Bloco:
-  - Type: 2
+  - Type: 0
     Text: 
     Image: {fileID: 0}
-    CheckType: 3
-    Hint: "Fonte n\xE3o citada"
-    Explanation: "Informa\xE7\xE3o sem fonte n\xE3o pode ser validada, logo n\xE3o
-      deve ser confiada."
+    CheckType: 0
+    Hint: 
+    Explanation: 
   - Type: 0
     Text: 
     Image: {fileID: 0}
