@@ -14,14 +14,19 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [Header("UI Settings")]
     public CanvasGroup canvasGroup;
 
+    [Header("Placement Settings")]
+    public bool stayOnBlock = true;
+
     private RectTransform rectTransform;
     private Vector2 originalAnchoredPosition;
     private bool isDragging;
-    private bool isUsed;
+    private bool isPlaced;
     private Canvas parentCanvas;
     private Canvas ownCanvas;
     private Transform originalParent;
     private int originalSiblingIndex;
+    private Vector2 placedAnchoredPosition;
+    private Transform placedParent;
 
     private int blockLayer;
 
@@ -61,16 +66,13 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         originalAnchoredPosition = rectTransform.anchoredPosition;
-        isUsed = false;
+        isPlaced = false;
 
         blockLayer = LayerMask.NameToLayer("Block Layer");
-        Debug.Log($"Block Layer name: Block Layer | Layer number: {blockLayer}");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (isUsed) return;
-
         if (!CanUseCheck())
         {
             Debug.Log($"Not enough {CheckType} remaining!");
@@ -81,7 +83,21 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
 
-        originalAnchoredPosition = rectTransform.anchoredPosition;
+        // Store the current position and parent before dragging
+        if (isPlaced)
+        {
+            placedParent = transform.parent;
+            placedAnchoredPosition = rectTransform.anchoredPosition;
+
+            // Detach from the block so it can move freely
+            transform.SetParent(parentCanvas.transform);
+            transform.SetAsLastSibling();
+        }
+        else
+        {
+            originalAnchoredPosition = rectTransform.anchoredPosition;
+        }
+
         ownCanvas.sortingOrder = 9999;
 
         Debug.Log($"Picked Action: {CheckType}");
@@ -89,7 +105,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!isDragging || isUsed)
+        if (!isDragging)
             return;
 
         rectTransform.anchoredPosition += eventData.delta / parentCanvas.scaleFactor;
@@ -97,10 +113,9 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!isDragging || isUsed)
+        if (!isDragging)
         {
             ResetDragState();
-            ReturnToOriginalPosition();
             return;
         }
 
@@ -118,23 +133,15 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         var results = new System.Collections.Generic.List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
-        Debug.Log($"Raycast hit {results.Count} objects");
-
         foreach (var result in results)
         {
             if (result.gameObject == gameObject || result.gameObject.transform.IsChildOf(transform))
             {
-                Debug.Log($"Skipping: {result.gameObject.name} (self)");
                 continue;
             }
 
-            string layerName = LayerMask.LayerToName(result.gameObject.layer);
-            Debug.Log($"Checking: {result.gameObject.name} | Layer: {layerName} ({result.gameObject.layer})");
-
             if (result.gameObject.layer == blockLayer)
             {
-                Debug.Log($"Found Block Layer: {result.gameObject.name}");
-
                 if (!CanUseCheck())
                 {
                     Debug.Log($"Not enough {CheckType} remaining!");
@@ -142,13 +149,20 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                     return;
                 }
 
-                Hit();
+                Hit(result);
                 return;
             }
         }
 
-        Debug.Log("No Block Layer found under cursor");
-        ReturnToOriginalPosition();
+        // If it was already placed, return to the block
+        if (isPlaced)
+        {
+            ReturnToPlacedPosition();
+        }
+        else
+        {
+            ReturnToOriginalPosition();
+        }
     }
 
     private bool CanUseCheck()
@@ -160,26 +174,58 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         return remaining > 0;
     }
 
-    private void Hit()
+    private void Hit(RaycastResult result)
     {
-        isUsed = true;
-        Debug.Log($"CORRECT - Placed on Block Layer");
-
-        if (GameManager.Instance != null)
+        if (!isPlaced)
         {
-            GameManager.Instance.UseCheck(CheckType);
-            GameManager.Instance.AddScore(10);
+            isPlaced = true;
+            Debug.Log($"CORRECT - Placed on Block Layer: {result.gameObject.name}");
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.UseCheck(CheckType);
+                GameManager.Instance.AddScore(10);
+            }
+
+            if (correctFeedback != null)
+                correctFeedback.SetActive(true);
+        }
+        else
+        {
+            Debug.Log($"MOVED - Placed on Block Layer: {result.gameObject.name}");
         }
 
-        if (correctFeedback != null)
-            correctFeedback.SetActive(true);
-
-        Invoke(nameof(DisableObject), 0.5f);
+        // Stay on the block
+        StayOnBlock(result);
     }
 
-    private void DisableObject()
+    private void StayOnBlock(RaycastResult result)
     {
-        gameObject.SetActive(false);
+        RectTransform blockRect = result.gameObject.GetComponent<RectTransform>();
+        if (blockRect == null && result.gameObject.transform.parent != null)
+        {
+            blockRect = result.gameObject.transform.parent.GetComponent<RectTransform>();
+        }
+
+        if (blockRect != null)
+        {
+            transform.SetParent(blockRect);
+
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            rectTransform.anchoredPosition = Vector2.zero;
+
+            ownCanvas.sortingOrder = 200;
+
+            Debug.Log($"Placed {gameObject.name} on top of {blockRect.name}");
+        }
+        else
+        {
+            Debug.LogWarning("Could not find RectTransform on block, staying at current position");
+        }
+
+        canvasGroup.blocksRaycasts = true;
     }
 
     private void Miss()
@@ -212,6 +258,24 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         ResetDragState();
     }
 
+    private void ReturnToPlacedPosition()
+    {
+        if (placedParent != null)
+        {
+            transform.SetParent(placedParent);
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            rectTransform.anchoredPosition = placedAnchoredPosition;
+            ownCanvas.sortingOrder = 200;
+        }
+        else
+        {
+            ReturnToOriginalPosition();
+        }
+        ResetDragState();
+    }
+
     private void ResetDragState()
     {
         isDragging = false;
@@ -220,13 +284,13 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
         }
-        if (ownCanvas != null)
+        if (ownCanvas != null && !isPlaced)
             ownCanvas.sortingOrder = 100;
     }
 
     public void ResetDraggable()
     {
-        isUsed = false;
+        isPlaced = false;
         isDragging = false;
         gameObject.SetActive(true);
         ReturnToOriginalPosition();
@@ -242,7 +306,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private void OnEnable()
     {
-        if (!isUsed)
+        if (!isPlaced)
         {
             ReturnToOriginalPosition();
             if (ownCanvas != null)
