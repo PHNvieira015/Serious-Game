@@ -12,29 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
   m_Name: Election Scandal
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
-  Titulo: 
-  Subtitulo: 
-  Autor:
-    NomeAutor: 
-    FotoAutor: {fileID: 0}
-    "Descri\xE7\xE3oAutor": 
-  Bloco:
-  - Type: 2
-    Text: 
+  Title: 
+  Subtitle: 
+  Writer:
+    WriterName: 
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 
+  Blocks:
+  - Type: 1
+    Text: True
     Image: {fileID: 0}
-    CheckType: 3
-    Hint: "Fonte n\xE3o citada"
-    Explanation: "Informa\xE7\xE3o sem fonte n\xE3o pode ser validada, logo n\xE3o
-      deve ser confiada."
-  - Type: 0
-    Text: 
-    Image: {fileID: 0}
-    CheckType: 0
-    Hint: 
-    Explanation: 
-  - Type: 0
-    Text: 
-    Image: {fileID: 0}
-    CheckType: 0
-    Hint: 
-    Explanation: 
+    CheckType: 1
+    Hint: Not a lie
+    Explanation: This is true
