@@ -187,6 +187,19 @@ public class GameManager : MonoBehaviour
         if (aiChecksText) aiChecksText.text = "AI: " + aiChecksRemaining;
         if (specialistChecksText) specialistChecksText.text = "Specialist: " + specialistChecksRemaining;
         if (falacyChecksText) falacyChecksText.text = "Falacy: " + falacyChecksRemaining;
+
+        UpdateDraggableUI();
+    }
+
+    public void UpdateDraggableUI()
+    {
+        DraggableObject[] draggables = FindObjectsByType<DraggableObject>(FindObjectsSortMode.None);
+        foreach (var obj in draggables)
+        {
+            if (obj == null) continue;
+            int remaining = GetRemainingChecks(obj.CheckType);
+            obj.gameObject.SetActive(remaining > 0);
+        }
     }
 
     void GameOver()

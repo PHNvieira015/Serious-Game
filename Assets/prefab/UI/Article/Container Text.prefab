@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5333230235871695190}
   - component: {fileID: 7579985664668164771}
   - component: {fileID: 6939680289138230474}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Container_Text()
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5996430064128149547}
   - component: {fileID: 8320839088634997209}
   - component: {fileID: 5788429608568466878}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,8 @@ GameObject:
   - component: {fileID: 9186229960491365451}
   - component: {fileID: 3144710008648642673}
   - component: {fileID: 8369589932524069456}
-  m_Layer: 0
+  - component: {fileID: 6804761512973418063}
+  m_Layer: 6
   m_Name: Container Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,3 +366,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &6804761512973418063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339722820499809746}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f875426d9f1c0458688a8f17ab5c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Block
+  solvedVisual: {fileID: 0}
+  selectedVisual: {fileID: 0}
+  hoverVisual: {fileID: 0}
+  showDebugLogs: 1

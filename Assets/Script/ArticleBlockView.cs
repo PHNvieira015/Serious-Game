@@ -7,20 +7,19 @@ public class ArticleBlockView : MonoBehaviour
     [Header("Text / Image")]
     public TMP_Text blockText;
     public Image blockImage;
-
     public GameObject textContainer;
     public GameObject imageContainer;
 
     [Header("Selection")]
     public Button markButton;
     public GameObject markedVisual;
-
-    [Tooltip("Optional text showing the player's selected check.")]
     public TMP_Text selectedCheckTypeText;
+
+    [Header("Block Component")]
+    public Block blockComponent;
 
     private ArticleBlock block;
     private ArticleViewer articleViewer;
-
     private bool isMarked;
     private CheckType playerCheckType = CheckType.None;
 
@@ -28,16 +27,13 @@ public class ArticleBlockView : MonoBehaviour
     public bool IsMarked => isMarked;
     public CheckType PlayerCheckType => playerCheckType;
 
-    // ============================================================
-    // INITIALIZATION
-    // ============================================================
-
-    public void Initialize(
-        ArticleBlock articleBlock,
-        ArticleViewer viewer)
+    public void Initialize(ArticleBlock articleBlock, ArticleViewer viewer)
     {
         block = articleBlock;
         articleViewer = viewer;
+
+        if (blockComponent == null)
+            blockComponent = GetComponent<Block>();
 
         if (markButton != null)
         {
@@ -49,21 +45,12 @@ public class ArticleBlockView : MonoBehaviour
         ClearPlayerSelection();
     }
 
-    // ============================================================
-    // DISPLAY
-    // ============================================================
-
     private void DisplayBlock()
     {
         if (block == null)
             return;
 
-        // --------------------------------------------------------
-        // IMAGE BLOCK
-        // --------------------------------------------------------
-
-        if (block.Type == BlockType.Image &&
-            block.Image != null)
+        if (block.Type == BlockType.Image && block.Image != null)
         {
             if (textContainer != null)
                 textContainer.SetActive(false);
@@ -77,10 +64,6 @@ public class ArticleBlockView : MonoBehaviour
             return;
         }
 
-        // --------------------------------------------------------
-        // TEXT / OTHER BLOCK TYPES
-        // --------------------------------------------------------
-
         if (imageContainer != null)
             imageContainer.SetActive(false);
 
@@ -93,10 +76,6 @@ public class ArticleBlockView : MonoBehaviour
             blockText.ForceMeshUpdate();
         }
     }
-
-    // ============================================================
-    // MARK BLOCK
-    // ============================================================
 
     private void OnMarkButtonClicked()
     {
@@ -114,26 +93,17 @@ public class ArticleBlockView : MonoBehaviour
             markedVisual.SetActive(value);
     }
 
-    // ============================================================
-    // PLAYER CHECK TYPE
-    // ============================================================
-
     public void SetPlayerCheckType(CheckType type)
     {
-        // None is not a valid player selection.
         if (type == CheckType.None)
             return;
 
         playerCheckType = type;
-
-        // Choosing a check means the player marked this block.
         SetMarked(true);
 
         if (selectedCheckTypeText != null)
         {
-            selectedCheckTypeText.text =
-                GetCheckTypeName(type);
-
+            selectedCheckTypeText.text = GetCheckTypeName(type);
             selectedCheckTypeText.gameObject.SetActive(true);
         }
     }
@@ -153,35 +123,18 @@ public class ArticleBlockView : MonoBehaviour
         }
     }
 
-    // ============================================================
-    // CHECK TYPE NAME
-    // ============================================================
-
     private string GetCheckTypeName(CheckType type)
     {
         switch (type)
         {
-            case CheckType.TrueCheck:
-                return "True Check";
-
-            case CheckType.LabelCheck:
-                return "Label Check";
-
-            case CheckType.SourceCheck:
-                return "Source Check";
-
-            case CheckType.AICheck:
-                return "AI Check";
-
-            case CheckType.SpecialistCheck:
-                return "Specialist Check";
-
-            case CheckType.FalacyCheck:
-                return "Fallacy Check";
-
+            case CheckType.TrueCheck: return "True Check";
+            case CheckType.LabelCheck: return "Label Check";
+            case CheckType.SourceCheck: return "Source Check";
+            case CheckType.AICheck: return "AI Check";
+            case CheckType.SpecialistCheck: return "Specialist Check";
+            case CheckType.FalacyCheck: return "Fallacy Check";
             case CheckType.None:
-            default:
-                return "None";
+            default: return "None";
         }
     }
 }

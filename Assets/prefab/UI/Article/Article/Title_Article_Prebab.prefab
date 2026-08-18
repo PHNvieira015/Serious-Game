@@ -8,9 +8,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1327775496735953731, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139122896744334748, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2339722820499809746, guid: 3e9091174f651aa438b47222732417b3, type: 3}
       propertyPath: m_Name
-      value: Title Variant
+      value: Title_Article_Prebab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339722820499809746, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5333230235871695190, guid: 3e9091174f651aa438b47222732417b3, type: 3}
       propertyPath: m_AnchorMax.y
