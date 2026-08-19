@@ -11,7 +11,6 @@ public class ArticleBlockView : MonoBehaviour
     public GameObject imageContainer;
 
     [Header("Selection")]
-    public Button markButton;
     public GameObject markedVisual;
     public TMP_Text selectedCheckTypeText;
 
@@ -19,7 +18,6 @@ public class ArticleBlockView : MonoBehaviour
     public Block blockComponent;
 
     private ArticleBlock block;
-    private ArticleViewer articleViewer;
     private bool isMarked;
     private CheckType playerCheckType = CheckType.None;
 
@@ -27,18 +25,25 @@ public class ArticleBlockView : MonoBehaviour
     public bool IsMarked => isMarked;
     public CheckType PlayerCheckType => playerCheckType;
 
-    public void Initialize(ArticleBlock articleBlock, ArticleViewer viewer)
+    private void Awake()
     {
-        block = articleBlock;
-        articleViewer = viewer;
-
         if (blockComponent == null)
             blockComponent = GetComponent<Block>();
+    }
 
-        if (markButton != null)
+    public void Initialize(ArticleBlock articleBlock)
+    {
+        block = articleBlock;
+
+        if (block == null)
         {
-            markButton.onClick.RemoveAllListeners();
-            markButton.onClick.AddListener(OnMarkButtonClicked);
+            Debug.LogError($"ArticleBlockView: ArticleBlock is null on {gameObject.name}");
+            return;
+        }
+
+        if (blockComponent != null)
+        {
+            blockComponent.Initialize(block);
         }
 
         DisplayBlock();
@@ -75,14 +80,6 @@ public class ArticleBlockView : MonoBehaviour
             blockText.text = block.Text;
             blockText.ForceMeshUpdate();
         }
-    }
-
-    private void OnMarkButtonClicked()
-    {
-        if (articleViewer == null)
-            return;
-
-        articleViewer.SelectBlock(this);
     }
 
     public void SetMarked(bool value)

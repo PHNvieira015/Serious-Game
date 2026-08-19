@@ -12,13 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
   m_Name: Election Scandal
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
-  Title: 
-  Subtitle: 
+  Title: 123
+  Subtitle: 123
   Writer:
-    WriterName: 
+    WriterName: asd
     WriterPhoto: {fileID: 0}
-    WriterDescription: 
+    WriterDescription: asdasd
   Blocks:
+  - Type: 1
+    Text: Trueasdasd
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: Not a lie
+    Explanation: This is true
+  - Type: 1
+    Text: True
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: Not a lie
+    Explanation: This is true
   - Type: 1
     Text: True
     Image: {fileID: 0}

@@ -83,13 +83,11 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
 
-        // Store the current position and parent before dragging
         if (isPlaced)
         {
             placedParent = transform.parent;
             placedAnchoredPosition = rectTransform.anchoredPosition;
 
-            // Detach from the block so it can move freely
             transform.SetParent(parentCanvas.transform);
             transform.SetAsLastSibling();
         }
@@ -154,7 +152,6 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             }
         }
 
-        // If it was already placed, return to the block
         if (isPlaced)
         {
             ReturnToPlacedPosition();
@@ -195,7 +192,6 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             Debug.Log($"MOVED - Placed on Block Layer: {result.gameObject.name}");
         }
 
-        // Stay on the block
         StayOnBlock(result);
     }
 

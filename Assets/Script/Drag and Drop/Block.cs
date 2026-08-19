@@ -17,9 +17,6 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public GameObject selectedVisual;
     public GameObject hoverVisual;
 
-    [Header("Debug")]
-    public bool showDebugLogs = true;
-
     public void Initialize(ArticleBlock data)
     {
         articleBlock = data;
@@ -30,11 +27,6 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             Debug.LogError($"Block {name}: ArticleBlock is null.");
         }
-        else
-        {
-            if (showDebugLogs)
-                Debug.Log($"Block {name} initialized with CheckType: {articleBlock.CheckType}");
-        }
 
         UpdateVisuals();
     }
@@ -42,28 +34,15 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public bool ValidateCheck(DraggableObject action)
     {
         if (articleBlock == null || action == null || isSolved)
-        {
-            if (showDebugLogs)
-                Debug.Log($"ValidateCheck failed: articleBlock={articleBlock != null}, action={action != null}, isSolved={isSolved}");
             return false;
-        }
 
         if (articleBlock.CheckType == CheckType.TrueCheck)
-        {
-            if (showDebugLogs)
-                Debug.Log($"Block is TrueCheck, cannot be marked");
             return false;
-        }
 
         CheckType correctCheck = articleBlock.CheckType;
         CheckType playerCheck = action.CheckType;
 
-        bool isValid = playerCheck == correctCheck;
-
-        if (showDebugLogs)
-            Debug.Log($"Block: {correctCheck} | Action: {playerCheck} | Valid: {isValid}");
-
-        return isValid;
+        return playerCheck == correctCheck;
     }
 
     public void MarkAsSolved()
@@ -73,9 +52,6 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         if (OnBlockSolved != null)
             OnBlockSolved.Invoke(this);
-
-        if (showDebugLogs)
-            Debug.Log($"Block {name} marked as solved!");
     }
 
     private void UpdateVisuals()

@@ -270,7 +270,8 @@ GameObject:
   - component: {fileID: 9186229960491365451}
   - component: {fileID: 3144710008648642673}
   - component: {fileID: 8369589932524069456}
-  - component: {fileID: 6804761512973418063}
+  - component: {fileID: 7976381536729874934}
+  - component: {fileID: 2002208397346687503}
   m_Layer: 6
   m_Name: Container Text
   m_TagString: Untagged
@@ -366,14 +367,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &6804761512973418063
+--- !u!114 &7976381536729874934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2339722820499809746}
-  m_Enabled: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f278b5dd6ed2e9544bcb8a194862b5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleBlockView
+  blockText: {fileID: 0}
+  blockImage: {fileID: 0}
+  textContainer: {fileID: 2139122896744334748}
+  imageContainer: {fileID: 0}
+  markButton: {fileID: 0}
+  markedVisual: {fileID: 0}
+  selectedCheckTypeText: {fileID: 0}
+  blockComponent: {fileID: 2002208397346687503}
+--- !u!114 &2002208397346687503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339722820499809746}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f875426d9f1c0458688a8f17ab5c43, type: 3}
   m_Name: 
