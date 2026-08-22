@@ -13,12 +13,12 @@ public class WriterData
 public enum CheckType
 {
     None,
-    TrueCheck,
-    LabelCheck,
-    SourceCheck,
-    AICheck,
-    SpecialistCheck,
-    FalacyCheck
+    True,
+    Label, //serve as label check
+    Source, //serve as date check
+    AI, 
+    Specialist, //serve as specialist check
+    Falacy //not implemented
 }
 
 public enum BlockType
@@ -34,6 +34,7 @@ public enum BlockType
 public class ArticleBlock
 {
     [Header("Block")]
+//    [EnumButtons]
     public BlockType Type;
 
     [TextArea(3, 10)]
@@ -42,6 +43,7 @@ public class ArticleBlock
     public Sprite Image;
 
     [Header("Verification")]
+//    [EnumButtons]
     public CheckType CheckType;
 
     [TextArea(2, 3)]

@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     {
         switch (checkType)
         {
-            case CheckType.LabelCheck:
+            case CheckType.Label:
                 if (labelChecksRemaining > 0)
                 {
                     labelChecksRemaining--;
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
                     return true;
                 }
                 break;
-            case CheckType.SourceCheck:
+            case CheckType.Source:
                 if (sourceChecksRemaining > 0)
                 {
                     sourceChecksRemaining--;
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
                     return true;
                 }
                 break;
-            case CheckType.AICheck:
+            case CheckType.AI:
                 if (aiChecksRemaining > 0)
                 {
                     aiChecksRemaining--;
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
                     return true;
                 }
                 break;
-            case CheckType.SpecialistCheck:
+            case CheckType.Specialist:
                 if (specialistChecksRemaining > 0)
                 {
                     specialistChecksRemaining--;
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
                     return true;
                 }
                 break;
-            case CheckType.FalacyCheck:
+            case CheckType.Falacy:
                 if (falacyChecksRemaining > 0)
                 {
                     falacyChecksRemaining--;
@@ -127,11 +127,11 @@ public class GameManager : MonoBehaviour
     {
         switch (checkType)
         {
-            case CheckType.LabelCheck: return labelChecksRemaining;
-            case CheckType.SourceCheck: return sourceChecksRemaining;
-            case CheckType.AICheck: return aiChecksRemaining;
-            case CheckType.SpecialistCheck: return specialistChecksRemaining;
-            case CheckType.FalacyCheck: return falacyChecksRemaining;
+            case CheckType.Label: return labelChecksRemaining;
+            case CheckType.Source: return sourceChecksRemaining;
+            case CheckType.AI: return aiChecksRemaining;
+            case CheckType.Specialist: return specialistChecksRemaining;
+            case CheckType.Falacy: return falacyChecksRemaining;
             default: return 0;
         }
     }

@@ -36,7 +36,7 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (articleBlock == null || action == null || isSolved)
             return false;
 
-        if (articleBlock.CheckType == CheckType.TrueCheck)
+        if (articleBlock.CheckType == CheckType.True)
             return false;
 
         CheckType correctCheck = articleBlock.CheckType;

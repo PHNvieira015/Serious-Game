@@ -12,19 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
   m_Name: Article Model
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
-  Titulo: 
-  Subtitulo: 
-  Autor:
-    NomeAutor: 
-    FotoAutor: {fileID: 0}
-    "Descri\xE7\xE3oAutor": 
-  Bloco:
-  - Type: 0
-    Text: 
-    Image: {fileID: 0}
-    CheckType: 0
-    Hint: 
-    Explanation: 
+  Title: 
+  Subtitle: 
+  Writer:
+    WriterName: 
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 
+  Blocks:
   - Type: 0
     Text: 
     Image: {fileID: 0}

@@ -131,7 +131,7 @@ public class ArticleViewer : MonoBehaviour
         bool allSolved = true;
         foreach (var b in blockComponents)
         {
-            if (!b.IsSolved && b.ArticleBlock.CheckType != CheckType.TrueCheck)
+            if (!b.IsSolved && b.ArticleBlock.CheckType != CheckType.True)
             {
                 allSolved = false;
                 break;
@@ -188,7 +188,7 @@ public class ArticleViewer : MonoBehaviour
             if (block.CheckType == CheckType.None)
                 continue;
 
-            if (block.CheckType == CheckType.TrueCheck)
+            if (block.CheckType == CheckType.True)
             {
                 if (!view.IsMarked)
                     continue;
@@ -278,12 +278,12 @@ public class ArticleViewer : MonoBehaviour
     {
         switch (type)
         {
-            case CheckType.TrueCheck: return "True Check";
-            case CheckType.LabelCheck: return "Label Check";
-            case CheckType.SourceCheck: return "Source Check";
-            case CheckType.AICheck: return "AI Check";
-            case CheckType.SpecialistCheck: return "Specialist Check";
-            case CheckType.FalacyCheck: return "Fallacy Check";
+            case CheckType.True: return "True Check";
+            case CheckType.Label: return "Label Check";
+            case CheckType.Source: return "Source Check";
+            case CheckType.AI: return "AI Check";
+            case CheckType.Specialist: return "Specialist Check";
+            case CheckType.Falacy: return "Fallacy Check";
             case CheckType.None:
             default: return "None";
         }
