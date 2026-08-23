@@ -17,39 +17,36 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [Header("Placement Settings")]
     public bool stayOnBlock = true;
 
+    [Header("Spawn Settings")]
+    public DraggableObject spawnPrefab;
+    public bool canSpawnMultiple = true;
+
     private RectTransform rectTransform;
-    private Vector2 originalAnchoredPosition;
-    private bool isDragging;
-    private bool isPlaced;
     private Canvas parentCanvas;
     private Canvas ownCanvas;
-    private Transform originalParent;
-    private int originalSiblingIndex;
-    private Vector2 placedAnchoredPosition;
-    private Transform placedParent;
+
+    private bool isDragging;
+    private bool isPlaced;
+    private bool isSpawnedInstance;
 
     private int blockLayer;
+
+    private DraggableObject spawnedObject;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
 
-        originalParent = transform.parent;
-        originalSiblingIndex = transform.GetSiblingIndex();
-
         ownCanvas = GetComponent<Canvas>();
+
         if (ownCanvas == null)
         {
             ownCanvas = gameObject.AddComponent<Canvas>();
-            ownCanvas.overrideSorting = true;
-            ownCanvas.sortingOrder = 100;
         }
-        else
-        {
-            ownCanvas.overrideSorting = true;
-            ownCanvas.sortingOrder = 100;
-        }
+
+        ownCanvas.overrideSorting = true;
+        ownCanvas.sortingOrder = 100;
 
         if (GetComponent<GraphicRaycaster>() == null)
         {
@@ -59,42 +56,79 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (canvasGroup == null)
         {
             canvasGroup = GetComponent<CanvasGroup>();
+
             if (canvasGroup == null)
             {
                 canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
         }
 
-        originalAnchoredPosition = rectTransform.anchoredPosition;
-        isPlaced = false;
-
         blockLayer = LayerMask.NameToLayer("Block Layer");
+
+        isPlaced = false;
+        isDragging = false;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (isPlaced)
+        {
+            return;
+        }
+
         if (!CanUseCheck())
         {
             Debug.Log($"Not enough {CheckType} remaining!");
             return;
         }
 
-        isDragging = true;
+        if (!isSpawnedInstance && canSpawnMultiple)
+        {
+            SpawnDraggableObject(eventData);
+            return;
+        }
+
+        StartDragging();
+    }
+
+    private void SpawnDraggableObject(PointerEventData eventData)
+    {
+        DraggableObject prefabToSpawn = spawnPrefab;
+
+        if (prefabToSpawn == null)
+        {
+            prefabToSpawn = this;
+        }
+
+        spawnedObject = Instantiate(prefabToSpawn, parentCanvas.transform);
+
+        spawnedObject.isSpawnedInstance = true;
+        spawnedObject.isPlaced = false;
+        spawnedObject.isDragging = true;
+
+        RectTransform spawnedRect = spawnedObject.GetComponent<RectTransform>();
+
+        spawnedRect.position = rectTransform.position;
+
+        spawnedObject.BeginSpawnedDrag();
+
+        Debug.Log($"Spawned copy of {gameObject.name}");
+    }
+
+    private void BeginSpawnedDrag()
+    {
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
 
-        if (isPlaced)
-        {
-            placedParent = transform.parent;
-            placedAnchoredPosition = rectTransform.anchoredPosition;
+        ownCanvas.sortingOrder = 9999;
+    }
 
-            transform.SetParent(parentCanvas.transform);
-            transform.SetAsLastSibling();
-        }
-        else
-        {
-            originalAnchoredPosition = rectTransform.anchoredPosition;
-        }
+    private void StartDragging()
+    {
+        isDragging = true;
+
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
 
         ownCanvas.sortingOrder = 9999;
 
@@ -103,21 +137,90 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!isDragging)
+        if (isSpawnedInstance)
+        {
+            if (!isDragging)
+            {
+                return;
+            }
+
+            MoveWithPointer(eventData);
             return;
+        }
+
+        if (spawnedObject != null)
+        {
+            if (!spawnedObject.gameObject.activeInHierarchy)
+            {
+                spawnedObject = null;
+                return;
+            }
+
+            spawnedObject.MoveWithPointer(eventData);
+            return;
+        }
+
+        if (!isDragging)
+        {
+            return;
+        }
+
+        MoveWithPointer(eventData);
+    }
+
+    private void MoveWithPointer(PointerEventData eventData)
+    {
+        if (parentCanvas == null)
+        {
+            return;
+        }
 
         rectTransform.anchoredPosition += eventData.delta / parentCanvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (isSpawnedInstance)
+        {
+            if (!isDragging)
+            {
+                return;
+            }
+
+            isDragging = false;
+
+            FinishDrag(eventData);
+            return;
+        }
+
+        if (spawnedObject != null)
+        {
+            if (!spawnedObject.gameObject.activeInHierarchy)
+            {
+                spawnedObject = null;
+                return;
+            }
+
+            spawnedObject.isDragging = false;
+            spawnedObject.FinishDrag(eventData);
+
+            spawnedObject = null;
+
+            return;
+        }
+
         if (!isDragging)
         {
-            ResetDragState();
             return;
         }
 
         isDragging = false;
+
+        FinishDrag(eventData);
+    }
+
+    private void FinishDrag(PointerEventData eventData)
+    {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
@@ -129,11 +232,17 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private void TryPlace(PointerEventData eventData)
     {
         var results = new System.Collections.Generic.List<RaycastResult>();
+
         EventSystem.current.RaycastAll(eventData, results);
 
-        foreach (var result in results)
+        foreach (RaycastResult result in results)
         {
-            if (result.gameObject == gameObject || result.gameObject.transform.IsChildOf(transform))
+            if (result.gameObject == gameObject)
+            {
+                continue;
+            }
+
+            if (result.gameObject.transform.IsChildOf(transform))
             {
                 continue;
             }
@@ -143,7 +252,8 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 if (!CanUseCheck())
                 {
                     Debug.Log($"Not enough {CheckType} remaining!");
-                    ReturnToOriginalPosition();
+
+                    DestroySpawnedObject();
                     return;
                 }
 
@@ -152,22 +262,20 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             }
         }
 
-        if (isPlaced)
-        {
-            ReturnToPlacedPosition();
-        }
-        else
-        {
-            ReturnToOriginalPosition();
-        }
+        Miss();
+
+        DestroySpawnedObject();
     }
 
     private bool CanUseCheck()
     {
         if (GameManager.Instance == null)
+        {
             return true;
+        }
 
         int remaining = GameManager.Instance.GetRemainingChecks(CheckType);
+
         return remaining > 0;
     }
 
@@ -176,6 +284,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (!isPlaced)
         {
             isPlaced = true;
+
             Debug.Log($"CORRECT - Placed on Block Layer: {result.gameObject.name}");
 
             if (GameManager.Instance != null)
@@ -185,7 +294,9 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             }
 
             if (correctFeedback != null)
+            {
                 correctFeedback.SetActive(true);
+            }
         }
         else
         {
@@ -198,30 +309,40 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private void StayOnBlock(RaycastResult result)
     {
         RectTransform blockRect = result.gameObject.GetComponent<RectTransform>();
+
         if (blockRect == null && result.gameObject.transform.parent != null)
         {
             blockRect = result.gameObject.transform.parent.GetComponent<RectTransform>();
         }
 
-        if (blockRect != null)
+        if (blockRect == null)
         {
-            transform.SetParent(blockRect);
-
-            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            rectTransform.anchoredPosition = Vector2.zero;
-
-            ownCanvas.sortingOrder = 200;
-
-            Debug.Log($"Placed {gameObject.name} on top of {blockRect.name}");
+            Debug.LogWarning("Could not find RectTransform on block.");
+            return;
         }
-        else
+
+        DraggableObject existingObject = blockRect.GetComponentInChildren<DraggableObject>();
+
+        if (existingObject != null && existingObject != this)
         {
-            Debug.LogWarning("Could not find RectTransform on block, staying at current position");
+            Debug.Log($"Replacing {existingObject.gameObject.name} with {gameObject.name}");
+
+            Destroy(existingObject.gameObject);
         }
+
+        transform.SetParent(blockRect);
+
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        rectTransform.anchoredPosition = Vector2.zero;
+
+        ownCanvas.sortingOrder = 200;
 
         canvasGroup.blocksRaycasts = true;
+
+        Debug.Log($"Placed {gameObject.name} on top of {blockRect.name}");
     }
 
     private void Miss()
@@ -243,59 +364,53 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private void HideWrongFeedback()
     {
         if (wrongFeedback != null)
-            wrongFeedback.SetActive(false);
-    }
-
-    private void ReturnToOriginalPosition()
-    {
-        transform.SetParent(originalParent);
-        transform.SetSiblingIndex(originalSiblingIndex);
-        rectTransform.anchoredPosition = originalAnchoredPosition;
-        ResetDragState();
-    }
-
-    private void ReturnToPlacedPosition()
-    {
-        if (placedParent != null)
         {
-            transform.SetParent(placedParent);
-            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            rectTransform.anchoredPosition = placedAnchoredPosition;
-            ownCanvas.sortingOrder = 200;
+            wrongFeedback.SetActive(false);
+        }
+    }
+
+    private void DestroySpawnedObject()
+    {
+        if (isSpawnedInstance)
+        {
+            Destroy(gameObject);
         }
         else
         {
-            ReturnToOriginalPosition();
+            ResetDragState();
         }
-        ResetDragState();
     }
 
     private void ResetDragState()
     {
         isDragging = false;
+
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
         }
+
         if (ownCanvas != null && !isPlaced)
+        {
             ownCanvas.sortingOrder = 100;
+        }
     }
 
     public void ResetDraggable()
     {
         isPlaced = false;
         isDragging = false;
-        gameObject.SetActive(true);
-        ReturnToOriginalPosition();
 
         if (correctFeedback != null)
+        {
             correctFeedback.SetActive(false);
+        }
 
         if (wrongFeedback != null)
+        {
             wrongFeedback.SetActive(false);
+        }
 
         ResetDragState();
     }
@@ -304,9 +419,10 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (!isPlaced)
         {
-            ReturnToOriginalPosition();
             if (ownCanvas != null)
+            {
                 ownCanvas.sortingOrder = 100;
+            }
         }
     }
 }
