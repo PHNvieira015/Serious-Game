@@ -32,6 +32,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private int blockLayer;
 
     private DraggableObject spawnedObject;
+    private Block currentBlock;
 
     private void Awake()
     {
@@ -285,7 +286,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             isPlaced = true;
 
-            Debug.Log($"CORRECT - Placed on Block Layer: {result.gameObject.name}");
+            Debug.Log($"Placed {CheckType} on {result.gameObject.name}");
 
             if (GameManager.Instance != null)
             {
@@ -298,16 +299,19 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 correctFeedback.SetActive(true);
             }
         }
-        else
-        {
-            Debug.Log($"MOVED - Placed on Block Layer: {result.gameObject.name}");
-        }
 
         StayOnBlock(result);
     }
 
     private void StayOnBlock(RaycastResult result)
     {
+        Block block = result.gameObject.GetComponent<Block>();
+
+        if (block == null)
+        {
+            block = result.gameObject.GetComponentInParent<Block>();
+        }
+
         RectTransform blockRect = result.gameObject.GetComponent<RectTransform>();
 
         if (blockRect == null && result.gameObject.transform.parent != null)
@@ -321,13 +325,27 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             return;
         }
 
-        DraggableObject existingObject = blockRect.GetComponentInChildren<DraggableObject>();
-
-        if (existingObject != null && existingObject != this)
+        if (block != null)
         {
-            Debug.Log($"Replacing {existingObject.gameObject.name} with {gameObject.name}");
+            DraggableObject existingDraggable = block.CurrentDraggable;
 
-            Destroy(existingObject.gameObject);
+            if (existingDraggable != null && existingDraggable != this)
+            {
+                Debug.Log(
+                    $"Replacing {existingDraggable.gameObject.name} " +
+                    $"with {gameObject.name} on {block.name}"
+                );
+
+                block.RemoveDraggable(existingDraggable);
+
+                existingDraggable.currentBlock = null;
+
+                Destroy(existingDraggable.gameObject);
+            }
+
+            block.SetDraggable(this);
+
+            currentBlock = block;
         }
 
         transform.SetParent(blockRect);
@@ -342,7 +360,10 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         canvasGroup.blocksRaycasts = true;
 
-        Debug.Log($"Placed {gameObject.name} on top of {blockRect.name}");
+        Debug.Log(
+            $"Placed {gameObject.name} on {blockRect.name}. " +
+            $"CheckType: {CheckType}"
+        );
     }
 
     private void Miss()
@@ -357,6 +378,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (wrongFeedback != null)
         {
             wrongFeedback.SetActive(true);
+
             Invoke(nameof(HideWrongFeedback), 0.5f);
         }
     }
@@ -399,6 +421,12 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void ResetDraggable()
     {
+        if (currentBlock != null)
+        {
+            currentBlock.RemoveDraggable(this);
+            currentBlock = null;
+        }
+
         isPlaced = false;
         isDragging = false;
 
@@ -423,6 +451,14 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             {
                 ownCanvas.sortingOrder = 100;
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (currentBlock != null)
+        {
+            currentBlock.RemoveDraggable(this);
         }
     }
 }
