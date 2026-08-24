@@ -22,7 +22,7 @@ public class ArticleValidator : MonoBehaviour
     {
         blocks.Clear();
 
-        Block[] foundBlocks = FindObjectsOfType<Block>(true);
+        Block[] foundBlocks = Object.FindObjectsByType<Block>(FindObjectsSortMode.None);
 
         foreach (Block block in foundBlocks)
         {
