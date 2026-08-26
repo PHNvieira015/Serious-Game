@@ -12,27 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
   m_Name: Election Scandal
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
-  Title: 123
-  Subtitle: 123
+  Title: "Metade do Senado apoia PEC alternativa \xE0 da C\xE2mara da escala 6 x
+    1"
+  Subtitle: "Texto constitucionaliza negocia\xE7\xE3o entre empregador e empregado
+    e vincula hora trabalhada ao sal\xE1rio m\xEDnimo proporcional"
   Writer:
     WriterName: asd
     WriterPhoto: {fileID: 0}
     WriterDescription: asdasd
   Blocks:
   - Type: 1
-    Text: Trueasdasd
+    Text: "Praticamente metade do Senado apoia a PEC (Proposta de Emenda \xE0 Constitui\xE7\xE3o)
+      alternativa ao texto aprovado horas antes pela C\xE2mara dos Deputados sobre
+      o fim da\_escala 6x1.\n"
+    Image: {fileID: 21300000, guid: ee7db5f288d8905478c8bd7eb9b0bff6, type: 3}
+    CheckType: 1
+    Hint: Not a lie
+    Explanation: This is true
+  - Type: 1
+    Text: "O texto tem apoio agora de\_40 senadores, 4 a mais do que os\_36 que a
+      protocolaram nesta madrugada, conforme revelado pela\_CNN."
     Image: {fileID: 0}
     CheckType: 1
     Hint: Not a lie
     Explanation: This is true
   - Type: 1
-    Text: True
-    Image: {fileID: 0}
-    CheckType: 1
-    Hint: Not a lie
-    Explanation: This is true
-  - Type: 1
-    Text: True
+    Text: "O texto, que j\xE1 entrou oficialmente no sistema de tramita\xE7\xE3o
+      do Senado sob o n\xFAmero 12 de 2026, prev\xEA que defini\xE7\xF5es sobre carga
+      e escala de trabalho podem ser acertadas mediante negocia\xE7\xE3o entre empregadores
+      e empregados. O presidente do Senado,\_Davi Alcolumbre\_(Uni\xE3o-AP), j\xE1
+      a enviou a\_Comiss\xE3o de Constitui\xE7\xE3o e Justi\xE7a."
     Image: {fileID: 0}
     CheckType: 1
     Hint: Not a lie
