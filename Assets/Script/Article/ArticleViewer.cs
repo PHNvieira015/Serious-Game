@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using System.Text;
 
 public class ArticleViewer : MonoBehaviour
 {
@@ -22,10 +21,8 @@ public class ArticleViewer : MonoBehaviour
     [Header("Article Verification")]
     public Button verifyArticleButton;
 
-    [Header("Feedback")]
-    public GameObject feedbackPanel;
-    public TMP_Text feedbackText;
-    public Button continueButton;
+    [Header("Validator")]
+    public ArticleValidator articleValidator;
 
     [Header("Scoring")]
     public int pointsPerCorrect = 10;
@@ -36,20 +33,16 @@ public class ArticleViewer : MonoBehaviour
 
     private void Start()
     {
-        if (continueButton != null)
-        {
-            continueButton.onClick.RemoveAllListeners();
-            continueButton.onClick.AddListener(CloseFeedback);
-        }
-
         if (verifyArticleButton != null)
         {
             verifyArticleButton.onClick.RemoveAllListeners();
-            verifyArticleButton.onClick.AddListener(VerifyArticle);
+            verifyArticleButton.onClick.AddListener(OnVerifyButtonPressed);
         }
 
         if (currentArticle != null)
+        {
             LoadArticle(currentArticle);
+        }
     }
 
     public void LoadArticle(ArticleData article)
@@ -65,27 +58,41 @@ public class ArticleViewer : MonoBehaviour
         DisplayArticleInfo();
         DisplayBlocks();
 
-        HideFeedback();
+        // Find validator if not assigned
+        if (articleValidator == null)
+        {
+            articleValidator = GetComponent<ArticleValidator>();
+        }
     }
 
     private void DisplayArticleInfo()
     {
         if (titleText != null)
+        {
             titleText.text = currentArticle.Title;
+        }
 
         if (subtitleText != null)
+        {
             subtitleText.text = currentArticle.Subtitle;
+        }
 
         if (currentArticle.Writer != null)
         {
             if (authorNameText != null)
+            {
                 authorNameText.text = currentArticle.Writer.WriterName;
+            }
 
             if (authorDescText != null)
+            {
                 authorDescText.text = currentArticle.Writer.WriterDescription;
+            }
 
             if (authorPhotoImage != null)
+            {
                 authorPhotoImage.sprite = currentArticle.Writer.WriterPhoto;
+            }
         }
     }
 
@@ -122,7 +129,9 @@ public class ArticleViewer : MonoBehaviour
         for (int i = currentArticle.Blocks.Count; i < blockViews.Length; i++)
         {
             if (blockViews[i] != null)
+            {
                 blockViews[i].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -146,15 +155,7 @@ public class ArticleViewer : MonoBehaviour
 
     private void OnAllBlocksSolved()
     {
-        if (feedbackPanel != null)
-        {
-            feedbackPanel.SetActive(true);
-            if (feedbackText != null)
-            {
-                feedbackText.text = "All blocks verified correctly!";
-                feedbackText.ForceMeshUpdate();
-            }
-        }
+        Debug.Log("All blocks solved!");
 
         if (GameManager.Instance != null)
         {
@@ -162,130 +163,43 @@ public class ArticleViewer : MonoBehaviour
         }
     }
 
-    public void VerifyArticle()
+    // This calls the validator instead of doing validation here
+    public void OnVerifyButtonPressed()
     {
-        if (currentArticle == null)
+        if (articleValidator == null)
+        {
+            Debug.LogError("ArticleValidator not assigned!");
             return;
-
-        int correct = 0;
-        int wrong = 0;
-        int missed = 0;
-        int score = 0;
-        StringBuilder results = new StringBuilder();
-
-        results.AppendLine("ARTICLE RESULTS");
-        results.AppendLine();
-
-        for (int i = 0; i < blockViews.Length; i++)
-        {
-            ArticleBlockView view = blockViews[i];
-
-            if (view == null || view.Block == null)
-                continue;
-
-            ArticleBlock block = view.Block;
-
-            if (block.CheckType == CheckType.None)
-                continue;
-
-            if (block.CheckType == CheckType.True)
-            {
-                if (!view.IsMarked)
-                    continue;
-
-                wrong++;
-                score -= penaltyPerWrong;
-                results.AppendLine($"Block {i + 1}: WRONG");
-                results.AppendLine("This block was true and should not have been marked.");
-                if (!string.IsNullOrEmpty(block.Explanation))
-                    results.AppendLine(block.Explanation);
-                results.AppendLine();
-                continue;
-            }
-
-            if (!view.IsMarked)
-            {
-                missed++;
-                score -= penaltyPerMissed;
-                results.AppendLine($"Block {i + 1}: MISSED");
-                results.AppendLine($"Correct check: {GetCheckTypeName(block.CheckType)}");
-                if (!string.IsNullOrEmpty(block.Explanation))
-                    results.AppendLine(block.Explanation);
-                results.AppendLine();
-                continue;
-            }
-
-            CheckType playerChoice = view.PlayerCheckType;
-
-            if (playerChoice == block.CheckType)
-            {
-                correct++;
-                score += pointsPerCorrect;
-                results.AppendLine($"Block {i + 1}: CORRECT");
-                results.AppendLine($"Check: {GetCheckTypeName(block.CheckType)}");
-                if (!string.IsNullOrEmpty(block.Explanation))
-                    results.AppendLine(block.Explanation);
-                results.AppendLine();
-            }
-            else
-            {
-                wrong++;
-                score -= penaltyPerWrong;
-                results.AppendLine($"Block {i + 1}: WRONG");
-                results.AppendLine($"Your check: {GetCheckTypeName(playerChoice)}");
-                results.AppendLine($"Correct check: {GetCheckTypeName(block.CheckType)}");
-                if (!string.IsNullOrEmpty(block.Explanation))
-                    results.AppendLine(block.Explanation);
-                results.AppendLine();
-            }
         }
 
-        results.AppendLine("--------------------------------");
-        results.AppendLine("SUMMARY");
-        results.AppendLine();
-        results.AppendLine($"Correct: {correct}");
-        results.AppendLine($"Wrong: {wrong}");
-        results.AppendLine($"Missed: {missed}");
-        results.AppendLine($"Score: {score}");
-
-        ShowFeedback(results.ToString());
-    }
-
-    private void ShowFeedback(string message)
-    {
-        if (feedbackText != null)
-        {
-            feedbackText.text = message;
-            feedbackText.ForceMeshUpdate();
-        }
-
-        if (feedbackPanel != null)
-            feedbackPanel.SetActive(true);
-    }
-
-    private void CloseFeedback()
-    {
-        HideFeedback();
-    }
-
-    private void HideFeedback()
-    {
-        if (feedbackPanel != null)
-            feedbackPanel.SetActive(false);
+        // Use the validator - it will handle feedback
+        articleValidator.OnValidateButtonPressed();
     }
 
     public string GetCheckTypeName(CheckType type)
     {
         switch (type)
         {
-            case CheckType.True: return "True Check";
-            case CheckType.Label: return "Label Check";
-            case CheckType.Source: return "Source Check";
-            case CheckType.AI: return "AI Check";
-            case CheckType.Specialist: return "Specialist Check";
-            case CheckType.Falacy: return "Fallacy Check";
+            case CheckType.True:
+                return "True Check";
+            case CheckType.Label:
+                return "Label Check";
+            case CheckType.Source:
+                return "Source Check";
+            case CheckType.AI:
+                return "AI Check";
+            case CheckType.Specialist:
+                return "Specialist Check";
+            case CheckType.Falacy:
+                return "Fallacy Check";
             case CheckType.None:
-            default: return "None";
+            default:
+                return "None";
         }
+    }
+
+    public List<Block> GetBlockComponents()
+    {
+        return blockComponents;
     }
 }
