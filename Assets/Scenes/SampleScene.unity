@@ -334,6 +334,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3445502312016790401, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4427157942400609983, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: CheckType
       value: 2
@@ -434,6 +438,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 1dc9ac00b9e5a6d4594a522406a74051, type: 3}
+    - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: m_PreserveAspect
       value: 1
@@ -644,7 +652,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &145197514
 RectTransform:
   m_ObjectHideFlags: 0
@@ -903,6 +911,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: ce103fba64e251843b472f5d76dd3282, type: 3}
+    - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: m_PreserveAspect
       value: 1
@@ -2767,7 +2779,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8, y: -0.000091552734}
+  m_AnchoredPosition: {x: 8, y: -0.00012207031}
   m_SizeDelta: {x: -16, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &529794930
@@ -3458,7 +3470,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 903.519}
+  m_SizeDelta: {x: 0, y: 1080}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &667408905
 MonoBehaviour:
@@ -7179,6 +7191,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3445502312016790401, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4427157942400609983, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: CheckType
       value: 3
@@ -7279,6 +7295,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 52260e6054bc34447ba074ba13695586, type: 3}
+    - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: m_UseSpriteMesh
       value: 0
@@ -8321,7 +8341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9704,8 +9724,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 0}
+  m_AnchoredPosition: {x: 0, y: 88.32864}
+  m_SizeDelta: {x: 20, y: 176.6572}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1903703654
 MonoBehaviour:
@@ -10966,6 +10986,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3445502312016790401, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4427157942400609983, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: CheckType
       value: 5
@@ -11463,7 +11487,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6584693451160740490}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.32258117
+  m_Size: 0.38558975
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13301,6 +13325,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3445502312016790401, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4427157942400609983, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: draggableInstancePrefab
       value: 
@@ -13401,6 +13429,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: f242e4dbaf873fb419dbbdc4698498df, type: 3}
+    - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5704644700492058272, guid: c7c8aa36ff3e4f045a345ea60e438deb, type: 3}
       propertyPath: m_PreserveAspect
       value: 1
