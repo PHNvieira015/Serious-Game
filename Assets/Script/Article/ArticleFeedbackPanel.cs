@@ -81,7 +81,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     {
         if (index >= results.Count)
         {
-            EndFeedback();
+            CloseFeedback();
             return;
         }
 
@@ -93,7 +93,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
             return;
         }
 
-        // Update navigation buttons
         if (backButton != null)
         {
             backButton.interactable = (index > 0);
@@ -134,7 +133,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         if (expectedAnswerText != null)
         {
-            expectedAnswerText.text = "Correct Check: " + result.GetExpectedCheckName();
+            expectedAnswerText.text = "Checagem Correta: " + GetCheckTypeDisplayName(result.ExpectedCheck);
             expectedAnswerText.ForceMeshUpdate();
         }
 
@@ -152,15 +151,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
             explanationText.ForceMeshUpdate();
         }
 
-        // Disable next button temporarily
+        // Update next button text based on position
         if (nextButton != null)
         {
             nextButton.interactable = false;
-        }
 
-        // Update next button text
-        if (nextButton != null)
-        {
             TMP_Text buttonText = nextButton.GetComponentInChildren<TMP_Text>();
             if (buttonText != null)
             {
@@ -199,21 +194,39 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     public void ShowNextBlock()
     {
-        if (currentIndex < results.Count - 1)
+        // Check if we're on the last block
+        if (currentIndex >= results.Count - 1)
         {
-            currentIndex++;
-            ShowBlock(currentIndex);
-        }
-        else
-        {
-            EndFeedback();
+            // Last block - close feedback
             CloseFeedback();
+            return;
         }
+
+        // Move to next block
+        currentIndex++;
+        ShowBlock(currentIndex);
     }
 
-    private void EndFeedback()
+    private string GetCheckTypeDisplayName(CheckType type)
     {
-        // No need to do anything here, CloseFeedback handles cleanup
+        switch (type)
+        {
+            case CheckType.True:
+                return "Verdadeiro";
+            case CheckType.Label:
+                return "Tendencioso";
+            case CheckType.Source:
+                return "Fonte";
+            case CheckType.AI:
+                return "IA";
+            case CheckType.Specialist:
+                return "Especialista";
+            case CheckType.Falacy:
+                return "Falacia";
+            case CheckType.None:
+            default:
+                return "Nenhum";
+        }
     }
 
     public void CloseFeedback()
