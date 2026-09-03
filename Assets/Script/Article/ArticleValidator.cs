@@ -31,13 +31,13 @@ public class ArticleValidator : MonoBehaviour
 
         foreach (Block block in foundBlocks)
         {
-            if (block != null)
+            if (block != null && block.ArticleBlock != null)
             {
                 blocks.Add(block);
             }
         }
 
-        Debug.Log("ArticleValidator: Found " + blocks.Count + " blocks.");
+        Debug.Log("ArticleValidator: Found " + blocks.Count + " blocks with ArticleBlock.");
     }
 
     public void OnValidateButtonPressed()
@@ -72,59 +72,113 @@ public class ArticleValidator : MonoBehaviour
         articleSolved = true;
         ValidationResult result = new ValidationResult();
 
+        int totalBlocks = 0;
+        int correctBlocks = 0;
+        int wrongBlocks = 0;
+        int missedBlocks = 0;
+
         foreach (Block block in blocks)
         {
-            if (block == null)
+            if (block == null || block.ArticleBlock == null)
             {
                 continue;
             }
 
+            totalBlocks++;
+
             BlockResult blockResult = new BlockResult();
             blockResult.Block = block;
+            blockResult.BlockText = block.ArticleBlock.Text;
+            blockResult.ExpectedCheck = block.ArticleBlock.CheckType;
+            blockResult.IsTrueCheck = (block.ArticleBlock.CheckType == CheckType.True);
+            blockResult.HasDraggable = (block.CurrentDraggable != null);
 
-            if (block.ArticleBlock != null)
-            {
-                blockResult.BlockText = block.ArticleBlock.Text;
-                blockResult.ExpectedCheck = block.ArticleBlock.CheckType;
-                blockResult.IsTrueCheck = (block.ArticleBlock.CheckType == CheckType.True);
-            }
-            else
-            {
-                blockResult.BlockText = "No text";
-                blockResult.ExpectedCheck = CheckType.None;
-                blockResult.IsTrueCheck = false;
-            }
-
-            if (block.CurrentDraggable == null)
-            {
-                blockResult.IsCorrect = false;
-                blockResult.PlayerCheck = CheckType.None;
-                blockResult.ResultType = BlockResultType.Missed;
-                articleSolved = false;
-            }
-            else
+            if (blockResult.HasDraggable)
             {
                 blockResult.PlayerCheck = block.CurrentDraggable.CheckType;
-                blockResult.IsCorrect = block.ValidateCurrentDraggable();
+            }
+            else
+            {
+                blockResult.PlayerCheck = CheckType.None;
+            }
 
-                if (blockResult.IsCorrect)
+            bool shouldShowInFeedback = false;
+            bool isCorrect = false;
+
+            // Case 1: True block
+            if (blockResult.IsTrueCheck)
+            {
+                // True block is correct if it's empty OR marked with True
+                if (!blockResult.HasDraggable || blockResult.PlayerCheck == CheckType.True)
                 {
-                    block.MarkAsSolved();
-                    blockResult.ResultType = BlockResultType.Correct;
+                    isCorrect = true;
+                    correctBlocks++;
+
+                    if (blockResult.HasDraggable && blockResult.PlayerCheck == CheckType.True)
+                    {
+                        block.MarkAsSolved();
+                    }
+                    else if (!blockResult.HasDraggable)
+                    {
+                        block.MarkAsSolved();
+                    }
+
+                    // True block correct - skip feedback
+                    shouldShowInFeedback = false;
                 }
                 else
                 {
+                    // True block marked with wrong type
+                    isCorrect = false;
+                    shouldShowInFeedback = true;
                     blockResult.ResultType = BlockResultType.Wrong;
                     articleSolved = false;
+                    wrongBlocks++;
+                    Debug.Log("True block marked wrong: " + block.name + " | Player: " + blockResult.PlayerCheck);
+                }
+            }
+            // Case 2: Non-True block - always show in feedback
+            else
+            {
+                shouldShowInFeedback = true;
+
+                if (blockResult.HasDraggable && blockResult.PlayerCheck == blockResult.ExpectedCheck)
+                {
+                    isCorrect = true;
+                    correctBlocks++;
+                    block.MarkAsSolved();
+                    blockResult.ResultType = BlockResultType.Correct;
+                    Debug.Log("Correct mark: " + block.name + " | Expected: " + blockResult.ExpectedCheck + " | Player: " + blockResult.PlayerCheck);
+                }
+                else if (blockResult.HasDraggable && blockResult.PlayerCheck != blockResult.ExpectedCheck)
+                {
+                    isCorrect = false;
+                    blockResult.ResultType = BlockResultType.Wrong;
+                    articleSolved = false;
+                    wrongBlocks++;
+                    Debug.Log("Wrong mark: " + block.name + " | Expected: " + blockResult.ExpectedCheck + " | Player: " + blockResult.PlayerCheck);
+                }
+                else if (!blockResult.HasDraggable)
+                {
+                    isCorrect = false;
+                    blockResult.ResultType = BlockResultType.Missed;
+                    articleSolved = false;
+                    missedBlocks++;
+                    Debug.Log("Missed block: " + block.name + " | Expected: " + blockResult.ExpectedCheck);
                 }
             }
 
-            result.BlockResults.Add(blockResult);
+            blockResult.IsCorrect = isCorrect;
+
+            if (shouldShowInFeedback)
+            {
+                result.BlockResults.Add(blockResult);
+            }
         }
 
         result.IsArticleSolved = articleSolved;
 
-        Debug.Log("Validation Complete. Solved: " + articleSolved);
+        Debug.Log("Validation Complete. Total: " + totalBlocks + " | Correct: " + correctBlocks + " | Wrong: " + wrongBlocks + " | Missed: " + missedBlocks + " | Feedback items: " + result.BlockResults.Count);
 
         return result;
     }
@@ -220,6 +274,7 @@ public class BlockResult
     public CheckType PlayerCheck;
     public bool IsCorrect;
     public bool IsTrueCheck;
+    public bool HasDraggable;
     public BlockResultType ResultType;
 
     public string GetResultText()
@@ -252,20 +307,20 @@ public class BlockResult
         switch (type)
         {
             case CheckType.True:
-                return "True Check";
+                return "Verdadeiro";
             case CheckType.Label:
-                return "Label Check";
+                return "Tendencioso";
             case CheckType.Source:
-                return "Source Check";
+                return "Fonte";
             case CheckType.AI:
-                return "AI Check";
+                return "IA";
             case CheckType.Specialist:
-                return "Specialist Check";
+                return "Especialista";
             case CheckType.Falacy:
-                return "Fallacy Check";
+                return "Falacia";
             case CheckType.None:
             default:
-                return "None";
+                return "Nenhum";
         }
     }
 }

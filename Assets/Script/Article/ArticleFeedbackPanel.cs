@@ -14,6 +14,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public TMP_Text blockIndexText;
     public TMP_Text resultText;
     public TMP_Text expectedAnswerText;
+    public TMP_Text playerMarkText;
     public TMP_Text explanationText;
 
     [Header("Navigation")]
@@ -32,6 +33,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private List<BlockResult> results = new List<BlockResult>();
     private int currentIndex = 0;
     private System.Action onFeedbackComplete;
+    private bool isBlockDisplayed = false;
 
     private void Start()
     {
@@ -72,6 +74,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
         results = result.BlockResults;
         currentIndex = 0;
         onFeedbackComplete = onComplete;
+        isBlockDisplayed = false;
 
         feedbackPanel.SetActive(true);
         ShowBlock(currentIndex);
@@ -92,6 +95,8 @@ public class ArticleFeedbackPanel : MonoBehaviour
             ShowNextBlock();
             return;
         }
+
+        isBlockDisplayed = true;
 
         if (backButton != null)
         {
@@ -131,10 +136,25 @@ public class ArticleFeedbackPanel : MonoBehaviour
             resultText.ForceMeshUpdate();
         }
 
+        // Show expected answer
         if (expectedAnswerText != null)
         {
             expectedAnswerText.text = "Checagem Correta: " + GetCheckTypeDisplayName(result.ExpectedCheck);
             expectedAnswerText.ForceMeshUpdate();
+        }
+
+        // Show what the player marked
+        if (playerMarkText != null)
+        {
+            if (result.HasDraggable)
+            {
+                playerMarkText.text = "Sua Marcação: " + GetCheckTypeDisplayName(result.PlayerCheck);
+            }
+            else
+            {
+                playerMarkText.text = "Sua Marcação: Nenhuma";
+            }
+            playerMarkText.ForceMeshUpdate();
         }
 
         if (explanationText != null)
@@ -151,7 +171,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
             explanationText.ForceMeshUpdate();
         }
 
-        // Update next button text based on position
         if (nextButton != null)
         {
             nextButton.interactable = false;
@@ -194,17 +213,50 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     public void ShowNextBlock()
     {
-        // Check if we're on the last block
-        if (currentIndex >= results.Count - 1)
+        if (!isBlockDisplayed)
         {
-            // Last block - close feedback
-            CloseFeedback();
             return;
         }
 
-        // Move to next block
+        if (currentIndex >= results.Count - 1)
+        {
+            FinishFeedback();
+            return;
+        }
+
         currentIndex++;
         ShowBlock(currentIndex);
+    }
+
+    private void FinishFeedback()
+    {
+        Debug.Log("Feedback finished - returning to article");
+
+        StopAllCoroutines();
+
+        if (feedbackPanel != null)
+        {
+            feedbackPanel.SetActive(false);
+        }
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.OpenArticle();
+        }
+
+        if (onFeedbackComplete != null)
+        {
+            onFeedbackComplete.Invoke();
+        }
+
+        results.Clear();
+        currentIndex = 0;
+        isBlockDisplayed = false;
+
+        if (backButton != null)
+        {
+            backButton.interactable = false;
+        }
     }
 
     private string GetCheckTypeDisplayName(CheckType type)
@@ -245,6 +297,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         results.Clear();
         currentIndex = 0;
+        isBlockDisplayed = false;
 
         if (backButton != null)
         {

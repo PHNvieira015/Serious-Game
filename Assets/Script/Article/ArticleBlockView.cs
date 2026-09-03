@@ -4,11 +4,8 @@ using TMPro;
 
 public class ArticleBlockView : MonoBehaviour
 {
-    [Header("Text / Image")]
+    [Header("Text")]
     public TMP_Text blockText;
-    public Image blockImage;
-    public GameObject textContainer;
-    public GameObject imageContainer;
 
     [Header("Selection")]
     public GameObject markedVisual;
@@ -29,6 +26,9 @@ public class ArticleBlockView : MonoBehaviour
     {
         if (blockComponent == null)
             blockComponent = GetComponent<Block>();
+
+        if (blockText == null)
+            blockText = GetComponent<TMP_Text>();
     }
 
     public void Initialize(ArticleBlock articleBlock)
@@ -37,7 +37,7 @@ public class ArticleBlockView : MonoBehaviour
 
         if (block == null)
         {
-            Debug.LogError($"ArticleBlockView: ArticleBlock is null on {gameObject.name}");
+            Debug.LogError("ArticleBlockView: ArticleBlock is null on " + gameObject.name);
             return;
         }
 
@@ -52,34 +52,14 @@ public class ArticleBlockView : MonoBehaviour
 
     private void DisplayBlock()
     {
-        if (block == null)
+        if (block == null || blockText == null)
             return;
 
-        if (block.Type == BlockType.Image && block.Image != null)
-        {
-            if (textContainer != null)
-                textContainer.SetActive(false);
+        blockText.text = block.Text;
+        blockText.ForceMeshUpdate();
 
-            if (imageContainer != null)
-                imageContainer.SetActive(true);
-
-            if (blockImage != null)
-                blockImage.sprite = block.Image;
-
-            return;
-        }
-
-        if (imageContainer != null)
-            imageContainer.SetActive(false);
-
-        if (textContainer != null)
-            textContainer.SetActive(true);
-
-        if (blockText != null)
-        {
-            blockText.text = block.Text;
-            blockText.ForceMeshUpdate();
-        }
+        // Force layout update
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 
     public void SetMarked(bool value)
