@@ -4,8 +4,10 @@ using TMPro;
 
 public class ArticleBlockView : MonoBehaviour
 {
-    [Header("Text")]
+    [Header("Text / Image")]
     public TMP_Text blockText;
+    public GameObject textContainer;
+    public GameObject imageContainer;
 
     [Header("Selection")]
     public GameObject markedVisual;
@@ -13,6 +15,15 @@ public class ArticleBlockView : MonoBehaviour
 
     [Header("Block Component")]
     public Block blockComponent;
+
+    [Header("Text Colors")]
+    public Color defaultTextColor = new Color(1f, 1f, 1f, 1f);
+    public Color trueColor = new Color(0.2f, 0.8f, 0.2f, 1f);
+    public Color labelColor = new Color(1f, 0.8f, 0.2f, 1f);
+    public Color sourceColor = new Color(0.2f, 0.5f, 1f, 1f);
+    public Color aiColor = new Color(0.2f, 0.9f, 0.9f, 1f);
+    public Color specialistColor = new Color(0.8f, 0.2f, 0.8f, 1f);
+    public Color falacyColor = new Color(1f, 0.2f, 0.2f, 1f);
 
     private ArticleBlock block;
     private bool isMarked;
@@ -29,6 +40,11 @@ public class ArticleBlockView : MonoBehaviour
 
         if (blockText == null)
             blockText = GetComponent<TMP_Text>();
+
+        if (blockText != null)
+        {
+            blockText.color = defaultTextColor;
+        }
     }
 
     public void Initialize(ArticleBlock articleBlock)
@@ -58,7 +74,6 @@ public class ArticleBlockView : MonoBehaviour
         blockText.text = block.Text;
         blockText.ForceMeshUpdate();
 
-        // Force layout update
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 
@@ -76,12 +91,47 @@ public class ArticleBlockView : MonoBehaviour
             return;
 
         playerCheckType = type;
-        SetMarked(true);
+        isMarked = true;
+
+        if (markedVisual != null)
+            markedVisual.SetActive(true);
 
         if (selectedCheckTypeText != null)
         {
             selectedCheckTypeText.text = GetCheckTypeName(type);
             selectedCheckTypeText.gameObject.SetActive(true);
+        }
+
+        SetTextColor(type);
+    }
+
+    public void SetMarkColorFromDraggable(CheckType type)
+    {
+        playerCheckType = type;
+        isMarked = true;
+
+        if (markedVisual != null)
+            markedVisual.SetActive(true);
+
+        if (selectedCheckTypeText != null)
+        {
+            selectedCheckTypeText.text = GetCheckTypeName(type);
+            selectedCheckTypeText.gameObject.SetActive(true);
+        }
+
+        SetTextColor(type);
+    }
+
+    private void SetTextColor(CheckType type)
+    {
+        if (blockText != null)
+        {
+            blockText.color = GetColorForType(type);
+            Debug.Log("SetTextColor: " + type + " -> " + GetColorForType(type));
+        }
+        else
+        {
+            Debug.LogWarning("blockText is null on " + gameObject.name);
         }
     }
 
@@ -97,6 +147,33 @@ public class ArticleBlockView : MonoBehaviour
         {
             selectedCheckTypeText.text = string.Empty;
             selectedCheckTypeText.gameObject.SetActive(false);
+        }
+
+        if (blockText != null)
+        {
+            blockText.color = defaultTextColor;
+        }
+    }
+
+    private Color GetColorForType(CheckType type)
+    {
+        switch (type)
+        {
+            case CheckType.True:
+                return trueColor;
+            case CheckType.Label:
+                return labelColor;
+            case CheckType.Source:
+                return sourceColor;
+            case CheckType.AI:
+                return aiColor;
+            case CheckType.Specialist:
+                return specialistColor;
+            case CheckType.Falacy:
+                return falacyColor;
+            case CheckType.None:
+            default:
+                return defaultTextColor;
         }
     }
 

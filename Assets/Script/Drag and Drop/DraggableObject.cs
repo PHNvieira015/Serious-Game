@@ -345,6 +345,18 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
             block.SetDraggable(this);
             currentBlock = block;
+
+            // Set the color on the block's ArticleBlockView
+            ArticleBlockView blockView = block.GetComponent<ArticleBlockView>();
+            if (blockView != null)
+            {
+                blockView.SetMarkColorFromDraggable(CheckType);
+                Debug.Log("Set color on block from drag: " + CheckType);
+            }
+            else
+            {
+                Debug.LogWarning("ArticleBlockView not found on " + block.name);
+            }
         }
 
         transform.SetParent(blockRect);
@@ -444,14 +456,12 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             return;
         }
 
-        // Always check if we have enough checks FIRST
         if (!CanUseCheck())
         {
             Debug.Log("Not enough " + CheckType + " remaining!");
             return;
         }
 
-        // Remove existing draggable from the block (always replace)
         if (block.CurrentDraggable != null)
         {
             Debug.Log("Replacing existing draggable on " + block.name);
@@ -461,11 +471,9 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             Destroy(old.gameObject);
         }
 
-        // Create a copy
         DraggableObject copy = Instantiate(spawnPrefab != null ? spawnPrefab : this, block.transform);
         copy.canSpawnMultiple = false;
 
-        // Position on block
         RectTransform copyRect = copy.GetComponent<RectTransform>();
         if (copyRect != null)
         {
@@ -475,12 +483,22 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             copyRect.anchoredPosition = Vector2.zero;
         }
 
-        // Set on block
         block.SetDraggable(copy);
         copy.currentBlock = block;
         copy.isPlaced = true;
 
-        // Use check
+        // Set the color on the block's ArticleBlockView
+        ArticleBlockView blockView = block.GetComponent<ArticleBlockView>();
+        if (blockView != null)
+        {
+            blockView.SetMarkColorFromDraggable(CheckType);
+            Debug.Log("Set color on block from click: " + CheckType);
+        }
+        else
+        {
+            Debug.LogWarning("ArticleBlockView not found on " + block.name);
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.UseCheck(CheckType);
@@ -492,7 +510,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             copy.correctFeedback.SetActive(true);
         }
 
-        Debug.Log("Placed " + CheckType + " on " + block.name + " via click (replaced existing).");
+        Debug.Log("Placed " + CheckType + " on " + block.name + " via click.");
     }
 
     private void OnEnable()

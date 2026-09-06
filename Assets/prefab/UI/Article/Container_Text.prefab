@@ -215,18 +215,26 @@ PrefabInstance:
       propertyPath: m_text
       value: 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
       objectReference: {fileID: 0}
-    - target: {fileID: 7976381536729874934, guid: 3e9091174f651aa438b47222732417b3, type: 3}
-      propertyPath: blockText
-      value: 
-      objectReference: {fileID: 5194775169806477930}
+    - target: {fileID: 7735767566482749879, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7735767566482749879, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7735767566482749879, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7735767566482749879, guid: 3e9091174f651aa438b47222732417b3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7976381536729874934, guid: 3e9091174f651aa438b47222732417b3, type: 3}
       propertyPath: blockImage
       value: 
       objectReference: {fileID: 2559687050086236729}
-    - target: {fileID: 7976381536729874934, guid: 3e9091174f651aa438b47222732417b3, type: 3}
-      propertyPath: textContainer
-      value: 
-      objectReference: {fileID: 472778807256328157}
     - target: {fileID: 7976381536729874934, guid: 3e9091174f651aa438b47222732417b3, type: 3}
       propertyPath: blockComponent
       value: 
@@ -279,22 +287,6 @@ PrefabInstance:
       addedObject: {fileID: 6697075175029661649}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e9091174f651aa438b47222732417b3, type: 3}
---- !u!1 &472778807256328157 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2139122896744334748, guid: 3e9091174f651aa438b47222732417b3, type: 3}
-  m_PrefabInstance: {fileID: 1954585470168031809}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5194775169806477930 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5996430064128149547, guid: 3e9091174f651aa438b47222732417b3, type: 3}
-  m_PrefabInstance: {fileID: 1954585470168031809}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472778807256328157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &6300563277033670187 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5498910307142591594, guid: 3e9091174f651aa438b47222732417b3, type: 3}
