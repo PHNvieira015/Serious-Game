@@ -21,6 +21,10 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public DraggableObject spawnPrefab;
     public bool canSpawnMultiple = true;
 
+    public bool IsPlaced => isPlaced;
+    public bool IsSpawnedInstance => isSpawnedInstance;
+    public Block CurrentBlock => currentBlock;
+
     private RectTransform rectTransform;
     private Canvas parentCanvas;
     private Canvas ownCanvas;
@@ -68,6 +72,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         isPlaced = false;
         isDragging = false;
+        isSpawnedInstance = false;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -331,20 +336,14 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
             if (existingDraggable != null && existingDraggable != this)
             {
-                Debug.Log(
-                    $"Replacing {existingDraggable.gameObject.name} " +
-                    $"with {gameObject.name} on {block.name}"
-                );
+                Debug.Log($"Replacing {existingDraggable.gameObject.name} with {gameObject.name} on {block.name}");
 
                 block.RemoveDraggable(existingDraggable);
-
                 existingDraggable.currentBlock = null;
-
                 Destroy(existingDraggable.gameObject);
             }
 
             block.SetDraggable(this);
-
             currentBlock = block;
         }
 
@@ -353,17 +352,12 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
-
         rectTransform.anchoredPosition = Vector2.zero;
 
         ownCanvas.sortingOrder = 200;
-
         canvasGroup.blocksRaycasts = true;
 
-        Debug.Log(
-            $"Placed {gameObject.name} on {blockRect.name}. " +
-            $"CheckType: {CheckType}"
-        );
+        Debug.Log($"Placed {gameObject.name} on {blockRect.name}. CheckType: {CheckType}");
     }
 
     private void Miss()
@@ -378,7 +372,6 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (wrongFeedback != null)
         {
             wrongFeedback.SetActive(true);
-
             Invoke(nameof(HideWrongFeedback), 0.5f);
         }
     }
@@ -441,6 +434,65 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         ResetDragState();
+    }
+
+    public void PlaceCopyOnBlock(Block block)
+    {
+        if (block == null)
+        {
+            Debug.LogWarning("Block is null.");
+            return;
+        }
+
+        // Always check if we have enough checks FIRST
+        if (!CanUseCheck())
+        {
+            Debug.Log("Not enough " + CheckType + " remaining!");
+            return;
+        }
+
+        // Remove existing draggable from the block (always replace)
+        if (block.CurrentDraggable != null)
+        {
+            Debug.Log("Replacing existing draggable on " + block.name);
+            DraggableObject old = block.CurrentDraggable;
+            block.RemoveDraggable(old);
+            old.currentBlock = null;
+            Destroy(old.gameObject);
+        }
+
+        // Create a copy
+        DraggableObject copy = Instantiate(spawnPrefab != null ? spawnPrefab : this, block.transform);
+        copy.canSpawnMultiple = false;
+
+        // Position on block
+        RectTransform copyRect = copy.GetComponent<RectTransform>();
+        if (copyRect != null)
+        {
+            copyRect.anchorMin = new Vector2(0.5f, 0.5f);
+            copyRect.anchorMax = new Vector2(0.5f, 0.5f);
+            copyRect.pivot = new Vector2(0.5f, 0.5f);
+            copyRect.anchoredPosition = Vector2.zero;
+        }
+
+        // Set on block
+        block.SetDraggable(copy);
+        copy.currentBlock = block;
+        copy.isPlaced = true;
+
+        // Use check
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UseCheck(CheckType);
+            GameManager.Instance.AddScore(10);
+        }
+
+        if (copy.correctFeedback != null)
+        {
+            copy.correctFeedback.SetActive(true);
+        }
+
+        Debug.Log("Placed " + CheckType + " on " + block.name + " via click (replaced existing).");
     }
 
     private void OnEnable()

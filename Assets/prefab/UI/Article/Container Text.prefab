@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7976381536729874934}
   - component: {fileID: 2002208397346687503}
   - component: {fileID: 6857730287599108582}
+  - component: {fileID: 8954468903276220303}
   m_Layer: 6
   m_Name: Container Text
   m_TagString: Untagged
@@ -235,3 +236,16 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8954468903276220303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339722820499809746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b070c2380b48e4247ba2f0a2470850c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlockClickReceiver
+  block: {fileID: 2002208397346687503}

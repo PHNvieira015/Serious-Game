@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 176691312812893880}
   - component: {fileID: 4572506471408992844}
   - component: {fileID: 4427157942400609983}
+  - component: {fileID: 324916804316635943}
   m_Layer: 0
   m_Name: ActionButton
   m_TagString: Untagged
@@ -183,7 +184,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7162016171004202520}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -265,6 +266,20 @@ MonoBehaviour:
   stayOnBlock: 1
   spawnPrefab: {fileID: 0}
   canSpawnMultiple: 1
+--- !u!114 &324916804316635943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7162016171004202520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: facc6bfe1f79a1c4793471db1b589d56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonClickMarker
+  checkType: 0
+  selectedFeedback: {fileID: 0}
 --- !u!1 &8803570158841410825
 GameObject:
   m_ObjectHideFlags: 0
