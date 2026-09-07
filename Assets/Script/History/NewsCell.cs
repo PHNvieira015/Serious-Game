@@ -7,7 +7,6 @@ public class NewsCell : MonoBehaviour
     [Header("References")]
     public TMP_Text titleText;
     public Button clickButton;
-    //public Image backgroundImage;
 
     [Header("Colors")]
     public Color normalColor = new Color(0.2f, 0.2f, 0.2f, 1f);
@@ -24,14 +23,18 @@ public class NewsCell : MonoBehaviour
             clickButton = GetComponent<Button>();
         }
 
-        //if (backgroundImage == null)
-        //{
-        //    backgroundImage = GetComponent<Image>();
-        //}
-
         if (titleText == null)
         {
             titleText = GetComponentInChildren<TMP_Text>();
+        }
+
+        if (clickButton != null)
+        {
+            ColorBlock colors = clickButton.colors;
+            colors.normalColor = normalColor;
+            colors.highlightedColor = hoverColor;
+            colors.pressedColor = pressedColor;
+            clickButton.colors = colors;
         }
     }
 
@@ -58,5 +61,10 @@ public class NewsCell : MonoBehaviour
         {
             onClickAction.Invoke(linkedArticle);
         }
+    }
+
+    public ArticleData GetArticleData()
+    {
+        return linkedArticle;
     }
 }

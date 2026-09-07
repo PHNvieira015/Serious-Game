@@ -3,24 +3,38 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class GridPopulator : MonoBehaviour
+public class NewsGridPopulator : MonoBehaviour
 {
     [Header("Grid Settings")]
     public GridLayoutGroup gridLayout;
     public GameObject cellPrefab;
 
-    [Header("Data")]
-    public List<GridData> gridData = new List<GridData>();
+    [Header("Target Parent")]
+    public Transform targetParent; // Where cells will be spawned
 
-    [System.Serializable]
-    public class GridData
-    {
-        public string month;
-        public string content;
-    }
+    [Header("Article Viewer")]
+    public ArticleViewer articleViewer;
+
+    [Header("News Data")]
+    public List<ArticleData> newsArticles = new List<ArticleData>();
 
     private void Start()
     {
+        if (gridLayout == null)
+        {
+            gridLayout = GetComponent<GridLayoutGroup>();
+        }
+
+        if (targetParent == null)
+        {
+            targetParent = transform;
+        }
+
+        if (articleViewer == null)
+        {
+            articleViewer = FindFirstObjectByType<ArticleViewer>();
+        }
+
         PopulateGrid();
     }
 
@@ -37,31 +51,72 @@ public class GridPopulator : MonoBehaviour
             return;
         }
 
-        // Clear existing cells
-        foreach (Transform child in transform)
+        if (articleViewer == null)
+        {
+            Debug.LogError("ArticleViewer not assigned!");
+            return;
+        }
+
+        if (targetParent == null)
+        {
+            targetParent = transform;
+        }
+
+        // Clear existing cells from target parent
+        foreach (Transform child in targetParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Create cells from data
-        foreach (GridData data in gridData)
+        // Create cells from news articles
+        foreach (ArticleData article in newsArticles)
         {
-            GameObject cell = Instantiate(cellPrefab, transform);
+            if (article == null)
+                continue;
+
+            GameObject cell = Instantiate(cellPrefab, targetParent);
             cell.SetActive(true);
 
-            // Set text
-            TMP_Text[] texts = cell.GetComponentsInChildren<TMP_Text>();
-            if (texts.Length >= 2)
+            NewsCell newsCell = cell.GetComponent<NewsCell>();
+            if (newsCell != null)
             {
-                texts[0].text = data.month;
-                texts[1].text = data.content;
+                newsCell.Initialize(article, OnCellClicked);
+            }
+            else
+            {
+                TMP_Text text = cell.GetComponentInChildren<TMP_Text>();
+                if (text != null)
+                {
+                    text.text = article.Title;
+                }
+
+                Button button = cell.GetComponent<Button>();
+                if (button != null)
+                {
+                    ArticleData articleRef = article;
+                    button.onClick.AddListener(() => OnCellClicked(articleRef));
+                }
             }
         }
     }
 
-    public void SetData(List<GridData> data)
+    private void OnCellClicked(ArticleData article)
     {
-        gridData = data;
+        if (articleViewer != null && article != null)
+        {
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.OpenArticle();
+            }
+
+            articleViewer.LoadArticle(article);
+            Debug.Log("Loaded article: " + article.Title);
+        }
+    }
+
+    public void SetNewsData(List<ArticleData> articles)
+    {
+        newsArticles = articles;
         PopulateGrid();
     }
 }
