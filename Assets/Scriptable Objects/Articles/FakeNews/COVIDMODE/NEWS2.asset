@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS2
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Logo ap\xF3s aprova\xE7\xE3o da Anvisa, governo de SP aplica em enfermeira
+    a 1\xAA dose de vacina contra Covid-19 no Brasil "
+  Subtitle: 
+  Writer:
+    WriterName: "G1 SP \u2014 S\xE3o Paulo"
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 'Publicado em: 17 de Janeiro de 2021'
+  Blocks:
+  - Type: 1
+    Text: "\tO governo de S\xE3o Paulo aplicou a primeira dose da vacina CoronaVac
+      na tarde deste domingo (17), logo ap\xF3s a Ag\xEAncia Nacional de Vigil\xE2ncia
+      Sanit\xE1ria (Anvisa) aprovar, por unanimidade, o uso emergencial do imunizante
+      contra a Covid-19 no Brasil. A reuni\xE3o dos diretores da ag\xEAncia, que
+      discutiu o tema, durou cerca de 5 horas e foi transmitida ao vivo."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tJornalismo Transparente. Em vez de usar \"fontes exclusivas\"
+      ou \"documentos secretos vazados\", a not\xEDcia se baseia em um evento oficial
+      p\xFAblico: uma reuni\xE3o da Anvisa que durou 5 horas e foi \"transmitida
+      ao vivo\". Qualquer cidad\xE3o pode (e poderia) buscar a grava\xE7\xE3o dessa
+      reuni\xE3o ou o Di\xE1rio Oficial da Uni\xE3o para comprovar o fato."
+  - Type: 1
+    Text: "\tA enfermeira M\xF4nica Calazans, de 54 anos, moradora de Itaquera, na
+      Zona Leste da capital paulista, foi a primeira pessoa, fora dos estudos cl\xEDnicos,
+      a receber a vacina no pa\xEDs. Negra e pertencente ao grupo de risco, M\xF4nica
+      atua na linha de frente contra a doen\xE7a na UTI do Instituto de Infectologia
+      Em\xEDlio Ribas."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tIdentifica\xE7\xE3o Clara. Fake news costumam usar personagens
+      vagos (\"um m\xE9dico renomado\", \"o vizinho de um funcion\xE1rio\"). Aqui,
+      o texto fornece Nome, Idade, Bairro de Resid\xEAncia e Local exato de Trabalho
+      (M\xF4nica Calazans, 54 anos, Itaquera, Em\xEDlio Ribas). Personagens reais
+      d\xE3o lastro \xE0 not\xEDcia."
+  - Type: 1
+    Text: "\tSegundo os dados apresentados durante a aprova\xE7\xE3o, a CoronaVac
+      registrou 50,38% de efic\xE1cia global nos testes realizados no pa\xEDs, \xEDndice
+      que aponta a capacidade do imunizante de proteger em todos os casos. O n\xFAmero
+      m\xEDnimo recomendado pela Organiza\xE7\xE3o Mundial da Sa\xFAde (OMS), e tamb\xE9m
+      exigido pela Anvisa, \xE9 de 50%."
+    Image: {fileID: 0}
+    CheckType: 0
+    Hint: 
+    Explanation: " Embasamento Factual sem Sensacionalismo. O texto n\xE3o promete
+      uma \"cura milagrosa de 100%\" (t\xEDpico de mentiras). Ele apresenta o n\xFAmero
+      exato e quebrado (50,38%) e cita par\xE2metros de \xF3rg\xE3os de autoridade
+      m\xE1xima (OMS e Anvisa). A linguagem \xE9 t\xE9cnica, fria e descritiva."
+  - Type: 1
+    Text: "\tO pedido sobre a CoronaVac foi apresentado em 8 de janeiro pelo Instituto
+      Butantan e \xE9 referente a 6 milh\xF5es de doses importadas. Na mesma reuni\xE3o
+      de domingo, a Anvisa tamb\xE9m aprovou o uso emergencial de 2 milh\xF5es de
+      doses da vacina de Oxford, com pedido feito pela Funda\xE7\xE3o Oswaldo Cruz
+      (Fiocruz)."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tFoco Informativo. Observe como o \xFAltimo par\xE1grafo apenas
+      conclui com mais dados (Butantan, 6 milh\xF5es, Fiocruz, 2 milh\xF5es). N\xE3o
+      h\xE1 pedido para compartilhar, n\xE3o h\xE1 texto em CAPS LOCK, n\xE3o h\xE1
+      uso de exclama\xE7\xF5es abusivas e n\xE3o h\xE1 gatilhos de medo ou raiva.
+      O objetivo do texto verdadeiro \xE9 apenas informar o leitor sobre o que aconteceu,
+      e n\xE3o for\xE7\xE1-lo a espalhar a mensagem desesperadamente."

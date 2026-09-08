@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS2_E
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Lalulu ou Bundowisk Boomsonaro: Nova pesquisa mostra quem tem a maior rejei\xE7\xE3o
+    na largada da campanha "
+  Subtitle: 
+  Writer:
+    WriterName: "Reda\xE7\xE3o Pol\xEDtica"
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 'Publicado em: Segunda-feira, 17 de Agosto de 2026'
+  Blocks:
+  - Type: 1
+    Text: "\tBundowisk Boomsonaro (PL) come\xE7a oficialmente a campanha eleitoral
+      com uma rejei\xE7\xE3o ligeiramente maior que a de Lalulu (PT), segundo a 10\xAA
+      rodada da pesquisa BTG/Nexus divulgada nesta segunda-feira, 17. Metade dos
+      eleitores, 50%, afirma que n\xE3o votaria no candidato do PL de jeito nenhum,
+      enquanto 48% dizem o mesmo em rela\xE7\xE3o ao atual presidente. A diferen\xE7a
+      de dois pontos est\xE1 dentro da margem de erro do levantamento, que \xE9 de
+      dois pontos percentuais."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tRigor Cient\xEDfico. O texto cita o nome do instituto de pesquisa
+      (BTG/Nexus), a edi\xE7\xE3o do estudo (10\xAA rodada), a data exata da divulga\xE7\xE3o
+      (segunda-feira, 17) e reconhece explicitamente a \"margem de erro de 2 pontos
+      percentuais\" e o \"empate t\xE9cnico\". Fake news estat\xEDsticas escondem
+      a margem de erro para cravar vit\xF3rias falsas."
+  - Type: 1
+    Text: "\tO dado ajuda a dimensionar o grau de resist\xEAncia aos dois principais
+      nomes da corrida presidencial. Na inten\xE7\xE3o de voto, Lalulu aparece \xE0
+      frente de Bundowisk no primeiro turno, com 41% contra 36%. Em um eventual segundo
+      turno entre os dois l\xEDderes, o petista registra 47%, contra 44% do rival
+      \u2014 caracterizando um empate t\xE9cnico no limite da margem de erro."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tJornalismo Descritivo. Os n\xFAmeros de primeiro e segundo turno
+      (41% x 36% e 47% x 44%) s\xE3o apresentados sem adjetivos passionais, sem comemora\xE7\xF5es
+      ou ofensas a qualquer um dos lados."
+  - Type: 1
+    Text: "\tO \xEDndice de 50% coloca Bundowisk Boomsonaro no patamar mais alto
+      de rejei\xE7\xE3o entre todos os pr\xE9-candidatos considerados no levantamento
+      estat\xEDstico. Lalulu aparece logo atr\xE1s, com 48%, demonstrando como a
+      rejei\xE7\xE3o dos dois polos domina a percep\xE7\xE3o do eleitorado neste
+      in\xEDcio de disputa oficial."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tAn\xE1lise T\xE9cnica. Em vez de usar palavras de p\xE2nico (\"derrota
+      humilhante\" ou \"fraude nas pesquisas\"), a reportagem contextualiza os 50%
+      e 48% como indicadores do grau de rejei\xE7\xE3o e resist\xEAncia do eleitorado,
+      mantendo a sobriedade."
+  - Type: 1
+    Text: "\tA proximidade dos percentuais e a estabilidade dos n\xFAmeros refor\xE7am
+      a caracter\xEDstica profundamente polarizada da disputa eleitoral: os dois
+      candidatos concentram simultaneamente as maiores inten\xE7\xF5es de voto e
+      os maiores \xEDndices de rejei\xE7\xE3o, sem que haja margem para uma terceira
+      via despontar no momento."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tTexto Puramente Informativo. O par\xE1grafo final limita-se a
+      analisar o fen\xF4meno da polariza\xE7\xE3o. N\xE3o h\xE1 pedidos desesperados
+      para compartilhar, n\xE3o h\xE1 uso de texto em CAPS LOCK, nem amea\xE7as de
+      \"censura\" ou apelo ao medo."

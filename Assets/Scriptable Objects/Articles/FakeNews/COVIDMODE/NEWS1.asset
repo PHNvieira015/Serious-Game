@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS1
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "ATEN\xC7\xC3O MOTORISTAS"
+  Subtitle: "Nova Delibera\xE7\xE3o determina multa de R$ 128,00 e perda de 3 pontos
+    na CNH para quem dirigir sem m\xE1scara"
+  Writer:
+    WriterName: "Ag\xEAncia Nacional de Tr\xE2nsito e Not\xEDcias"
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 'Publicado em: 28 de Abril de 2020'
+  Blocks:
+  - Type: 1
+    Text: "\tCom a nova atualiza\xE7\xE3o emergencial do C\xF3digo de Tr\xE2nsito
+      Brasileiro (CTB) aprovada esta semana, a Guarda Municipal e a Pol\xEDcia Militar
+      iniciaram blitze severas para fiscalizar o uso de m\xE1scaras de prote\xE7\xE3o
+      individual dentro de ve\xEDculos de passeio e motocicletas. A medida visa conter
+      a prolifera\xE7\xE3o do coronav\xEDrus no tr\xE2nsito e nas vias p\xFAblicas
+      urbanas."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tUsurpa\xE7\xE3o de Legisla\xE7\xE3o. No Brasil, apenas a Uni\xE3o
+      (Lei Federal) tem compet\xEAncia para alterar o CTB e criar infra\xE7\xF5es
+      de tr\xE2nsito ou pontos na CNH. Estados e prefeituras n\xE3o podem criar multas
+      de tr\xE2nsito por conta pr\xF3pria, mesmo em momentos de pandemia ou emerg\xEAncia
+      sanit\xE1ria."
+  - Type: 1
+    Text: "\tA infra\xE7\xE3o foi classificada como leve, mas acarreta a perda imediata
+      de 3 pontos na Carteira Nacional de Habilita\xE7\xE3o (CNH), al\xE9m de uma
+      multa no valor fixo de R$ 128,00 por ocupante sem m\xE1scara no ve\xEDculo.
+      Segundo relat\xF3rios internos das autoridades de tr\xE2nsito, agentes j\xE1
+      est\xE3o aplicando as san\xE7\xF5es em rodovias e vias municipais sem a necessidade
+      de aviso pr\xE9vio."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tVerossimilhan\xE7a por Detalhamento. Fake news s\xE9rias utilizam
+      n\xFAmeros espec\xEDficos e termos burocr\xE1ticos para soar aut\xEAnticas
+      e gerar p\xE2nico financeiro. Na realidade, cidades que exigiram m\xE1scaras
+      aplicavam apenas san\xE7\xF5es administrativas/sanit\xE1rias na rua, jamais
+      pontua\xE7\xE3o na CNH."
+  - Type: 1
+    Text: "\tO jurista e especialista em direito sanit\xE1rio, Dr. Marcus Vance,
+      declarou que a Portaria Interministerial n\xBA 894/2020 autorizou estados e
+      prefeituras a legislarem sobre normas de tr\xE2nsito emergenciais. De acordo
+      com o especialista, \"o STF j\xE1 homologou a decis\xE3o e qualquer recurso
+      administrativo contra a perda de pontos na carteira ser\xE1 indeferido automaticamente
+      pelo sistema integrado do Detran\"."
+    Image: {fileID: 0}
+    CheckType: 3
+    Hint: 
+    Explanation: "\tAlucina\xE7\xE3o de Autoridade e Falso Embasamento Jur\xEDdico.
+      Estrutura muito comum em textos redigidos por golpistas: cria-se um nome de
+      especialista e um n\xFAmero de que n\xE3o existem para impossibilitar que o
+      leitor comum questione. Al\xE9m disso, afirma que \"recursos ser\xE3o indeferidos
+      automaticamente\", o que fere o direito constitucional \xE0 ampla defesa."
+  - Type: 1
+    Text: "\tAvisem urgentemente seus parentes, amigos e grupos de motoristas de
+      aplicativo! As blitze come\xE7aram hoje cedo e muitos condutores est\xE3o sendo
+      pegos de surpresa, perdendo pontos na CNH sem nem saber da nova regulamenta\xE7\xE3o.
+      Repasse este alerta agora mesmo nos seus grupos para evitar que conhecidos
+      seus tomem preju\xEDzo financeiro!"
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tDiferente de boatos alarmistas apelativos, as fake news \"s\xE9rias\"
+      usam o desejo da v\xEDtima de ajudar o pr\xF3ximo (\"avise seus amigos para
+      n\xE3o tomarem multa\").Isso faz com que a pessoa compartilhe a informa\xE7\xE3o
+      rapidamente sem checar no Google se a lei realmente existe."

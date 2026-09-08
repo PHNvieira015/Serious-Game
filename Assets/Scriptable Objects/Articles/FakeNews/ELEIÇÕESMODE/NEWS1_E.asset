@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS1_E
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "URGENTE: Pol\xEDcia apreende caminh\xE3o clandestino com 500 urnas pr\xE9-votadas
+    a favor do candidato Bundowisk! "
+  Subtitle: 
+  Writer:
+    WriterName: Portal Verdade na Urna
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 'Publicado em: 02 de Outubro de 2026'
+  Blocks:
+  - Type: 1
+    Text: "\tUma opera\xE7\xE3o sigilosa realizada na madrugada deste domingo revelou
+      o maior esquema de fraude eleitoral da hist\xF3ria das Elei\xE7\xF5es 2026.
+      Fontes patriotas e agentes an\xF4nimos da fiscaliza\xE7\xE3o apreenderam um
+      caminh\xE3o sem placa transportando centenas de urnas eletr\xF4nicas que j\xE1
+      sa\xEDram de f\xE1brica com o chip adulterado para registrar votos autom\xE1ticos
+      para o candidato Bundowisk."
+    Image: {fileID: 0}
+    CheckType: 3
+    Hint: 
+    Explanation: "\tReaproveitamento de Lenda Urbana Eleitoral. Essa \xE9 uma mentira
+      que reaparece em quase todas as elei\xE7\xF5es municipais e federais. O texto
+      n\xE3o informa a cidade, a delegacia que fez a apreens\xE3o, a rodovia nem
+      o n\xFAmero do boletim de ocorr\xEAncia, tornando imposs\xEDvel qualquer checagem
+      factual."
+  - Type: 1
+    Text: "\tUm v\xEDdeo gravado por um motorista que prefere n\xE3o se identificar
+      por medo de morte mostra o momento exato em que os fiscais do Tribunal Superior
+      Eleitoral tentaram abafar o caso para blindar a candidatura de Bundowisk. A
+      grande m\xEDdia j\xE1 recebeu as imagens chocantes, mas foi proibida de divulgar
+      pela censura do sistema que quer impor a vit\xF3ria da chapa a qualquer custo."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tAo dizer que \"a m\xEDdia foi proibida de mostrar\" e que o \"v\xEDdeo
+      \xE9 secreto\", o criador da fake news cria um escudo para que o leitor n\xE3o
+      desconfie quando procurar a not\xEDcia nos jornais e n\xE3o encontrar nada."
+  - Type: 1
+    Text: "\tO engenheiro de software e especialista em ciberseguran\xE7a do Pent\xE1gono,
+      Dr. Alexander Petrov, analisou o c\xF3digo-fonte vazado e confirmou o golpe:
+      o sistema possui uma linha de comando oculta que transfere exatamente 1 a cada
+      3 votos do candidato advers\xE1rio direto para a conta de Popoviski no momento
+      em que a urna \xE9 encerrada, \xE0s 17h."
+    Image: {fileID: 0}
+    CheckType: 3
+    Hint: 
+    Explanation: "\tFabrica\xE7\xE3o de Autoridade Externa. Usar nomes estrangeiros
+      gen\xE9ricos e termos como \"Pent\xE1gono\" busca intimidar o leitor pelo excesso
+      de autoridade inventada. O detalhe matem\xE1tico (\"1 a cada 3 votos \xE0s
+      17h\") \xE9 uma estrutura t\xEDpica de textos de correntes de WhatsApp."
+  - Type: 1
+    Text: "\tPovo brasileiro, exijam o comprovante impresso no seu tribunal regional
+      antes de votar! Repassem essa den\xFAncia agora mesmo nos grupos da sua fam\xEDlia,
+      vizinhos e igreja antes que o algoritmo entre em a\xE7\xE3o na apura\xE7\xE3o
+      deste domingo! Se voc\xEA n\xE3o compartilhar nos pr\xF3ximos 10 minutos, estar\xE1
+      aceitando a fraude e a vit\xF3ria manipulada de Bundowisk!"
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tGatilho de Urg\xEAncia / Desinforma\xE7\xE3o Operacional. Al\xE9m
+      do prazo absurdo de 10 minutos para coagir a pessoa a compartilhar pelo medo
+      de \"cumplicidade\", o texto induz o eleitor a causar tumulto na se\xE7\xE3o
+      eleitoral pedindo procedimentos inexistentes."
