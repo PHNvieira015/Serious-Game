@@ -4969,7 +4969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
   currentScreen: 0
-  chatFrame: {fileID: 4490646782291608412}
+  chatFrame: {fileID: 1817133370}
   articleFrame: {fileID: 9050445653130150816}
   feedbackFrame: {fileID: 8161669072993512217}
   historyFrame: {fileID: 179890450}
