@@ -76,7 +76,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
         onFeedbackComplete = onComplete;
         isBlockDisplayed = false;
 
-        feedbackPanel.SetActive(true);
+        if (feedbackPanel != null)
+        {
+            feedbackPanel.SetActive(true);
+        }
+
         ShowBlock(currentIndex);
     }
 
@@ -100,7 +104,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         if (backButton != null)
         {
-            backButton.interactable = (index > 0);
+            backButton.interactable = index > 0;
         }
 
         if (blockIndexText != null)
@@ -123,9 +127,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
                 case BlockResultType.Correct:
                     color = correctColor;
                     break;
+
                 case BlockResultType.Wrong:
                     color = wrongColor;
                     break;
+
                 case BlockResultType.Missed:
                     color = missedColor;
                     break;
@@ -136,24 +142,28 @@ public class ArticleFeedbackPanel : MonoBehaviour
             resultText.ForceMeshUpdate();
         }
 
-        // Show expected answer
         if (expectedAnswerText != null)
         {
-            expectedAnswerText.text = "Checagem Correta: " + GetCheckTypeDisplayName(result.ExpectedCheck);
+            expectedAnswerText.text =
+                "Checagem Correta: " +
+                GetCheckTypeDisplayName(result.ExpectedCheck);
+
             expectedAnswerText.ForceMeshUpdate();
         }
 
-        // Show what the player marked
         if (playerMarkText != null)
         {
             if (result.HasDraggable)
             {
-                playerMarkText.text = "Sua Marcação: " + GetCheckTypeDisplayName(result.PlayerCheck);
+                playerMarkText.text =
+                    "Sua Marcação: " +
+                    GetCheckTypeDisplayName(result.PlayerCheck);
             }
             else
             {
                 playerMarkText.text = "Sua Marcação: Nenhuma";
             }
+
             playerMarkText.ForceMeshUpdate();
         }
 
@@ -162,12 +172,17 @@ public class ArticleFeedbackPanel : MonoBehaviour
             if (result.Block != null && result.Block.ArticleBlock != null)
             {
                 string explanation = result.Block.ArticleBlock.Explanation;
-                explanationText.text = string.IsNullOrEmpty(explanation) ? "No explanation provided." : explanation;
+
+                explanationText.text =
+                    string.IsNullOrEmpty(explanation)
+                        ? "No explanation provided."
+                        : explanation;
             }
             else
             {
                 explanationText.text = "No explanation available.";
             }
+
             explanationText.ForceMeshUpdate();
         }
 
@@ -175,7 +190,9 @@ public class ArticleFeedbackPanel : MonoBehaviour
         {
             nextButton.interactable = false;
 
-            TMP_Text buttonText = nextButton.GetComponentInChildren<TMP_Text>();
+            TMP_Text buttonText =
+                nextButton.GetComponentInChildren<TMP_Text>();
+
             if (buttonText != null)
             {
                 if (index == results.Count - 1)
@@ -265,16 +282,22 @@ public class ArticleFeedbackPanel : MonoBehaviour
         {
             case CheckType.True:
                 return "Verdadeiro";
+
             case CheckType.Label:
                 return "Tendencioso";
+
             case CheckType.Source:
                 return "Fonte";
+
             case CheckType.AI:
                 return "IA";
+
             case CheckType.Specialist:
                 return "Especialista";
+
             case CheckType.Falacy:
                 return "Falacia";
+
             case CheckType.None:
             default:
                 return "Nenhum";
