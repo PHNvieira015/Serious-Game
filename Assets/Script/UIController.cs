@@ -1,17 +1,24 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [Header("Main UI Frames")]
-    public GameObject chatFrame;
-    public GameObject articleFrame;
-    public GameObject feedbackFrame;
+    public enum Screens
+    {
+        None,
+        Chat,
+        Article,
+        Feedback
+    }
 
-    private Dictionary<string, GameObject> frames = new Dictionary<string, GameObject>();
-    private string currentActiveFrame = "";
+    [Header("Current Screen")]
+    public Screens currentScreen;
+
+    [Header("Screens")]
+    [SerializeField] private GameObject chatFrame;
+    [SerializeField] private GameObject articleFrame;
+    [SerializeField] private GameObject feedbackFrame;
 
     private void Awake()
     {
@@ -26,196 +33,101 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        InitializeFrames();
+        DetectCurrentScreen();
     }
 
-    private void InitializeFrames()
+    public void ShowScreen(Screens screen)
     {
+        currentScreen = screen;
+
+        // Close all screens
         if (chatFrame != null)
-        {
-            frames.Add("Chat", chatFrame);
-        }
+            chatFrame.SetActive(false);
 
         if (articleFrame != null)
-        {
-            frames.Add("Article", articleFrame);
-        }
+            articleFrame.SetActive(false);
 
         if (feedbackFrame != null)
+            feedbackFrame.SetActive(false);
+
+        // Open selected screen
+        switch (currentScreen)
         {
-            frames.Add("Feedback", feedbackFrame);
+            case Screens.None:
+                break;
+
+            case Screens.Chat:
+                if (chatFrame != null)
+                    chatFrame.SetActive(true);
+                break;
+
+            case Screens.Article:
+                if (articleFrame != null)
+                    articleFrame.SetActive(true);
+                break;
+
+            case Screens.Feedback:
+                if (feedbackFrame != null)
+                    feedbackFrame.SetActive(true);
+                break;
         }
 
-        // Do NOT close all frames - keep the scene's current state
-        // Just detect which frame is currently active
-        DetectCurrentActiveFrame();
+        Debug.Log("UIManager: Current screen = " + currentScreen);
     }
 
-    private void DetectCurrentActiveFrame()
+    // Useful for Unity Button / Inspector
+    public void ShowScreen(int screen)
     {
-        foreach (var frame in frames)
-        {
-            if (frame.Value != null && frame.Value.activeSelf)
-            {
-                currentActiveFrame = frame.Key;
-                Debug.Log("UIManager: Currently active frame - " + currentActiveFrame);
-                return;
-            }
-        }
-
-        currentActiveFrame = "";
-        Debug.Log("UIManager: No frame is currently active.");
+        ShowScreen((Screens)screen);
     }
 
-    public void OpenFrame(string frameName)
+    public void ToggleScreen(Screens screen)
     {
-        if (string.IsNullOrEmpty(frameName))
+        if (currentScreen == screen)
         {
-            Debug.LogWarning("UIManager: Frame name is empty.");
-            return;
-        }
-
-        if (!frames.ContainsKey(frameName))
-        {
-            Debug.LogWarning("UIManager: Frame '" + frameName + "' not found.");
-            return;
-        }
-
-        // Close all frames first
-        CloseAllFrames();
-
-        // Open the requested frame
-        frames[frameName].SetActive(true);
-        currentActiveFrame = frameName;
-
-        Debug.Log("UIManager: Opened frame - " + frameName);
-    }
-
-    public void CloseFrame(string frameName)
-    {
-        if (string.IsNullOrEmpty(frameName))
-        {
-            Debug.LogWarning("UIManager: Frame name is empty.");
-            return;
-        }
-
-        if (!frames.ContainsKey(frameName))
-        {
-            Debug.LogWarning("UIManager: Frame '" + frameName + "' not found.");
-            return;
-        }
-
-        frames[frameName].SetActive(false);
-
-        if (currentActiveFrame == frameName)
-        {
-            currentActiveFrame = "";
-        }
-
-        Debug.Log("UIManager: Closed frame - " + frameName);
-    }
-
-    public void CloseAllFrames()
-    {
-        foreach (var frame in frames)
-        {
-            if (frame.Value != null)
-            {
-                frame.Value.SetActive(false);
-            }
-        }
-
-        currentActiveFrame = "";
-        Debug.Log("UIManager: All frames closed.");
-    }
-
-    public void ToggleFrame(string frameName)
-    {
-        if (string.IsNullOrEmpty(frameName))
-        {
-            Debug.LogWarning("UIManager: Frame name is empty.");
-            return;
-        }
-
-        if (!frames.ContainsKey(frameName))
-        {
-            Debug.LogWarning("UIManager: Frame '" + frameName + "' not found.");
-            return;
-        }
-
-        if (currentActiveFrame == frameName)
-        {
-            CloseFrame(frameName);
+            ShowScreen(Screens.None);
         }
         else
         {
-            OpenFrame(frameName);
+            ShowScreen(screen);
         }
     }
 
-    public bool IsFrameOpen(string frameName)
+    public void CloseCurrentScreen()
     {
-        if (string.IsNullOrEmpty(frameName))
+        ShowScreen(Screens.None);
+    }
+
+    public bool IsScreenOpen(Screens screen)
+    {
+        return currentScreen == screen;
+    }
+
+    public Screens GetCurrentScreen()
+    {
+        return currentScreen;
+    }
+
+    private void DetectCurrentScreen()
+    {
+        if (chatFrame != null && chatFrame.activeSelf)
         {
-            return false;
+            currentScreen = Screens.Chat;
         }
-
-        if (!frames.ContainsKey(frameName))
+        else if (articleFrame != null && articleFrame.activeSelf)
         {
-            return false;
+            currentScreen = Screens.Article;
+        }
+        else if (feedbackFrame != null && feedbackFrame.activeSelf)
+        {
+            currentScreen = Screens.Feedback;
+        }
+        else
+        {
+            currentScreen = Screens.None;
         }
 
-        return frames[frameName].activeSelf;
-    }
-
-    public string GetCurrentActiveFrame()
-    {
-        return currentActiveFrame;
-    }
-
-    public void OpenChat()
-    {
-        OpenFrame("Chat");
-    }
-
-    public void OpenArticle()
-    {
-        OpenFrame("Article");
-    }
-
-    public void OpenFeedback()
-    {
-        OpenFrame("Feedback");
-    }
-
-    public void CloseChat()
-    {
-        CloseFrame("Chat");
-    }
-
-    public void CloseArticle()
-    {
-        CloseFrame("Article");
-    }
-
-    public void CloseFeedback()
-    {
-        CloseFrame("Feedback");
-    }
-
-    public bool IsChatOpen()
-    {
-        return IsFrameOpen("Chat");
-    }
-
-    public bool IsArticleOpen()
-    {
-        return IsFrameOpen("Article");
-    }
-
-    public bool IsFeedbackOpen()
-    {
-        return IsFrameOpen("Feedback");
+        Debug.Log("UIManager: Detected current screen = " + currentScreen);
     }
 
     private void OnDestroy()

@@ -241,7 +241,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.OpenArticle();
+            UIManager.Instance.ShowScreen(UIManager.Screens.Article);
         }
 
         if (onFeedbackComplete != null)

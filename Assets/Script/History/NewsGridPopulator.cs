@@ -106,8 +106,9 @@ public class NewsGridPopulator : MonoBehaviour
         {
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.OpenArticle();
+                UIManager.Instance.ShowScreen(UIManager.Screens.Article);
             }
+
 
             articleViewer.LoadArticle(article);
             Debug.Log("Loaded article: " + article.Title);
