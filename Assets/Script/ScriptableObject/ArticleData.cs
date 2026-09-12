@@ -12,6 +12,9 @@ public class ArticleData : ScriptableObject
 
     public string Subtitle;
 
+    [Header("Article")]
+    public string URL_site;
+
     [Header("Author")]
     public WriterData Writer;
 
