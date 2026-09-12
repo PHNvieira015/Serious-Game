@@ -30,9 +30,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
     [Header("Settings")]
     public float displayDelay = 1.5f;
 
-    [Header("Debug")]
-    public bool verboseLogging = true;
-
     private List<BlockResult> results = new List<BlockResult>();
     private int currentIndex = 0;
     private System.Action onFeedbackComplete;
@@ -40,15 +37,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private bool isTransitioning = false;
     private Coroutine enableNextCoroutine;
 
-    // Hard guard: only allow one advance per frame, no matter how many
-    // times the button fires (duplicate listeners, double-click, etc.).
     private int lastNextFrame = -1;
     private int lastPrevFrame = -1;
 
     private void Start()
     {
-        Debug.Log($"[FEEDBACK] Start ran on '{gameObject.name}' (instanceID={GetInstanceID()})", this);
-
         if (feedbackPanel != null)
         {
             feedbackPanel.SetActive(false);
@@ -91,15 +84,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
         lastNextFrame = -1;
         lastPrevFrame = -1;
 
-        if (verboseLogging)
-        {
-            Debug.Log($"[FEEDBACK] StartFeedback: {results.Count} results.");
-            for (int i = 0; i < results.Count; i++)
-            {
-                Debug.Log($"[FEEDBACK]   result[{i}] = {(results[i] == null ? "NULL" : results[i].ResultType.ToString())}");
-            }
-        }
-
         if (feedbackPanel != null)
         {
             feedbackPanel.SetActive(true);
@@ -119,8 +103,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         BlockResult result = results[index];
 
-        // Skip null results WITHOUT re-entering ShowNextBlock (which would
-        // double-increment currentIndex).
+        // Skip nulls with ShowBlock (not ShowNextBlock) so we don't double-increment the index.
         if (result == null)
         {
             Debug.LogWarning($"[FEEDBACK] result[{index}] is NULL - skipping.");
@@ -138,25 +121,23 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         isBlockDisplayed = true;
 
-        if (verboseLogging)
-        {
-            Debug.Log($"[FEEDBACK] ShowBlock({index}) - displaying 'Block {index + 1} of {results.Count}'");
-        }
-
         if (backButton != null)
         {
-            backButton.interactable = index > 0;
+            backButton.interactable = true;
+
+            TMP_Text backButtonText =
+                backButton.GetComponentInChildren<TMP_Text>();
+
+            if (backButtonText != null)
+            {
+                backButtonText.text = (index == 0) ? "Return" : "Back";
+            }
         }
 
         if (blockIndexText != null)
         {
             blockIndexText.text = "Block " + (index + 1) + " of " + results.Count;
             blockIndexText.ForceMeshUpdate();
-
-            if (verboseLogging)
-            {
-                Debug.Log($"[FEEDBACK] blockIndexText set to '{blockIndexText.text}'");
-            }
         }
 
         if (blockText != null)
@@ -253,8 +234,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
             }
         }
 
-        // Cancel any pending enable coroutine so we don't have overlapping
-        // coroutines re-enabling the button prematurely.
         if (enableNextCoroutine != null)
         {
             StopCoroutine(enableNextCoroutine);
@@ -278,51 +257,40 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     public void ShowPreviousBlock()
     {
+        // Frame lock: prevents duplicate button events from double-advancing.
         if (lastPrevFrame == Time.frameCount)
         {
-            if (verboseLogging)
-            {
-                Debug.LogWarning("[FEEDBACK] ShowPreviousBlock blocked: already advanced this frame.");
-            }
             return;
         }
 
-        if (isTransitioning)
+        if (isTransitioning || !isBlockDisplayed)
         {
             return;
         }
 
-        if (currentIndex > 0)
+        if (currentIndex <= 0)
         {
-            lastPrevFrame = Time.frameCount;
-            isTransitioning = true;
-            currentIndex--;
-            ShowBlock(currentIndex);
-            isTransitioning = false;
+            FinishFeedback();
+            return;
         }
+
+        lastPrevFrame = Time.frameCount;
+        isTransitioning = true;
+        currentIndex--;
+        ShowBlock(currentIndex);
+        isTransitioning = false;
     }
 
     public void ShowNextBlock()
     {
-        if (verboseLogging)
-        {
-            Debug.Log($"[FEEDBACK] ShowNextBlock CALLED. frame={Time.frameCount}, idx={currentIndex}, count={results.Count}, displayed={isBlockDisplayed}, transitioning={isTransitioning}, lastNextFrame={lastNextFrame}");
-        }
-
-        // Hard guard: only allow one advance per frame, no matter how many
-        // times the button fires (duplicate listeners, double-click, etc.).
+        // Frame lock: prevents duplicate button events from double-advancing.
         if (lastNextFrame == Time.frameCount)
         {
-            Debug.LogWarning("[FEEDBACK] ShowNextBlock blocked: already advanced this frame (duplicate call).");
             return;
         }
 
         if (!isBlockDisplayed || isTransitioning)
         {
-            if (verboseLogging)
-            {
-                Debug.Log($"[FEEDBACK] ShowNextBlock blocked: displayed={isBlockDisplayed}, transitioning={isTransitioning}");
-            }
             return;
         }
 
@@ -341,8 +309,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private void FinishFeedback()
     {
-        Debug.Log("[FEEDBACK] Feedback finished - returning to article");
-
         StopAllCoroutines();
         enableNextCoroutine = null;
 
