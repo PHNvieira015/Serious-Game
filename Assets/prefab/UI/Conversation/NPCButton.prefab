@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 7553094273657757121}
   - component: {fileID: 632586369243665709}
   - component: {fileID: 2732863069019474502}
+  - component: {fileID: 6847909577502645618}
   m_Layer: 0
-  m_Name: ChatButton
+  m_Name: NPCButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +84,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ConversationViewer, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &632586369243665709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +143,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6847909577502645618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586178283528301673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a0b1cf05dfaa6428542a5a52fdb938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConversationButton
+  conversation: {fileID: 0}
+  button: {fileID: 7553094273657757121}
+  label: {fileID: 6571834513554653536}
+  avatarImage: {fileID: 4766847960916571876}
+  selectedColor: {r: 0, g: 0, b: 0, a: 0.12}
 --- !u!1 &1120050709909833205
 GameObject:
   m_ObjectHideFlags: 0

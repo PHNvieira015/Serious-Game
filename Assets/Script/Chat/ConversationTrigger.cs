@@ -29,7 +29,6 @@ public class ConversationTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            Debug.Log($"Press {interactKey} to talk");
         }
     }
 
