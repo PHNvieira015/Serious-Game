@@ -27,7 +27,8 @@ public enum BlockType
     Paragraph,
     Quote,
     Image,
-    Claim
+    Claim,
+    Link
 }
 
 [System.Serializable]

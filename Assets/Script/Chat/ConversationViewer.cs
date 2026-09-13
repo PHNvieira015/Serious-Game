@@ -3,7 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+
+[Serializable]
+public class ArticleDataEvent : UnityEvent<ArticleData>
+{
+}
 
 public class ConversationViewer : MonoBehaviour
 {
@@ -31,6 +37,15 @@ public class ConversationViewer : MonoBehaviour
     public Transform optionsContainer;
     public GameObject optionButtonPrefab;
 
+    [Header("Article Link")]
+    [SerializeField]
+    private ArticleDataEvent onArticleRequested =
+        new ArticleDataEvent();
+
+    [Header("Continue Button")]
+    public string continueLabel = "Continue";
+    public bool requireContinueButton = true;
+
     [Header("Settings")]
     public float initialDelay = 0.3f;
     public float bubbleDelay = 0.4f;
@@ -52,10 +67,15 @@ public class ConversationViewer : MonoBehaviour
     private int currentNodeIndex;
     private bool isWaitingForChoice;
     private bool isTypingNPC;
+    private bool pauseConversationForLink;
+
     private Coroutine flowRoutine;
 
-    private readonly List<ChatBubble> spawnedBubbles = new List<ChatBubble>();
-    private readonly List<Button> currentOptionButtons = new List<Button>();
+    private readonly List<ChatBubble> spawnedBubbles =
+        new List<ChatBubble>();
+
+    private readonly List<Button> currentOptionButtons =
+        new List<Button>();
 
     private void Awake()
     {
@@ -71,33 +91,50 @@ public class ConversationViewer : MonoBehaviour
 
         if (closeButton != null)
         {
-            closeButton.onClick.RemoveAllListeners();
-            closeButton.onClick.AddListener(CloseConversation);
+            closeButton.onClick.RemoveListener(
+                CloseConversation
+            );
+
+            closeButton.onClick.AddListener(
+                CloseConversation
+            );
         }
     }
 
-    public void OpenConversation(ConversationData conversation)
+    public void OpenConversation(
+        ConversationData conversation)
     {
         if (conversation == null)
         {
-            Debug.LogError("[CHAT] ConversationData is null.");
+            Debug.LogError(
+                "[CHAT] ConversationData is null."
+            );
+
             return;
         }
 
-        if (conversation.Nodes == null || conversation.Nodes.Count == 0)
+        if (conversation.Nodes == null ||
+            conversation.Nodes.Count == 0)
         {
-            Debug.LogError($"[CHAT] '{conversation.name}' has no nodes.");
+            Debug.LogError(
+                "[CHAT] '" +
+                conversation.name +
+                "' has no nodes."
+            );
+
             return;
         }
 
-        bool wasOpen = currentConversation != null
-                       && conversationPanel != null
-                       && conversationPanel.activeSelf;
+        bool wasOpen =
+            currentConversation != null &&
+            conversationPanel != null &&
+            conversationPanel.activeSelf;
 
         Teardown();
 
         currentConversation = conversation;
-        currentNodeIndex = currentConversation.StartNodeIndex;
+        currentNodeIndex =
+            currentConversation.StartNodeIndex;
 
         if (conversationPanel != null)
         {
@@ -108,24 +145,38 @@ public class ConversationViewer : MonoBehaviour
 
         if (wasOpen)
         {
-            OnConversationSwitched?.Invoke(currentConversation);
+            if (OnConversationSwitched != null)
+            {
+                OnConversationSwitched.Invoke(
+                    currentConversation
+                );
+            }
         }
         else
         {
-            OnConversationOpened?.Invoke(currentConversation);
+            if (OnConversationOpened != null)
+            {
+                OnConversationOpened.Invoke(
+                    currentConversation
+                );
+            }
         }
 
-        flowRoutine = StartCoroutine(FlowRoutine());
+        flowRoutine = StartCoroutine(
+            FlowRoutine()
+        );
     }
 
-    public void StartConversation(ConversationData conversation)
+    public void StartConversation(
+        ConversationData conversation)
     {
         OpenConversation(conversation);
     }
 
     public void CloseConversation()
     {
-        ConversationData closed = currentConversation;
+        ConversationData closedConversation =
+            currentConversation;
 
         Teardown();
 
@@ -136,20 +187,35 @@ public class ConversationViewer : MonoBehaviour
 
         currentConversation = null;
 
-        OnConversationClosed?.Invoke(closed);
+        if (OnConversationClosed != null)
+        {
+            OnConversationClosed.Invoke(
+                closedConversation
+            );
+        }
     }
 
     private void UpdateHeader()
     {
+        if (currentConversation == null)
+        {
+            return;
+        }
+
         if (npcNameText != null)
         {
-            npcNameText.text = currentConversation.NPCSpeakerName;
+            npcNameText.text =
+                currentConversation.NPCSpeakerName;
         }
 
         if (npcAvatarImage != null)
         {
-            npcAvatarImage.sprite = currentConversation.NPCSpeakerAvatar;
-            npcAvatarImage.enabled = currentConversation.NPCSpeakerAvatar != null;
+            npcAvatarImage.sprite =
+                currentConversation.NPCSpeakerAvatar;
+
+            npcAvatarImage.enabled =
+                currentConversation.NPCSpeakerAvatar !=
+                null;
         }
     }
 
@@ -162,7 +228,6 @@ public class ConversationViewer : MonoBehaviour
         }
 
         StopAllCoroutines();
-
         StopAllTyping();
         ClearChat();
 
@@ -173,47 +238,69 @@ public class ConversationViewer : MonoBehaviour
 
         isWaitingForChoice = false;
         isTypingNPC = false;
+        pauseConversationForLink = false;
         currentNodeIndex = 0;
     }
 
     private IEnumerator FlowRoutine()
     {
-        yield return new WaitForSeconds(initialDelay);
+        yield return new WaitForSeconds(
+            initialDelay
+        );
 
         while (true)
         {
             if (currentConversation == null)
             {
+                flowRoutine = null;
                 yield break;
             }
 
-            if (currentNodeIndex < 0 || currentNodeIndex >= currentConversation.Nodes.Count)
+            if (currentNodeIndex < 0 ||
+                currentNodeIndex >=
+                currentConversation.Nodes.Count)
             {
                 yield return EndRoutine();
+
+                flowRoutine = null;
                 yield break;
             }
 
-            ConversationNode node = currentConversation.Nodes[currentNodeIndex];
+            ConversationNode node =
+                currentConversation.Nodes[
+                    currentNodeIndex
+                ];
 
             if (node == null || node.IsEndNode)
             {
                 yield return EndRoutine();
+
+                flowRoutine = null;
                 yield break;
             }
 
             if (node.IsNPC)
             {
                 yield return PlayNPCNode(node);
+
+                if (pauseConversationForLink)
+                {
+                    flowRoutine = null;
+                    yield break;
+                }
             }
             else
             {
                 yield return PlayPlayerNode(node);
+
+                flowRoutine = null;
                 yield break;
             }
         }
     }
 
-    private IEnumerator PlayNPCNode(ConversationNode node)
+    private IEnumerator PlayNPCNode(
+        ConversationNode node)
     {
         isTypingNPC = true;
 
@@ -225,7 +312,9 @@ public class ConversationViewer : MonoBehaviour
 
         if (bubbleDelay > 0f)
         {
-            yield return new WaitForSeconds(bubbleDelay);
+            yield return new WaitForSeconds(
+                bubbleDelay
+            );
         }
 
         if (typingIndicator != null)
@@ -233,88 +322,269 @@ public class ConversationViewer : MonoBehaviour
             typingIndicator.SetActive(false);
         }
 
-        ChatBubble bubble = SpawnBubble(isNPC: true);
+        ChatBubble bubble =
+            SpawnBubble(true);
+
+        string displayText = node.Message;
+        string linkURL =
+            GetNodeLinkURL(node);
+
+        bool isLinkNode =
+            node.DisplayType == BlockType.Link;
+
+        bool hasValidLink =
+            node.LinkedArticle != null ||
+            !string.IsNullOrWhiteSpace(linkURL);
+
+        if (isLinkNode)
+        {
+            displayText = BuildLinkMessage(
+                displayText,
+                linkURL
+            );
+        }
+
+        if (displayText == null)
+        {
+            displayText = string.Empty;
+        }
 
         float estimatedTime = 0f;
 
         if (bubble != null)
         {
-            bubble.StartTyping(node.Message, isNPC: true, charInterval);
+            bubble.StartTyping(
+                displayText,
+                true,
+                charInterval
+            );
+
+            if (isLinkNode && hasValidLink)
+            {
+                bubble.ConfigureAsLink(
+                    node.LinkedArticle,
+                    linkURL,
+                    OpenChatLink
+                );
+            }
+            else
+            {
+                bubble.ConfigureAsNormalBubble();
+            }
+
             ScrollToBottom();
 
-            estimatedTime = Mathf.Max(0.05f, node.Message.Length * charInterval);
+            estimatedTime = Mathf.Max(
+                0.05f,
+                displayText.Length * charInterval
+            );
         }
 
-        yield return new WaitForSeconds(estimatedTime);
+        yield return new WaitForSeconds(
+            estimatedTime
+        );
 
         isTypingNPC = false;
 
-        if (node.AutoAdvance)
+        if (isLinkNode && hasValidLink)
         {
-            yield return new WaitForSeconds(node.AutoAdvanceDelay);
-            AdvanceToNextNode(currentNodeIndex + 1);
+            pauseConversationForLink = true;
             yield break;
         }
 
-        int nextPlayerIndex = FindNextPlayerNodeIndex(currentNodeIndex + 1);
+        if (isLinkNode && !hasValidLink)
+        {
+            Debug.LogWarning(
+                "[CHAT] Link node has no " +
+                "LinkedArticle or LinkURL."
+            );
+        }
+
+        if (node.AutoAdvance)
+        {
+            yield return new WaitForSeconds(
+                node.AutoAdvanceDelay
+            );
+
+            AdvanceToNextNode(
+                currentNodeIndex + 1
+            );
+
+            yield break;
+        }
+
+        if (requireContinueButton)
+        {
+            yield return WaitForContinueButton(
+                continueLabel
+            );
+        }
+
+        int nextPlayerIndex =
+            FindNextPlayerNodeIndex(
+                currentNodeIndex + 1
+            );
 
         if (nextPlayerIndex >= 0)
         {
-            currentNodeIndex = nextPlayerIndex;
-            yield return PlayPlayerNode(currentConversation.Nodes[nextPlayerIndex]);
+            currentNodeIndex =
+                nextPlayerIndex;
+
+            yield return PlayPlayerNode(
+                currentConversation.Nodes[
+                    nextPlayerIndex
+                ]
+            );
         }
         else
         {
-            currentNodeIndex = currentNodeIndex + 1;
+            currentNodeIndex =
+                currentNodeIndex + 1;
         }
     }
 
-    private IEnumerator PlayPlayerNode(ConversationNode node)
+    private IEnumerator PlayPlayerNode(
+        ConversationNode node)
     {
         ClearOptions();
 
         if (!string.IsNullOrEmpty(node.Message))
         {
-            ChatBubble bubble = SpawnBubble(isNPC: false);
+            ChatBubble bubble =
+                SpawnBubble(false);
 
             if (bubble != null)
             {
-                bubble.StartTyping(node.Message, isNPC: false, charInterval);
+                bubble.ConfigureAsNormalBubble();
+
+                bubble.StartTyping(
+                    node.Message,
+                    false,
+                    charInterval
+                );
+
                 ScrollToBottom();
             }
         }
 
-        if (node.PlayerOptions != null && node.PlayerOptions.Count > 0)
+        if (node.PlayerOptions != null &&
+            node.PlayerOptions.Count > 0)
         {
-            yield return new WaitForSeconds(optionDelay);
+            yield return new WaitForSeconds(
+                optionDelay
+            );
 
             isWaitingForChoice = true;
-            CreateOptionButtons(node.PlayerOptions);
+
+            CreateOptionButtons(
+                node.PlayerOptions
+            );
+
             yield break;
         }
 
-        AdvanceToNextNode(currentNodeIndex + 1);
-        yield break;
+        if (requireContinueButton &&
+            !string.IsNullOrEmpty(node.Message))
+        {
+            yield return WaitForContinueButton(
+                continueLabel
+            );
+        }
+
+        AdvanceToNextNode(
+            currentNodeIndex + 1
+        );
+    }
+
+    private IEnumerator WaitForContinueButton(
+        string label)
+    {
+        if (optionsContainer == null ||
+            optionButtonPrefab == null)
+        {
+            yield return new WaitForSeconds(
+                0.3f
+            );
+
+            yield break;
+        }
+
+        ClearOptions();
+
+        bool clicked = false;
+
+        GameObject buttonObject =
+            Instantiate(
+                optionButtonPrefab,
+                optionsContainer
+            );
+
+        Button button =
+            buttonObject.GetComponent<Button>();
+
+        TMP_Text buttonText =
+            buttonObject.GetComponentInChildren<
+                TMP_Text
+            >();
+
+        if (buttonText != null)
+        {
+            buttonText.text = label;
+        }
+
+        if (button != null)
+        {
+            button.onClick.AddListener(
+                delegate
+                {
+                    clicked = true;
+                }
+            );
+        }
+
+        ScrollToBottom();
+
+        while (!clicked)
+        {
+            yield return null;
+        }
+
+        ClearOptions();
     }
 
     private IEnumerator EndRoutine()
     {
         ClearOptions();
 
-        if (optionsContainer != null && optionButtonPrefab != null)
+        if (optionsContainer != null &&
+            optionButtonPrefab != null)
         {
-            GameObject endBtn = Instantiate(optionButtonPrefab, optionsContainer);
-            Button button = endBtn.GetComponent<Button>();
-            TMP_Text label = endBtn.GetComponentInChildren<TMP_Text>();
+            GameObject endButtonObject =
+                Instantiate(
+                    optionButtonPrefab,
+                    optionsContainer
+                );
 
-            if (label != null)
+            Button endButton =
+                endButtonObject.GetComponent<Button>();
+
+            TMP_Text endButtonText =
+                endButtonObject
+                    .GetComponentInChildren<
+                        TMP_Text
+                    >();
+
+            if (endButtonText != null)
             {
-                label.text = "End Conversation";
+                endButtonText.text =
+                    "End Conversation";
             }
 
-            if (button != null)
+            if (endButton != null)
             {
-                button.onClick.AddListener(CloseConversation);
+                endButton.onClick.AddListener(
+                    CloseConversation
+                );
             }
 
             ScrollToBottom();
@@ -323,11 +593,17 @@ public class ConversationViewer : MonoBehaviour
         yield break;
     }
 
-    private void CreateOptionButtons(List<PlayerOption> options)
+    private void CreateOptionButtons(
+        List<PlayerOption> options)
     {
-        if (optionsContainer == null || optionButtonPrefab == null)
+        if (optionsContainer == null ||
+            optionButtonPrefab == null)
         {
-            Debug.LogWarning("[CHAT] Options container or prefab missing.");
+            Debug.LogWarning(
+                "[CHAT] Options container or " +
+                "option prefab is missing."
+            );
+
             return;
         }
 
@@ -337,27 +613,54 @@ public class ConversationViewer : MonoBehaviour
         {
             PlayerOption option = options[i];
 
-            GameObject obj = Instantiate(optionButtonPrefab, optionsContainer);
-            Button button = obj.GetComponent<Button>();
-            TMP_Text label = obj.GetComponentInChildren<TMP_Text>();
+            GameObject buttonObject =
+                Instantiate(
+                    optionButtonPrefab,
+                    optionsContainer
+                );
 
-            if (label != null)
+            Button button =
+                buttonObject.GetComponent<Button>();
+
+            TMP_Text buttonText =
+                buttonObject.GetComponentInChildren<
+                    TMP_Text
+                >();
+
+            if (buttonText != null)
             {
-                label.text = option.OptionText;
+                buttonText.text =
+                    option.OptionText;
             }
 
             if (button != null)
             {
-                PlayerOption captured = option;
-                button.onClick.AddListener(() => OnOptionSelected(captured));
-                currentOptionButtons.Add(button);
+                PlayerOption capturedOption =
+                    option;
+
+                button.onClick.AddListener(
+                    delegate
+                    {
+                        OnOptionSelected(
+                            capturedOption
+                        );
+                    }
+                );
+
+                currentOptionButtons.Add(
+                    button
+                );
             }
         }
 
-        if (lockOptionsUntilTypingDone && isTypingNPC)
+        if (lockOptionsUntilTypingDone &&
+            isTypingNPC)
         {
             SetOptionsInteractable(false);
-            StartCoroutine(EnableOptionsWhenTypingDone());
+
+            StartCoroutine(
+                EnableOptionsWhenTypingDone()
+            );
         }
 
         ScrollToBottom();
@@ -373,30 +676,43 @@ public class ConversationViewer : MonoBehaviour
         SetOptionsInteractable(true);
     }
 
-    private void SetOptionsInteractable(bool value)
+    private void SetOptionsInteractable(
+        bool value)
     {
-        for (int i = 0; i < currentOptionButtons.Count; i++)
+        for (
+            int i = 0;
+            i < currentOptionButtons.Count;
+            i++
+        )
         {
-            if (currentOptionButtons[i] != null)
+            Button button =
+                currentOptionButtons[i];
+
+            if (button != null)
             {
-                currentOptionButtons[i].interactable = value;
+                button.interactable = value;
             }
         }
     }
 
-    private void OnOptionSelected(PlayerOption option)
+    private void OnOptionSelected(
+        PlayerOption option)
     {
         if (!isWaitingForChoice)
         {
             return;
         }
 
-        if (lockOptionsUntilTypingDone && isTypingNPC)
+        if (lockOptionsUntilTypingDone &&
+            isTypingNPC)
         {
             return;
         }
 
-        OnOptionChosen?.Invoke(option);
+        if (OnOptionChosen != null)
+        {
+            OnOptionChosen.Invoke(option);
+        }
 
         isWaitingForChoice = false;
 
@@ -405,13 +721,23 @@ public class ConversationViewer : MonoBehaviour
             SetOptionsInteractable(false);
         }
 
-        if (echoOptionAsPlayerBubble && !string.IsNullOrEmpty(option.OptionText))
+        if (echoOptionAsPlayerBubble &&
+            !string.IsNullOrEmpty(
+                option.OptionText
+            ))
         {
-            ChatBubble echo = SpawnBubble(isNPC: false);
+            ChatBubble echoBubble =
+                SpawnBubble(false);
 
-            if (echo != null)
+            if (echoBubble != null)
             {
-                echo.SetMessage(option.OptionText, isNPC: false);
+                echoBubble.ConfigureAsNormalBubble();
+
+                echoBubble.SetMessage(
+                    option.OptionText,
+                    false
+                );
+
                 ScrollToBottom();
             }
         }
@@ -423,9 +749,16 @@ public class ConversationViewer : MonoBehaviour
             return;
         }
 
-        if (option.NextNodeIndex < 0 || option.NextNodeIndex >= currentConversation.Nodes.Count)
+        if (option.NextNodeIndex < 0 ||
+            option.NextNodeIndex >=
+            currentConversation.Nodes.Count)
         {
-            Debug.LogWarning($"[CHAT] Option '{option.OptionText}' has invalid NextNodeIndex ({option.NextNodeIndex}).");
+            Debug.LogWarning(
+                "[CHAT] Option '" +
+                option.OptionText +
+                "' has invalid NextNodeIndex: " +
+                option.NextNodeIndex
+            );
 
             if (closeIfOptionTargetInvalid)
             {
@@ -435,10 +768,13 @@ public class ConversationViewer : MonoBehaviour
             return;
         }
 
-        AdvanceToNextNode(option.NextNodeIndex);
+        AdvanceToNextNode(
+            option.NextNodeIndex
+        );
     }
 
-    private void AdvanceToNextNode(int nextIndex)
+    private void AdvanceToNextNode(
+        int nextIndex)
     {
         if (currentConversation == null)
         {
@@ -446,25 +782,34 @@ public class ConversationViewer : MonoBehaviour
         }
 
         currentNodeIndex = nextIndex;
+        pauseConversationForLink = false;
 
         if (flowRoutine != null)
         {
             StopCoroutine(flowRoutine);
         }
 
-        flowRoutine = StartCoroutine(FlowRoutine());
+        flowRoutine = StartCoroutine(
+            FlowRoutine()
+        );
     }
 
-    private int FindNextPlayerNodeIndex(int startIndex)
+    private int FindNextPlayerNodeIndex(
+        int startIndex)
     {
         if (currentConversation == null)
         {
             return -1;
         }
 
-        for (int i = startIndex; i < currentConversation.Nodes.Count; i++)
+        for (
+            int i = startIndex;
+            i < currentConversation.Nodes.Count;
+            i++
+        )
         {
-            ConversationNode candidate = currentConversation.Nodes[i];
+            ConversationNode candidate =
+                currentConversation.Nodes[i];
 
             if (candidate == null)
             {
@@ -482,28 +827,191 @@ public class ConversationViewer : MonoBehaviour
         return -1;
     }
 
-    private ChatBubble SpawnBubble(bool isNPC)
+    private ChatBubble SpawnBubble(
+        bool isNPC)
     {
-        ChatBubble prefab = isNPC ? npcBubblePrefab : playerBubblePrefab;
+        ChatBubble bubblePrefab;
 
-        if (prefab == null || messageContainer == null)
+        if (isNPC)
         {
-            Debug.LogWarning("[CHAT] Bubble prefab or container missing.");
+            bubblePrefab = npcBubblePrefab;
+        }
+        else
+        {
+            bubblePrefab = playerBubblePrefab;
+        }
+
+        if (bubblePrefab == null ||
+            messageContainer == null)
+        {
+            Debug.LogWarning(
+                "[CHAT] Bubble prefab or " +
+                "message container is missing."
+            );
+
             return null;
         }
 
-        ChatBubble bubble = Instantiate(prefab, messageContainer);
+        if (conversationPanel != null &&
+            !conversationPanel.activeSelf)
+        {
+            conversationPanel.SetActive(true);
+        }
+
+        ChatBubble bubble =
+            Instantiate(
+                bubblePrefab,
+                messageContainer
+            );
+
+        if (!bubble.gameObject.activeSelf)
+        {
+            bubble.gameObject.SetActive(true);
+        }
+
         spawnedBubbles.Add(bubble);
+
         return bubble;
+    }
+
+    private string GetNodeLinkURL(
+        ConversationNode node)
+    {
+        if (node == null)
+        {
+            return string.Empty;
+        }
+
+        if (!string.IsNullOrWhiteSpace(
+            node.LinkURL
+        ))
+        {
+            return node.LinkURL.Trim();
+        }
+
+        if (node.LinkedArticle != null &&
+            !string.IsNullOrWhiteSpace(
+                node.LinkedArticle.URL_site
+            ))
+        {
+            return node.LinkedArticle
+                .URL_site
+                .Trim();
+        }
+
+        return string.Empty;
+    }
+
+    private string BuildLinkMessage(
+        string message,
+        string url)
+    {
+        string finalMessage = message;
+
+        if (string.IsNullOrWhiteSpace(
+            finalMessage
+        ))
+        {
+            return url;
+        }
+
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return finalMessage;
+        }
+
+        if (!finalMessage.Contains(url))
+        {
+            finalMessage =
+                finalMessage +
+                "\n" +
+                url;
+        }
+
+        return finalMessage;
+    }
+
+    private void OpenChatLink(
+        ArticleData linkedArticle,
+        string linkURL)
+    {
+        if (linkedArticle != null)
+        {
+            onArticleRequested.Invoke(
+                linkedArticle
+            );
+
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.OpenArticle();
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "[CHAT] UIManager.Instance " +
+                    "was not found."
+                );
+            }
+
+            return;
+        }
+
+        if (IsValidWebURL(linkURL))
+        {
+            Application.OpenURL(linkURL);
+            return;
+        }
+
+        Debug.LogWarning(
+            "[CHAT] Link bubble has no valid " +
+            "LinkedArticle or LinkURL."
+        );
+    }
+
+    private bool IsValidWebURL(
+        string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return false;
+        }
+
+        bool validURL =
+            Uri.TryCreate(
+                url,
+                UriKind.Absolute,
+                out Uri result
+            );
+
+        if (!validURL)
+        {
+            return false;
+        }
+
+        bool isHTTP =
+            result.Scheme ==
+            Uri.UriSchemeHttp;
+
+        bool isHTTPS =
+            result.Scheme ==
+            Uri.UriSchemeHttps;
+
+        return isHTTP || isHTTPS;
     }
 
     private void ClearChat()
     {
-        for (int i = 0; i < spawnedBubbles.Count; i++)
+        for (
+            int i = 0;
+            i < spawnedBubbles.Count;
+            i++
+        )
         {
             if (spawnedBubbles[i] != null)
             {
-                Destroy(spawnedBubbles[i].gameObject);
+                Destroy(
+                    spawnedBubbles[i].gameObject
+                );
             }
         }
 
@@ -520,15 +1028,27 @@ public class ConversationViewer : MonoBehaviour
             return;
         }
 
-        for (int i = optionsContainer.childCount - 1; i >= 0; i--)
+        for (
+            int i = optionsContainer.childCount - 1;
+            i >= 0;
+            i--
+        )
         {
-            Destroy(optionsContainer.GetChild(i).gameObject);
+            Destroy(
+                optionsContainer
+                    .GetChild(i)
+                    .gameObject
+            );
         }
     }
 
     private void StopAllTyping()
     {
-        for (int i = 0; i < spawnedBubbles.Count; i++)
+        for (
+            int i = 0;
+            i < spawnedBubbles.Count;
+            i++
+        )
         {
             if (spawnedBubbles[i] != null)
             {
@@ -545,6 +1065,18 @@ public class ConversationViewer : MonoBehaviour
         }
 
         Canvas.ForceUpdateCanvases();
-        scrollRect.verticalNormalizedPosition = 0f;
+
+        scrollRect.verticalNormalizedPosition =
+            0f;
+    }
+
+    private void OnDestroy()
+    {
+        if (closeButton != null)
+        {
+            closeButton.onClick.RemoveListener(
+                CloseConversation
+            );
+        }
     }
 }

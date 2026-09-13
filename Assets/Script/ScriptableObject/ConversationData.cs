@@ -25,7 +25,7 @@ public class ConversationData : ScriptableObject
 public class ConversationNode
 {
     [Header("Speaker")]
-    public bool IsNPC=true;
+    public bool IsNPC = true;
 
     [Header("Message")]
     [TextArea(2, 4)]
@@ -35,9 +35,13 @@ public class ConversationNode
     public BlockType DisplayType = BlockType.Paragraph;
     public Sprite Image;
 
+    [Header("Link")]
+    public ArticleData LinkedArticle;
+    public string LinkURL;
+
     [Header("Player Options")]
     public List<PlayerOption> PlayerOptions = new List<PlayerOption>();
-    
+
     [Header("Node Settings")]
     public bool IsEndNode;
     public bool AutoAdvance = false;
