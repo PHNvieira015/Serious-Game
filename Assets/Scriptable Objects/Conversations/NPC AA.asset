@@ -56,4 +56,14 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: g1.globo.com/2026/09/13/artigo
+    DisplayType: 5
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 11400000, guid: 8f36976437d643044b2b5c1a776590f0, type: 2}
+    LinkURL: g1.globo.com/2026/09/13/artigo
+    PlayerOptions: []
+    IsEndNode: 1
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
   StartNodeIndex: 0

@@ -1,7 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ArticleViewer : MonoBehaviour
 {
@@ -13,13 +13,17 @@ public class ArticleViewer : MonoBehaviour
     public TMP_Text subtitleText;
     public TMP_Text authorNameText;
     public TMP_Text authorDescText;
-    public Image authorPhotoImage;
+    public UnityEngine.UI.Image authorPhotoImage;
+
+    [Header("Article Scroll")]
+    public UnityEngine.UI.ScrollRect articleScrollRect;
+    public RectTransform articleContent;
 
     [Header("Article Blocks")]
     public ArticleBlockView[] blockViews;
 
     [Header("Article Verification")]
-    public Button verifyArticleButton;
+    public UnityEngine.UI.Button verifyArticleButton;
 
     [Header("Validator")]
     public ArticleValidator articleValidator;
@@ -29,8 +33,28 @@ public class ArticleViewer : MonoBehaviour
     public int penaltyPerWrong = 5;
     public int penaltyPerMissed = 5;
 
+    [Header("Debug")]
+    public bool showDebugMessages = true;
+
     private List<Block> blockComponents =
         new List<Block>();
+
+    private Coroutine scrollToTopRoutine;
+    private bool scrollToTopWhenEnabled;
+
+    private void Awake()
+    {
+        CacheScrollReferences();
+    }
+
+    private void OnEnable()
+    {
+        CacheScrollReferences();
+
+        scrollToTopWhenEnabled = false;
+
+        ScrollToTop();
+    }
 
     private void Start()
     {
@@ -55,9 +79,14 @@ public class ArticleViewer : MonoBehaviour
         {
             LoadArticle(currentArticle);
         }
+        else
+        {
+            ScrollToTop();
+        }
     }
 
-    public void LoadArticle(ArticleData article)
+    public void LoadArticle(
+        ArticleData article)
     {
         if (article == null)
         {
@@ -72,6 +101,14 @@ public class ArticleViewer : MonoBehaviour
 
         currentArticle = article;
 
+        if (showDebugMessages)
+        {
+            Debug.Log(
+                "ArticleViewer: Loading article: " +
+                currentArticle.Title
+            );
+        }
+
         DisplayArticleInfo();
         DisplayBlocks();
 
@@ -81,10 +118,114 @@ public class ArticleViewer : MonoBehaviour
                 GetComponent<ArticleValidator>();
         }
 
-        Debug.Log(
-            "ArticleViewer: Loaded article: " +
-            currentArticle.Title
-        );
+        ScrollToTop();
+    }
+
+    public void ScrollToTop()
+    {
+        CacheScrollReferences();
+
+        if (!isActiveAndEnabled)
+        {
+            scrollToTopWhenEnabled = true;
+
+            if (showDebugMessages)
+            {
+                Debug.Log(
+                    "ArticleViewer: Article screen is inactive. " +
+                    "Scroll reset will run when it becomes active."
+                );
+            }
+
+            return;
+        }
+
+        if (articleScrollRect == null)
+        {
+            Debug.LogWarning(
+                "ArticleViewer: Article ScrollRect is not assigned."
+            );
+
+            return;
+        }
+
+        if (scrollToTopRoutine != null)
+        {
+            StopCoroutine(scrollToTopRoutine);
+        }
+
+        scrollToTopRoutine =
+            StartCoroutine(
+                ScrollToTopRoutine()
+            );
+    }
+
+    private IEnumerator ScrollToTopRoutine()
+    {
+        /*
+         * Wait for the Article screen to become visible
+         * and for its layout components to update.
+         */
+        yield return null;
+
+        Canvas.ForceUpdateCanvases();
+
+        if (articleContent != null)
+        {
+            UnityEngine.UI.LayoutRebuilder
+                .ForceRebuildLayoutImmediate(
+                    articleContent
+                );
+        }
+
+        Canvas.ForceUpdateCanvases();
+
+        yield return new WaitForEndOfFrame();
+
+        if (articleScrollRect != null)
+        {
+            articleScrollRect.StopMovement();
+            articleScrollRect.velocity =
+                Vector2.zero;
+
+            articleScrollRect.verticalNormalizedPosition =
+                1f;
+
+            Canvas.ForceUpdateCanvases();
+
+            articleScrollRect.verticalNormalizedPosition =
+                1f;
+
+            if (showDebugMessages)
+            {
+                Debug.Log(
+                    "ArticleViewer: Article was moved to the top. " +
+                    "Scroll position: " +
+                    articleScrollRect.verticalNormalizedPosition
+                );
+            }
+        }
+
+        scrollToTopRoutine = null;
+        scrollToTopWhenEnabled = false;
+    }
+
+    private void CacheScrollReferences()
+    {
+        if (articleScrollRect == null)
+        {
+            articleScrollRect =
+                GetComponentInChildren<
+                    UnityEngine.UI.ScrollRect
+                >(true);
+        }
+
+        if (articleContent == null &&
+            articleScrollRect != null)
+        {
+            articleContent =
+                articleScrollRect.content;
+        }
     }
 
     private void ClearCurrentArticle()
@@ -216,10 +357,11 @@ public class ArticleViewer : MonoBehaviour
             return;
         }
 
-        int amountToDisplay = Mathf.Min(
-            currentArticle.Blocks.Count,
-            blockViews.Length
-        );
+        int amountToDisplay =
+            Mathf.Min(
+                currentArticle.Blocks.Count,
+                blockViews.Length
+            );
 
         for (
             int i = 0;
@@ -248,8 +390,9 @@ public class ArticleViewer : MonoBehaviour
             if (blockComponent == null)
             {
                 blockComponent =
-                    blockView
-                        .GetComponentInChildren<Block>();
+                    blockView.GetComponentInChildren<
+                        Block
+                    >();
             }
 
             if (blockComponent != null)
@@ -278,7 +421,8 @@ public class ArticleViewer : MonoBehaviour
         }
     }
 
-    public void OnBlockSolved(Block block)
+    public void OnBlockSolved(
+        Block block)
     {
         bool allSolved = true;
 
@@ -318,7 +462,9 @@ public class ArticleViewer : MonoBehaviour
 
     private void OnAllBlocksSolved()
     {
-        Debug.Log("All blocks solved!");
+        Debug.Log(
+            "All blocks solved!"
+        );
 
         if (GameManager.Instance != null)
         {
@@ -372,6 +518,15 @@ public class ArticleViewer : MonoBehaviour
     public List<Block> GetBlockComponents()
     {
         return blockComponents;
+    }
+
+    private void OnDisable()
+    {
+        if (scrollToTopRoutine != null)
+        {
+            StopCoroutine(scrollToTopRoutine);
+            scrollToTopRoutine = null;
+        }
     }
 
     private void OnDestroy()
