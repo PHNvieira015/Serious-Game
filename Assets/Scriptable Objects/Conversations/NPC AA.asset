@@ -37,7 +37,7 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: 3 - I Like COokies AAAA
+    Message: 3 - I Like COokies AAAA too
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -50,10 +50,10 @@ MonoBehaviour:
     Message: g1.globo.com/2026/09/13/artigo
     DisplayType: 5
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 0}
-    LinkURL: 
+    LinkedArticle: {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
+    LinkURL: g1.globo.com/2026/09/13/artigo
     PlayerOptions: []
-    IsEndNode: 1
+    IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   StartNodeIndex: 0
