@@ -15,6 +15,7 @@ public class ConversationViewer : MonoBehaviour
     [Header("Header")]
     public TMP_Text npcNameText;
     public UnityEngine.UI.Image npcAvatarImage;
+    public UnityEngine.UI.Image npcAvatarBackgroundImage;
     public UnityEngine.UI.Button closeButton;
 
     [Header("Chat List")]
@@ -238,6 +239,16 @@ public class ConversationViewer : MonoBehaviour
                 currentConversation.NPCSpeakerAvatar !=
                 null;
         }
+
+        if (npcAvatarBackgroundImage != null)
+        {
+            npcAvatarBackgroundImage.sprite =
+                currentConversation.NPCSpeakerBackground;
+
+            npcAvatarBackgroundImage.enabled =
+                currentConversation.NPCSpeakerBackground !=
+                null;
+        }
     }
 
     private void Teardown()
@@ -321,9 +332,6 @@ public class ConversationViewer : MonoBehaviour
 
             LogCurrentNode(node);
 
-            /*
-             * Is End Node is now the validation point.
-             */
             if (node.IsEndNode)
             {
                 if (showDebugMessages)

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775b654f7a6429140af8de946fb24861, type: 3}
+  m_Name: "7 NPC K\xE9lvin Clay"
+  m_EditorClassIdentifier: Assembly-CSharp::ConversationData
+  ConversationTitle: "K\xE9lvin Clay_1"
+  NPCSpeakerName: "K\xE9lvin Clay"
+  NPCSpeakerAvatar: {fileID: 21300000, guid: 13519fe8682edd24bba8e23984542f9e, type: 3}
+  NPCSpeakerBackground: {fileID: 21300000, guid: 8e6b15472a1bf9d42b42a3602fee1c82, type: 3}
+  Nodes:
+  - IsNPC: 0
+    Message: 
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  StartNodeIndex: 0

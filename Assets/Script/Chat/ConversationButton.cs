@@ -13,8 +13,14 @@ public class ConversationButton : MonoBehaviour
     public TMP_Text label;
     public Image avatarImage;
 
+    [Tooltip("Image that receives the NPC's background sprite when Setup runs.")]
+    public Image avatarBackgroundImage;
+
     [Header("Selection Colors")]
     public Color selectedColor = new Color(0.85f, 0.95f, 1f, 1f);
+
+    [Header("Debug")]
+    public bool logSetup = true;
 
     public ConversationData Conversation => conversation;
 
@@ -52,6 +58,15 @@ public class ConversationButton : MonoBehaviour
     {
         onClicked = callback;
 
+        if (logSetup)
+        {
+            Debug.Log($"[BTN] Setup on '{name}'. " +
+                      $"conversation={(conversation != null ? conversation.name : "NULL")}, " +
+                      $"label={(label != null)}, " +
+                      $"avatar={(avatarImage != null)}, " +
+                      $"bg={(avatarBackgroundImage != null)}", this);
+        }
+
         if (label != null)
         {
             label.text = conversation != null ? conversation.NPCSpeakerName : string.Empty;
@@ -61,6 +76,12 @@ public class ConversationButton : MonoBehaviour
         {
             avatarImage.sprite = conversation != null ? conversation.NPCSpeakerAvatar : null;
             avatarImage.enabled = avatarImage.sprite != null;
+        }
+
+        if (avatarBackgroundImage != null)
+        {
+            avatarBackgroundImage.sprite = conversation != null ? conversation.NPCSpeakerBackground : null;
+            avatarBackgroundImage.enabled = avatarBackgroundImage.sprite != null;
         }
 
         SetSelected(false);

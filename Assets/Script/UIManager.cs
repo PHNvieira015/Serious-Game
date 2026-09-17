@@ -142,7 +142,9 @@ public class UIManager : MonoBehaviour
 
     public void OpenChat()
     {
+        Debug.LogWarning($"[UIMANAGER] OpenChat called from:\n{System.Environment.StackTrace}");
         ShowScreen(Screens.Chat);
+        
     }
 
     public void OpenArticle()

@@ -14,6 +14,9 @@ public class ConversationData : ScriptableObject
     public string NPCSpeakerName;
     public Sprite NPCSpeakerAvatar;
 
+    [Tooltip("Background image shown behind/around the NPC avatar in the contact list.")]
+    public Sprite NPCSpeakerBackground;
+
     [Header("Conversation Flow")]
     public List<ConversationNode> Nodes = new List<ConversationNode>();
 
