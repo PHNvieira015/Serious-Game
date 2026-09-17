@@ -18,7 +18,7 @@ MonoBehaviour:
   NPCSpeakerBackground: {fileID: 0}
   Nodes:
   - IsNPC: 0
-    Message: 1 - Hello AAAA
+    Message: "Buenas tchum, t\xE1 vivo ? "
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -28,7 +28,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: 2 - I Like COokies AAAA
+    Message: "Tem not\xEDcia nova no radar. Preciso que passe o pente-fino e me diga
+      se \xE9 leg\xEDtima ou se \xE9 mais lixo rodando na rede."
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -38,7 +39,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: 3 - I Like COokies AAAA too
+    Message: "E essa daqui t\xE1 com um cheirinho estranho, ent\xE3o v\xEA com carinho
+      t\xE1 ?"
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}

@@ -18,7 +18,37 @@ MonoBehaviour:
   NPCSpeakerBackground: {fileID: 21300000, guid: 1e4a2851cff7fd648bdce6d601299e9e, type: 3}
   Nodes:
   - IsNPC: 0
-    Message: 
+    Message: Oi :)
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: "Achei isso, voc\xEA pode olhar pra mim ?"
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: "Espero que n\xE3o seja nada ruim..."
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: (LINK)
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
