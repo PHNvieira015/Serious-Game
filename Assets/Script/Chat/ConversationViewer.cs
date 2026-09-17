@@ -60,7 +60,46 @@ public class ConversationViewer : MonoBehaviour
     public Action<ConversationData> OnConversationClosed;
     public Action<PlayerOption> OnOptionChosen;
 
-    private int currentNodeIndex;
+    private class BubbleRecord
+    {
+        public string Text;
+        public bool IsNPC;
+    }
+
+    private class ConversationProgress
+    {
+        public int NodeIndex;
+        public bool MessageShown;
+        public readonly List<BubbleRecord> Bubbles =
+            new List<BubbleRecord>();
+    }
+
+    private static readonly Dictionary<ConversationData, ConversationProgress>
+        conversationProgress =
+            new Dictionary<ConversationData, ConversationProgress>();
+
+    private ConversationProgress activeProgress;
+    private bool openingConversation;
+    private bool suspended;
+
+    private int currentNodeIndex
+    {
+        get { return activeProgress != null ? activeProgress.NodeIndex : 0; }
+        set
+        {
+            if (activeProgress != null)
+            {
+                activeProgress.NodeIndex = value;
+                activeProgress.MessageShown = false;
+            }
+        }
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ClearSessionProgress()
+    {
+        conversationProgress.Clear();
+    }
     private bool isWaitingForChoice;
     private bool isTypingNPC;
 
@@ -130,8 +169,12 @@ public class ConversationViewer : MonoBehaviour
         Teardown();
 
         currentConversation = conversation;
-        currentNodeIndex =
-            currentConversation.StartNodeIndex;
+        if (!conversationProgress.TryGetValue(conversation, out activeProgress))
+        {
+            activeProgress = new ConversationProgress();
+            activeProgress.NodeIndex = conversation.StartNodeIndex;
+            conversationProgress.Add(conversation, activeProgress);
+        }
 
         if (showDebugMessages)
         {
@@ -151,12 +194,16 @@ public class ConversationViewer : MonoBehaviour
             );
         }
 
+        openingConversation = true;
         if (conversationPanel != null)
         {
             conversationPanel.SetActive(true);
         }
+        openingConversation = false;
+        suspended = false;
 
         UpdateHeader();
+        RestoreBubbles();
 
         if (wasOpen)
         {
@@ -274,78 +321,36 @@ public class ConversationViewer : MonoBehaviour
         preparedArticle = null;
         preparedURL = string.Empty;
 
-        currentNodeIndex = 0;
+        suspended = false;
     }
 
     private IEnumerator FlowRoutine()
     {
-        yield return new WaitForSeconds(
-            initialDelay
-        );
+        yield return new WaitForSeconds(initialDelay);
+        yield return RefreshLayoutAndScroll();
 
-        while (true)
+        while (currentConversation != null && activeProgress != null)
         {
-            if (currentConversation == null)
-            {
-                Debug.LogWarning(
-                    "[CHAT] Conversation became null."
-                );
-
-                flowRoutine = null;
-                yield break;
-            }
-
             if (currentNodeIndex < 0 ||
-                currentNodeIndex >=
-                currentConversation.Nodes.Count)
+                currentNodeIndex >= currentConversation.Nodes.Count)
             {
-                if (showDebugMessages)
-                {
-                    Debug.Log(
-                        "[CHAT] Reached the end of the node list."
-                    );
-                }
-
                 yield return EndRoutine(null);
-
                 flowRoutine = null;
                 yield break;
             }
 
-            ConversationNode node =
-                currentConversation.Nodes[
-                    currentNodeIndex
-                ];
-
+            ConversationNode node = currentConversation.Nodes[currentNodeIndex];
             if (node == null)
             {
-                Debug.LogWarning(
-                    "[CHAT] Node is null at index: " +
-                    currentNodeIndex
-                );
-
-                currentNodeIndex =
-                    currentNodeIndex + 1;
-
+                currentNodeIndex++;
                 continue;
             }
 
             LogCurrentNode(node);
-
             if (node.IsEndNode)
             {
-                if (showDebugMessages)
-                {
-                    Debug.Log(
-                        "[CHAT] End node detected at index: " +
-                        currentNodeIndex
-                    );
-                }
-
                 PrepareArticleFromEndNode(node);
-
                 yield return EndRoutine(node);
-
                 flowRoutine = null;
                 yield break;
             }
@@ -357,11 +362,15 @@ public class ConversationViewer : MonoBehaviour
             else
             {
                 yield return PlayPlayerNode(node);
-
-                flowRoutine = null;
-                yield break;
+                if (isWaitingForChoice)
+                {
+                    flowRoutine = null;
+                    yield break;
+                }
             }
         }
+
+        flowRoutine = null;
     }
 
     private void LogCurrentNode(
@@ -488,159 +497,96 @@ public class ConversationViewer : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayNPCNode(
-        ConversationNode node)
+    private IEnumerator PlayNPCNode(ConversationNode node)
     {
-        isTypingNPC = true;
-
-        if (typingIndicator != null)
+        if (!activeProgress.MessageShown)
         {
-            typingIndicator.SetActive(true);
-            ScrollToBottom();
-        }
-
-        if (bubbleDelay > 0f)
-        {
-            yield return new WaitForSeconds(
-                bubbleDelay
-            );
-        }
-
-        if (typingIndicator != null)
-        {
-            typingIndicator.SetActive(false);
-        }
-
-        string displayText =
-            BuildNodeMessage(node);
-
-        if (!string.IsNullOrWhiteSpace(
-            displayText
-        ))
-        {
-            ChatBubble messageBubble =
-                SpawnBubble(true);
-
-            if (messageBubble != null)
+            isTypingNPC = true;
+            if (typingIndicator != null)
             {
-                messageBubble.ConfigureAsNormalBubble();
-
-                messageBubble.StartTyping(
-                    displayText,
-                    true,
-                    charInterval
-                );
-
-                float messageTypingTime =
-                    Mathf.Max(
-                        0.05f,
-                        displayText.Length *
-                        charInterval
-                    );
-
-                yield return new WaitForSeconds(
-                    messageTypingTime
-                );
-
-                yield return RefreshLayoutAndScroll();
+                typingIndicator.SetActive(true);
+                ScrollToBottom();
             }
-        }
 
-        isTypingNPC = false;
+            if (bubbleDelay > 0f)
+            {
+                yield return new WaitForSeconds(bubbleDelay);
+            }
+
+            if (typingIndicator != null)
+            {
+                typingIndicator.SetActive(false);
+            }
+
+            string text = BuildNodeMessage(node);
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                ChatBubble bubble = ShowNewBubble(text, true, true);
+                if (bubble != null && bubble.messageText != null)
+                {
+                    while (bubble != null && bubble.messageText.text != text)
+                    {
+                        yield return null;
+                    }
+                }
+            }
+
+            activeProgress.MessageShown = true;
+            isTypingNPC = false;
+            yield return RefreshLayoutAndScroll();
+        }
 
         if (node.AutoAdvance)
         {
-            yield return new WaitForSeconds(
-                node.AutoAdvanceDelay
-            );
-
-            currentNodeIndex =
-                currentNodeIndex + 1;
-
-            yield break;
+            yield return new WaitForSeconds(node.AutoAdvanceDelay);
+            currentNodeIndex++;
         }
-
-        if (requireContinueButton)
+        else if (requireContinueButton)
         {
-            yield return WaitForContinueButton(
-                continueLabel
-            );
-        }
-
-        int nextPlayerIndex =
-            FindNextPlayerNodeIndex(
-                currentNodeIndex + 1
-            );
-
-        if (nextPlayerIndex >= 0)
-        {
-            currentNodeIndex =
-                nextPlayerIndex;
-
-            yield return PlayPlayerNode(
-                currentConversation.Nodes[
-                    nextPlayerIndex
-                ]
-            );
+            yield return WaitForContinueButton(continueLabel);
         }
         else
         {
-            currentNodeIndex =
-                currentNodeIndex + 1;
+            currentNodeIndex++;
         }
     }
 
-    private IEnumerator PlayPlayerNode(
-        ConversationNode node)
+    private IEnumerator PlayPlayerNode(ConversationNode node)
     {
         ClearOptions();
 
-        if (!string.IsNullOrEmpty(node.Message))
+        if (!activeProgress.MessageShown)
         {
-            ChatBubble bubble =
-                SpawnBubble(false);
-
-            if (bubble != null)
+            if (!string.IsNullOrEmpty(node.Message))
             {
-                bubble.ConfigureAsNormalBubble();
-
-                bubble.StartTyping(
-                    node.Message,
-                    false,
-                    charInterval
-                );
-
-                ScrollToBottom();
+                ChatBubble bubble = ShowNewBubble(node.Message, false, true);
+                if (bubble != null && bubble.messageText != null)
+                {
+                    while (bubble != null && bubble.messageText.text != node.Message)
+                    {
+                        yield return null;
+                    }
+                }
             }
+            activeProgress.MessageShown = true;
         }
 
-        if (node.PlayerOptions != null &&
-            node.PlayerOptions.Count > 0)
+        if (node.PlayerOptions != null && node.PlayerOptions.Count > 0)
         {
-            yield return new WaitForSeconds(
-                optionDelay
-            );
-
+            yield return new WaitForSeconds(optionDelay);
             isWaitingForChoice = true;
-
-            CreateOptionButtons(
-                node.PlayerOptions
-            );
-
+            CreateOptionButtons(node.PlayerOptions);
             yield break;
         }
 
-        if (requireContinueButton &&
-            !string.IsNullOrEmpty(node.Message))
+        if (requireContinueButton && !string.IsNullOrEmpty(node.Message))
         {
-            yield return WaitForContinueButton(
-                continueLabel
-            );
+            yield return WaitForContinueButton(continueLabel);
         }
-
-        AdvanceToNextNode(
-            currentNodeIndex + 1
-        );
+        else
+        {
+            currentNodeIndex++;
+        }
     }
 
     private IEnumerator WaitForContinueButton(
@@ -710,7 +656,16 @@ public class ConversationViewer : MonoBehaviour
                     );
                 }
 
+                if (clicked)
+                {
+                    return;
+                }
+
+                // Save the next node immediately, even if the panel
+                // is closed before the coroutine resumes.
+                currentNodeIndex++;
                 clicked = true;
+                button.interactable = false;
             }
         );
 
@@ -1068,89 +1023,45 @@ public class ConversationViewer : MonoBehaviour
         }
     }
 
-    private void OnOptionSelected(
-        PlayerOption option)
+    private void OnOptionSelected(PlayerOption option)
     {
-        if (!isWaitingForChoice)
+        if (!isWaitingForChoice || currentConversation == null)
         {
             return;
         }
 
-        if (lockOptionsUntilTypingDone &&
-            isTypingNPC)
-        {
-            return;
-        }
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Player option selected: " +
-                option.OptionText
-            );
-        }
-
-        if (OnOptionChosen != null)
-        {
-            OnOptionChosen.Invoke(option);
-        }
-
-        isWaitingForChoice = false;
-
-        if (disableOptionOnClick)
-        {
-            SetOptionsInteractable(false);
-        }
-
-        if (echoOptionAsPlayerBubble &&
-            !string.IsNullOrEmpty(
-                option.OptionText
-            ))
-        {
-            ChatBubble echoBubble =
-                SpawnBubble(false);
-
-            if (echoBubble != null)
-            {
-                echoBubble.ConfigureAsNormalBubble();
-
-                echoBubble.SetMessage(
-                    option.OptionText,
-                    false
-                );
-
-                ScrollToBottom();
-            }
-        }
-
-        ClearOptions();
-
-        if (currentConversation == null)
+        if (lockOptionsUntilTypingDone && isTypingNPC)
         {
             return;
         }
 
         if (option.NextNodeIndex < 0 ||
-            option.NextNodeIndex >=
-            currentConversation.Nodes.Count)
+            option.NextNodeIndex >= currentConversation.Nodes.Count)
         {
-            Debug.LogWarning(
-                "[CHAT] Option has invalid " +
-                "NextNodeIndex: " +
-                option.NextNodeIndex
-            );
-
+            Debug.LogWarning("[CHAT] Option has invalid NextNodeIndex: " +
+                option.NextNodeIndex);
             if (closeIfOptionTargetInvalid)
             {
                 CloseConversation();
             }
-
             return;
         }
 
-        AdvanceToNextNode(
-            option.NextNodeIndex
-        );
+        isWaitingForChoice = false;
+        if (disableOptionOnClick)
+        {
+            SetOptionsInteractable(false);
+        }
+
+        if (echoOptionAsPlayerBubble && !string.IsNullOrEmpty(option.OptionText))
+        {
+            ShowNewBubble(option.OptionText, false, false);
+            ScrollToBottom();
+        }
+
+        ClearOptions();
+        AdvanceToNextNode(option.NextNodeIndex);
+        OnOptionChosen?.Invoke(option);
     }
 
     private void AdvanceToNextNode(
@@ -1178,9 +1089,16 @@ public class ConversationViewer : MonoBehaviour
             StopCoroutine(flowRoutine);
         }
 
-        flowRoutine = StartCoroutine(
-            FlowRoutine()
-        );
+        if (isActiveAndEnabled &&
+            (conversationPanel == null || conversationPanel.activeInHierarchy))
+        {
+            flowRoutine = StartCoroutine(FlowRoutine());
+        }
+        else
+        {
+            flowRoutine = null;
+            suspended = true;
+        }
     }
 
     private int FindNextPlayerNodeIndex(
@@ -1205,7 +1123,7 @@ public class ConversationViewer : MonoBehaviour
                 continue;
             }
 
-            if (candidate.IsNPC)
+            if (candidate.IsEndNode || candidate.IsNPC)
             {
                 return -1;
             }
@@ -1411,9 +1329,8 @@ public class ConversationViewer : MonoBehaviour
         {
             if (spawnedBubbles[i] != null)
             {
-                Destroy(
-                    spawnedBubbles[i].gameObject
-                );
+                spawnedBubbles[i].gameObject.SetActive(false);
+                Destroy(spawnedBubbles[i].gameObject);
             }
         }
 
@@ -1436,11 +1353,9 @@ public class ConversationViewer : MonoBehaviour
             i--
         )
         {
-            Destroy(
-                optionsContainer
-                    .GetChild(i)
-                    .gameObject
-            );
+            GameObject oldOption = optionsContainer.GetChild(i).gameObject;
+            oldOption.SetActive(false);
+            Destroy(oldOption);
         }
     }
 
@@ -1480,5 +1395,108 @@ public class ConversationViewer : MonoBehaviour
                 CloseConversation
             );
         }
+    }
+
+    private ChatBubble ShowNewBubble(string text, bool isNPC, bool type)
+    {
+        ChatBubble bubble = SpawnBubble(isNPC);
+        if (bubble == null)
+        {
+            return null;
+        }
+
+        activeProgress.Bubbles.Add(new BubbleRecord
+        {
+            Text = text,
+            IsNPC = isNPC
+        });
+        activeProgress.MessageShown = true;
+        bubble.ConfigureAsNormalBubble();
+        if (type)
+        {
+            bubble.StartTyping(text, isNPC, charInterval);
+        }
+        else
+        {
+            bubble.SetMessage(text, isNPC);
+        }
+        return bubble;
+    }
+
+    private void RestoreBubbles()
+    {
+        if (activeProgress == null)
+        {
+            return;
+        }
+
+        foreach (BubbleRecord record in activeProgress.Bubbles)
+        {
+            ChatBubble bubble = SpawnBubble(record.IsNPC);
+            if (bubble != null)
+            {
+                bubble.ConfigureAsNormalBubble();
+                bubble.SetMessage(record.Text, record.IsNPC);
+            }
+        }
+
+        if (showDebugMessages)
+        {
+            Debug.Log("[CHAT] Restored " + activeProgress.Bubbles.Count +
+                " bubbles. Resuming node: " + currentNodeIndex);
+        }
+    }
+
+    private void Update()
+    {
+        // Also handle a panel that is a child of the viewer, where hiding
+        // the panel does not disable this component.
+        if (openingConversation || currentConversation == null ||
+            activeProgress == null || conversationPanel == null)
+        {
+            return;
+        }
+
+        if (!conversationPanel.activeInHierarchy && !suspended)
+        {
+            OnDisable();
+        }
+        else if (conversationPanel.activeInHierarchy && suspended)
+        {
+            OnEnable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (currentConversation == null || activeProgress == null)
+        {
+            return;
+        }
+
+        suspended = true;
+        StopAllCoroutines();
+        flowRoutine = null;
+        StopAllTyping();
+        isTypingNPC = false;
+        isWaitingForChoice = false;
+        if (typingIndicator != null)
+        {
+            typingIndicator.SetActive(false);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (openingConversation || !suspended ||
+            currentConversation == null || activeProgress == null)
+        {
+            return;
+        }
+
+        suspended = false;
+        ClearChat();
+        RestoreBubbles();
+        flowRoutine = StartCoroutine(FlowRoutine());
     }
 }
