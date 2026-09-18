@@ -58,4 +58,14 @@ MonoBehaviour:
     IsEndNode: 1
     AutoAdvance: 0
     AutoAdvanceDelay: 0
+  - IsNPC: 1
+    Message: https://g1.globo.com/
+    DisplayType: 5
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 11400000, guid: 8f36976437d643044b2b5c1a776590f0, type: 2}
+    LinkURL: https://g1.globo.com/
+    PlayerOptions: []
+    IsEndNode: 1
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
   StartNodeIndex: 0

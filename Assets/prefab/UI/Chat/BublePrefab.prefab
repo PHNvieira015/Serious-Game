@@ -402,10 +402,12 @@ MonoBehaviour:
   bubbleBackground: {fileID: 505294196016107778}
   messageText: {fileID: 3912696989126281385}
   layoutElement: {fileID: 6880629171490255164}
+  bubbleButton: {fileID: 0}
   npcBubbleColor: {r: 1, g: 1, b: 1, a: 1}
   playerBubbleColor: {r: 0.85, g: 0.97, b: 0.79, a: 1}
   npcTextColor: {r: 0, g: 0, b: 0, a: 1}
   playerTextColor: {r: 0, g: 0, b: 0, a: 1}
+  linkTextColor: {r: 0.15, g: 0.5, b: 0.94, a: 1}
   sidePadding: 40
   maxBubbleWidth: 700
   minBubbleHeight: 60

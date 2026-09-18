@@ -17,7 +17,7 @@ MonoBehaviour:
   NPCSpeakerAvatar: {fileID: 21300000, guid: a935045195a10774289645b704f13935, type: 3}
   NPCSpeakerBackground: {fileID: 21300000, guid: 32a112d5b8c03f24bb29078d78e64cb7, type: 3}
   Nodes:
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Oieee divaa\u2764\u2764"
     DisplayType: 1
     Image: {fileID: 0}
@@ -48,12 +48,12 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: (LINK)
     DisplayType: 5
     Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 4a09ef614594dd7429076fa5378d6d3f, type: 2}
-    LinkURL: 
+    LinkURL: (LINK)
     PlayerOptions: []
     IsEndNode: 1
     AutoAdvance: 0
