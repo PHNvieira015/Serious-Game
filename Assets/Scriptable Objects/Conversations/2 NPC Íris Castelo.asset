@@ -28,7 +28,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: "Tenho mais uma noticia para sua an\xE1lise"
+    Message: "Estava ouvindo o meu hor\xF3scopo diario no spotify e acabei pegando
+      um an\xFAncio sobre esssa not\xEDcia"
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -38,7 +39,7 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: "Vamos ver o que o universo reservou para voc\xEA!"
+    Message: "Voc\xEA poderia dar uma olhadinha nela, porfarvorzinho!"
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}

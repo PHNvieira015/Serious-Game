@@ -28,7 +28,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: "Seguinte, tem mais uma not\xEDcia aqui pra voc\xEA analisar "
+    Message: "Seguinte, enviaram essa not\xEDcia aqui l\xE1 no grupo do RPG e n\xE3o
+      to confiando muito n\xE3o, pode me dar um help ? "
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}

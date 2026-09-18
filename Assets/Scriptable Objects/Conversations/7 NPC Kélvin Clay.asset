@@ -18,7 +18,51 @@ MonoBehaviour:
   NPCSpeakerBackground: {fileID: 21300000, guid: 8e6b15472a1bf9d42b42a3602fee1c82, type: 3}
   Nodes:
   - IsNPC: 0
-    Message: 
+    Message: E ai, meu velho
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: "Ouvi uns caras discutindo sobre isso no est\xFAdio hoje enquanto a
+      gente arrumava as coisas para o ensaio. acabei salvando pra te mandar porque
+      tu \xE9 sinistro"
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: "Ouvi uns caras discutindo sobre isso no est\xFAdio hoje enquanto a
+      gente arrumava as coisas para o ensaio. acabei salvando pra te mandar porque
+      tu \xE9 sinistro"
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: "Agora \xE9 contigo. Eu tenho um skate pra quebrar ao som de Chop Suey!"
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  - IsNPC: 0
+    Message: (Link)
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
