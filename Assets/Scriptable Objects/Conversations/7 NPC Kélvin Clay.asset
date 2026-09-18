@@ -24,7 +24,7 @@ MonoBehaviour:
     LinkedArticle: {fileID: 0}
     LinkURL: 
     PlayerOptions: []
-    IsEndNode: 0
+    IsEndNode: 1
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
     Message: "Agora \xE9 contigo. Eu tenho um skate pra quebrar ao som de Chop Suey!"
     DisplayType: 1
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 0}
+    LinkedArticle: {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
     LinkURL: 
     PlayerOptions: []
     IsEndNode: 0
@@ -63,9 +63,9 @@ MonoBehaviour:
     AutoAdvanceDelay: 0
   - IsNPC: 0
     Message: (Link)
-    DisplayType: 1
+    DisplayType: 5
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 0}
+    LinkedArticle: {fileID: 11400000, guid: 6ffe7392c734fb849b71e4807d29cb77, type: 2}
     LinkURL: 
     PlayerOptions: []
     IsEndNode: 0
