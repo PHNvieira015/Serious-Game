@@ -12,58 +12,99 @@ public class BlockClickReceiver : MonoBehaviour, IPointerClickHandler
         {
             block = GetComponent<Block>();
         }
+
+        if (block == null)
+        {
+            block = GetComponentInParent<Block>();
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        ButtonClickMarker selected = ButtonClickMarker.GetSelected();
-
-        if (selected == null)
+        if (eventData.button != PointerEventData.InputButton.Left)
         {
-            Debug.Log("No button selected.");
             return;
         }
 
-        if (block == null)
+        ButtonClickMarker selected =
+            ButtonClickMarker.GetSelected();
+
+        if (selected == null || block == null)
         {
-            Debug.LogWarning("Block is null on " + gameObject.name);
             return;
         }
 
-        if (GameManager.Instance != null)
+        CheckType selectedType = selected.GetCheckType();
+
+        // Use the selected button's own source first.
+        DraggableObject source = selected.checkTypeSource;
+
+        if (source == null)
         {
-            int remaining = GameManager.Instance.GetRemainingChecks(selected.GetCheckType());
-            if (remaining <= 0)
+            source = selected.GetComponent<DraggableObject>();
+        }
+
+        if (source == null)
+        {
+            source = selected.GetComponentInChildren<DraggableObject>(
+                true
+            );
+        }
+
+        // Compatibility with buttons that use a separate source.
+        if (source == null)
+        {
+            DraggableObject[] available =
+                FindObjectsByType<DraggableObject>(
+                    FindObjectsSortMode.None
+                );
+
+            foreach (DraggableObject candidate in available)
             {
-                Debug.Log("Not enough " + selected.GetCheckType() + " remaining!");
-                return;
+                if (!candidate.IsPlaced &&
+                    !candidate.IsSpawnedInstance &&
+                    candidate.CheckType == selectedType)
+                {
+                    source = candidate;
+                    break;
+                }
             }
         }
 
-        // Find a draggable of the selected type that is not placed
-        DraggableObject[] draggables = FindObjectsByType<DraggableObject>(FindObjectsSortMode.None);
-
-        DraggableObject matchingDraggable = null;
-
-        foreach (DraggableObject draggable in draggables)
+        if (source == null)
         {
-            if (draggable.CheckType == selected.GetCheckType() && !draggable.IsPlaced)
-            {
-                matchingDraggable = draggable;
-                break;
-            }
+            Debug.LogWarning(
+                "[CLICK] No icon source assigned for " +
+                selectedType +
+                ". Assign Check Type Source on " +
+                selected.name
+            );
+
+            return;
         }
 
-        if (matchingDraggable != null)
+        bool placed = source.TryPlaceCopyOnBlock(
+            block,
+            selectedType
+        );
+
+        if (!placed)
         {
-            // Place on block (will replace existing)
-            matchingDraggable.PlaceCopyOnBlock(block);
-            Debug.Log("Placed " + selected.GetCheckType() + " on block via click.");
+            Debug.LogWarning(
+                "[CLICK] Placement failed on " +
+                block.name +
+                ". See the preceding warning."
+            );
+
+            return;
         }
-        else
-        {
-            Debug.LogWarning("No available draggable found for type: " + selected.GetCheckType());
-        }
+
+        Debug.Log(
+            "[CLICK] Placed " +
+            selectedType +
+            " in the checklist container for " +
+            block.name
+        );
 
         ButtonClickMarker.ClearSelection();
     }

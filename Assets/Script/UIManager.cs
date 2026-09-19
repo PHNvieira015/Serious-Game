@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     }
 
     [Header("Current Screen")]
-    public Screens currentScreen;
+    public Screens currentScreen= Screens.Chat;
 
     [Header("Screens")]
     [SerializeField] private GameObject chatFrame;

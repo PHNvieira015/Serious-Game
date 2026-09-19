@@ -319,7 +319,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowScreen(UIManager.Screens.Article);
+            UIManager.Instance.ShowScreen(UIManager.Screens.Chat);
         }
 
         if (onFeedbackComplete != null)

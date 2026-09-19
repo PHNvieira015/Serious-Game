@@ -1,17 +1,31 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class ButtonClickMarker : MonoBehaviour, IPointerClickHandler
+public class ButtonClickMarker :
+    MonoBehaviour,
+    IPointerClickHandler
 {
     [Header("Settings")]
     public CheckType checkType;
 
+    [Tooltip(
+        "Optional. When assigned, the marker automatically " +
+        "uses this DraggableObject's CheckType."
+    )]
+    public DraggableObject checkTypeSource;
+
     [Header("Visual Feedback")]
     public GameObject selectedFeedback;
 
-    private bool isSelected = false;
+    private bool isSelected;
+
     private static ButtonClickMarker currentlySelected;
+
+    private void Awake()
+    {
+        FindCheckTypeSource();
+        SynchronizeCheckType();
+    }
 
     private void Start()
     {
@@ -19,17 +33,68 @@ public class ButtonClickMarker : MonoBehaviour, IPointerClickHandler
         {
             selectedFeedback.SetActive(false);
         }
+
+        Debug.Log(
+            "[BUTTON MARKER] " +
+            gameObject.name +
+            " initialized with CheckType: " +
+            checkType
+        );
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void FindCheckTypeSource()
     {
-        // Deselect previous
-        if (currentlySelected != null && currentlySelected != this)
+        if (checkTypeSource != null)
+        {
+            return;
+        }
+
+        checkTypeSource =
+            GetComponent<DraggableObject>();
+
+        if (checkTypeSource == null)
+        {
+            checkTypeSource =
+                GetComponentInChildren<DraggableObject>(true);
+        }
+    }
+
+    private void SynchronizeCheckType()
+    {
+        if (checkTypeSource == null)
+        {
+            Debug.LogWarning(
+                "[BUTTON MARKER] No DraggableObject assigned " +
+                "to " +
+                gameObject.name +
+                ". The Inspector Check Type will be used: " +
+                checkType
+            );
+
+            return;
+        }
+
+        checkType = checkTypeSource.CheckType;
+
+        Debug.Log(
+            "[BUTTON MARKER] " +
+            gameObject.name +
+            " copied CheckType from DraggableObject: " +
+            checkType
+        );
+    }
+
+    public void OnPointerClick(
+        PointerEventData eventData)
+    {
+        SynchronizeCheckType();
+
+        if (currentlySelected != null &&
+            currentlySelected != this)
         {
             currentlySelected.Deselect();
         }
 
-        // Toggle selection
         if (isSelected)
         {
             Deselect();
@@ -50,7 +115,12 @@ public class ButtonClickMarker : MonoBehaviour, IPointerClickHandler
             selectedFeedback.SetActive(true);
         }
 
-        Debug.Log("Selected: " + checkType);
+        Debug.Log(
+            "[BUTTON MARKER] Selected button: " +
+            gameObject.name +
+            " | CheckType: " +
+            checkType
+        );
     }
 
     private void Deselect()
@@ -67,7 +137,12 @@ public class ButtonClickMarker : MonoBehaviour, IPointerClickHandler
             selectedFeedback.SetActive(false);
         }
 
-        Debug.Log("Deselected: " + checkType);
+        Debug.Log(
+            "[BUTTON MARKER] Deselected button: " +
+            gameObject.name +
+            " | CheckType: " +
+            checkType
+        );
     }
 
     public bool IsSelected()
@@ -77,6 +152,8 @@ public class ButtonClickMarker : MonoBehaviour, IPointerClickHandler
 
     public CheckType GetCheckType()
     {
+        SynchronizeCheckType();
+
         return checkType;
     }
 
@@ -92,4 +169,29 @@ public class ButtonClickMarker : MonoBehaviour, IPointerClickHandler
             currentlySelected.Deselect();
         }
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (checkTypeSource == null)
+        {
+            checkTypeSource =
+                GetComponent<DraggableObject>();
+
+            if (checkTypeSource == null)
+            {
+                checkTypeSource =
+                    GetComponentInChildren<DraggableObject>(
+                        true
+                    );
+            }
+        }
+
+        if (checkTypeSource != null)
+        {
+            checkType =
+                checkTypeSource.CheckType;
+        }
+    }
+#endif
 }

@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 2333632698451362295}
   - component: {fileID: 3688811736277268802}
   m_Layer: 0
-  m_Name: Writer_NameBlock
+  m_Name: Article_Writer_NameBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

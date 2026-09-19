@@ -1,8 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableObject :
+    MonoBehaviour,
+    IBeginDragHandler,
+    IDragHandler,
+    IEndDragHandler
 {
     [Header("Verification")]
     public CheckType CheckType;
@@ -38,10 +43,19 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private DraggableObject spawnedObject;
     private Block currentBlock;
 
+    private Vector3 dragStartPosition;
+    private bool hasDragStartPosition;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        parentCanvas = GetComponentInParent<Canvas>();
+
+        Canvas containingCanvas = GetComponentInParent<Canvas>();
+
+        if (containingCanvas != null)
+        {
+            parentCanvas = containingCanvas.rootCanvas;
+        }
 
         ownCanvas = GetComponent<Canvas>();
 
@@ -61,160 +75,168 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (canvasGroup == null)
         {
             canvasGroup = GetComponent<CanvasGroup>();
+        }
 
-            if (canvasGroup == null)
-            {
-                canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            }
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
 
         blockLayer = LayerMask.NameToLayer("Block Layer");
-
-        isPlaced = false;
-        isDragging = false;
-        isSpawnedInstance = false;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (isPlaced)
+        if (isPlaced || !CanUseCheck(CheckType))
         {
-            return;
-        }
-
-        if (!CanUseCheck())
-        {
-            Debug.Log($"Not enough {CheckType} remaining!");
             return;
         }
 
         if (!isSpawnedInstance && canSpawnMultiple)
         {
-            SpawnDraggableObject(eventData);
+            if (parentCanvas == null)
+            {
+                Debug.LogWarning("[DRAG] Parent Canvas is missing.");
+                return;
+            }
+
+            spawnedObject = CreateCopy(
+                parentCanvas.transform,
+                CheckType
+            );
+
+            if (spawnedObject == null)
+            {
+                return;
+            }
+
+            spawnedObject.rectTransform.position =
+                rectTransform.position;
+
+            spawnedObject.StartDragging();
             return;
         }
 
         StartDragging();
     }
 
-    private void SpawnDraggableObject(PointerEventData eventData)
+    private DraggableObject CreateCopy(
+        Transform parent,
+        CheckType type)
     {
-        DraggableObject prefabToSpawn = spawnPrefab;
+        DraggableObject template =
+            spawnPrefab != null ? spawnPrefab : this;
 
-        if (prefabToSpawn == null)
+        if (template.GetComponent<RectTransform>() == null)
         {
-            prefabToSpawn = this;
+            Debug.LogWarning(
+                "[PLACEMENT] Icon prefab needs a RectTransform."
+            );
+
+            return null;
         }
 
-        spawnedObject = Instantiate(prefabToSpawn, parentCanvas.transform);
+        DraggableObject copy = Instantiate(
+            template,
+            parent,
+            false
+        );
 
-        spawnedObject.isSpawnedInstance = true;
-        spawnedObject.isPlaced = false;
-        spawnedObject.isDragging = true;
+        // The requested type is authoritative for the new copy.
+        copy.CheckType = type;
+        copy.isSpawnedInstance = true;
+        copy.isPlaced = false;
+        copy.isDragging = false;
+        copy.canSpawnMultiple = false;
+        copy.currentBlock = null;
+        copy.spawnedObject = null;
 
-        RectTransform spawnedRect = spawnedObject.GetComponent<RectTransform>();
+        if (!copy.gameObject.activeSelf)
+        {
+            copy.gameObject.SetActive(true);
+        }
 
-        spawnedRect.position = rectTransform.position;
-
-        spawnedObject.BeginSpawnedDrag();
-
-        Debug.Log($"Spawned copy of {gameObject.name}");
-    }
-
-    private void BeginSpawnedDrag()
-    {
-        canvasGroup.alpha = 0.6f;
-        canvasGroup.blocksRaycasts = false;
-
-        ownCanvas.sortingOrder = 9999;
+        return copy;
     }
 
     private void StartDragging()
     {
         isDragging = true;
 
+        dragStartPosition = rectTransform.position;
+        hasDragStartPosition = true;
+
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
-
         ownCanvas.sortingOrder = 9999;
 
-        Debug.Log($"Picked Action: {CheckType}");
+        Debug.Log("[DRAG] Picked " + CheckType);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isSpawnedInstance)
-        {
-            if (!isDragging)
-            {
-                return;
-            }
-
-            MoveWithPointer(eventData);
-            return;
-        }
-
         if (spawnedObject != null)
         {
-            if (!spawnedObject.gameObject.activeInHierarchy)
+            if (spawnedObject.isDragging)
             {
-                spawnedObject = null;
-                return;
+                spawnedObject.MoveWithPointer(eventData);
             }
 
-            spawnedObject.MoveWithPointer(eventData);
             return;
         }
 
-        if (!isDragging)
+        if (isDragging)
         {
-            return;
+            MoveWithPointer(eventData);
         }
-
-        MoveWithPointer(eventData);
     }
 
     private void MoveWithPointer(PointerEventData eventData)
     {
-        if (parentCanvas == null)
+        if (rectTransform == null)
         {
             return;
         }
 
-        rectTransform.anchoredPosition += eventData.delta / parentCanvas.scaleFactor;
+        RectTransform parentRect =
+            rectTransform.parent as RectTransform;
+
+        if (parentRect == null)
+        {
+            return;
+        }
+
+        Vector3 pointerPosition;
+
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
+            parentRect,
+            eventData.position,
+            eventData.pressEventCamera,
+            out pointerPosition))
+        {
+            rectTransform.position = pointerPosition;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (isSpawnedInstance)
-        {
-            if (!isDragging)
-            {
-                return;
-            }
-
-            isDragging = false;
-
-            FinishDrag(eventData);
-            return;
-        }
-
         if (spawnedObject != null)
         {
-            if (!spawnedObject.gameObject.activeInHierarchy)
-            {
-                spawnedObject = null;
-                return;
-            }
-
-            spawnedObject.isDragging = false;
-            spawnedObject.FinishDrag(eventData);
-
+            DraggableObject copy = spawnedObject;
             spawnedObject = null;
 
+            copy.FinishDrag(eventData);
             return;
         }
 
+        if (isDragging)
+        {
+            FinishDrag(eventData);
+        }
+    }
+
+    private void FinishDrag(PointerEventData eventData)
+    {
         if (!isDragging)
         {
             return;
@@ -222,159 +244,280 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         isDragging = false;
 
-        FinishDrag(eventData);
-    }
-
-    private void FinishDrag(PointerEventData eventData)
-    {
+        // Keep the icon out of raycasts while finding the block.
+        canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
 
-        ownCanvas.sortingOrder = 100;
+        Block target = FindDropBlock(eventData);
 
-        TryPlace(eventData);
+        if (target == null)
+        {
+            Miss();
+            DestroySpawnedObject();
+            return;
+        }
+
+        // Both click and drag finish through this method.
+        if (!TryPlaceOnBlock(target))
+        {
+            DestroySpawnedObject();
+        }
     }
 
-    private void TryPlace(PointerEventData eventData)
+    private Block FindDropBlock(PointerEventData eventData)
     {
-        var results = new System.Collections.Generic.List<RaycastResult>();
-
-        EventSystem.current.RaycastAll(eventData, results);
-
-        foreach (RaycastResult result in results)
+        if (EventSystem.current == null)
         {
-            if (result.gameObject == gameObject)
+            return null;
+        }
+
+        List<RaycastResult> hits = new List<RaycastResult>();
+
+        EventSystem.current.RaycastAll(eventData, hits);
+
+        foreach (RaycastResult hit in hits)
+        {
+            if (hit.gameObject == gameObject ||
+                hit.gameObject.transform.IsChildOf(transform))
             {
                 continue;
             }
 
-            if (result.gameObject.transform.IsChildOf(transform))
-            {
-                continue;
-            }
+            Block target = hit.gameObject.GetComponentInParent<Block>();
 
-            if (result.gameObject.layer == blockLayer)
+            if (target == null)
             {
-                if (!CanUseCheck())
+                ArticleBlockView view =
+                    hit.gameObject.GetComponentInParent<ArticleBlockView>();
+
+                if (view != null)
                 {
-                    Debug.Log($"Not enough {CheckType} remaining!");
-
-                    DestroySpawnedObject();
-                    return;
+                    target = view.blockComponent;
                 }
+            }
 
-                Hit(result);
-                return;
+            if (target == null)
+            {
+                continue;
+            }
+
+            if (hit.gameObject.layer == blockLayer ||
+                target.gameObject.layer == blockLayer)
+            {
+                return target;
             }
         }
 
-        Miss();
-
-        DestroySpawnedObject();
+        return null;
     }
 
-    private bool CanUseCheck()
+    private bool CanUseCheck(CheckType type)
     {
         if (GameManager.Instance == null)
         {
             return true;
         }
 
-        int remaining = GameManager.Instance.GetRemainingChecks(CheckType);
+        if (GameManager.Instance.GetRemainingChecks(type) > 0)
+        {
+            return true;
+        }
 
-        return remaining > 0;
+        Debug.LogWarning(
+            "[PLACEMENT] Not enough " + type + " remaining."
+        );
+
+        return false;
     }
 
-    private void Hit(RaycastResult result)
+    private ArticleBlockView FindBlockView(Block target)
     {
-        if (!isPlaced)
+        ArticleBlockView view =
+            target.GetComponent<ArticleBlockView>();
+
+        if (view != null)
         {
-            isPlaced = true;
+            return view;
+        }
 
-            Debug.Log($"Placed {CheckType} on {result.gameObject.name}");
+        view = target.GetComponentInParent<ArticleBlockView>();
 
-            if (GameManager.Instance != null)
+        if (view != null &&
+            (view.blockComponent == null ||
+             view.blockComponent == target))
+        {
+            return view;
+        }
+
+        // Supports a view that references a Block on another object.
+        ArticleBlockView[] views =
+            target.transform.root.GetComponentsInChildren<ArticleBlockView>(
+                true
+            );
+
+        foreach (ArticleBlockView candidate in views)
+        {
+            if (candidate.blockComponent == target)
             {
-                GameManager.Instance.UseCheck(CheckType);
-                GameManager.Instance.AddScore(10);
-            }
-
-            if (correctFeedback != null)
-            {
-                correctFeedback.SetActive(true);
+                return candidate;
             }
         }
 
-        StayOnBlock(result);
+        return null;
     }
 
-    private void StayOnBlock(RaycastResult result)
+    private bool TryPlaceOnBlock(Block target)
     {
-        Block block = result.gameObject.GetComponent<Block>();
-
-        if (block == null)
+        if (target == null || rectTransform == null)
         {
-            block = result.gameObject.GetComponentInParent<Block>();
+            Debug.LogWarning(
+                "[PLACEMENT] Missing Block or icon RectTransform."
+            );
+
+            return false;
         }
 
-        RectTransform blockRect = result.gameObject.GetComponent<RectTransform>();
-
-        if (blockRect == null && result.gameObject.transform.parent != null)
+        if (isPlaced)
         {
-            blockRect = result.gameObject.transform.parent.GetComponent<RectTransform>();
+            return currentBlock == target;
         }
 
-        if (blockRect == null)
+        if (!CanUseCheck(CheckType))
         {
-            Debug.LogWarning("Could not find RectTransform on block.");
-            return;
+            return false;
         }
 
-        if (block != null)
+        ArticleBlockView view = FindBlockView(target);
+
+        if (view == null)
         {
-            DraggableObject existingDraggable = block.CurrentDraggable;
+            Debug.LogWarning(
+                "[PLACEMENT] No ArticleBlockView found for " +
+                target.name
+            );
 
-            if (existingDraggable != null && existingDraggable != this)
-            {
-                Debug.Log($"Replacing {existingDraggable.gameObject.name} with {gameObject.name} on {block.name}");
-
-                block.RemoveDraggable(existingDraggable);
-                existingDraggable.currentBlock = null;
-                Destroy(existingDraggable.gameObject);
-            }
-
-            block.SetDraggable(this);
-            currentBlock = block;
-
-            // Set the color on the block's ArticleBlockView
-            ArticleBlockView blockView = block.GetComponent<ArticleBlockView>();
-            if (blockView != null)
-            {
-                blockView.SetMarkColorFromDraggable(CheckType);
-                Debug.Log("Set color on block from drag: " + CheckType);
-            }
-            else
-            {
-                Debug.LogWarning("ArticleBlockView not found on " + block.name);
-            }
+            return false;
         }
 
-        transform.SetParent(blockRect);
+        if (view.ChecklistContainer == null)
+        {
+            Debug.LogWarning(
+                "[PLACEMENT] Assign Checklist Container on " +
+                view.name
+            );
 
-        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-        rectTransform.pivot = new Vector2(0.5f, 0.5f);
-        rectTransform.anchoredPosition = Vector2.zero;
+            return false;
+        }
 
-        ownCanvas.sortingOrder = 200;
-        canvasGroup.blocksRaycasts = true;
+        // Verify the new icon can be positioned before removing the old one.
+        if (!view.PlaceIconInChecklist(this))
+        {
+            return false;
+        }
 
-        Debug.Log($"Placed {gameObject.name} on {blockRect.name}. CheckType: {CheckType}");
+        DraggableObject previous = target.CurrentDraggable;
+
+        if (previous != null && previous != this)
+        {
+            previous.currentBlock = null;
+
+            target.RemoveDraggable(previous);
+
+            previous.gameObject.SetActive(false);
+
+            Destroy(previous.gameObject);
+        }
+
+        currentBlock = target;
+        isPlaced = true;
+        isDragging = false;
+
+        target.SetDraggable(this);
+
+        // Updates the player mark, mark label, and text color.
+        view.SetMarkColorFromDraggable(CheckType);
+
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = false;
+
+        // Once placed, render as part of the article UI.
+        ownCanvas.overrideSorting = false;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UseCheck(CheckType);
+            GameManager.Instance.AddScore(10);
+        }
+
+        if (correctFeedback != null)
+        {
+            correctFeedback.SetActive(true);
+        }
+
+        Debug.Log(
+            "[PLACEMENT] Block: " +
+            target.name +
+            " | Mark: " +
+            CheckType +
+            " | Container: " +
+            view.ChecklistContainer.name
+        );
+
+        return true;
+    }
+
+    // Preserve the original method for existing callers.
+    public void PlaceCopyOnBlock(Block block)
+    {
+        TryPlaceCopyOnBlock(block, CheckType);
+    }
+
+    public bool TryPlaceCopyOnBlock(
+        Block block,
+        CheckType selectedType)
+    {
+        if (block == null || !CanUseCheck(selectedType))
+        {
+            return false;
+        }
+
+        ArticleBlockView view = FindBlockView(block);
+
+        if (view == null || view.ChecklistContainer == null)
+        {
+            Debug.LogWarning(
+                "[PLACEMENT] Assign ArticleBlockView and its " +
+                "Checklist Container for " +
+                block.name
+            );
+
+            return false;
+        }
+
+        DraggableObject copy = CreateCopy(
+            view.ChecklistContainer,
+            selectedType
+        );
+
+        if (copy == null)
+        {
+            return false;
+        }
+
+        // Identical mark and icon placement logic to drag-and-drop.
+        bool success = copy.TryPlaceOnBlock(block);
+
+        if (!success)
+        {
+            Destroy(copy.gameObject);
+        }
+
+        return success;
     }
 
     private void Miss()
     {
-        Debug.Log($"WRONG - Not on Block Layer");
+        Debug.Log("[DRAG] No valid block under the pointer.");
 
         if (GameManager.Instance != null)
         {
@@ -400,12 +543,17 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (isSpawnedInstance)
         {
+            gameObject.SetActive(false);
             Destroy(gameObject);
+            return;
         }
-        else
+
+        if (hasDragStartPosition && rectTransform != null)
         {
-            ResetDragState();
+            rectTransform.position = dragStartPosition;
         }
+
+        ResetDragState();
     }
 
     private void ResetDragState()
@@ -420,16 +568,27 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         if (ownCanvas != null && !isPlaced)
         {
+            ownCanvas.overrideSorting = true;
             ownCanvas.sortingOrder = 100;
         }
     }
 
     public void ResetDraggable()
     {
-        if (currentBlock != null)
+        Block previousBlock = currentBlock;
+        currentBlock = null;
+
+        if (previousBlock != null &&
+            previousBlock.CurrentDraggable == this)
         {
-            currentBlock.RemoveDraggable(this);
-            currentBlock = null;
+            previousBlock.RemoveDraggable(this);
+
+            ArticleBlockView view = FindBlockView(previousBlock);
+
+            if (view != null)
+            {
+                view.ClearPlayerSelection();
+            }
         }
 
         isPlaced = false;
@@ -446,87 +605,28 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         ResetDragState();
-    }
 
-    public void PlaceCopyOnBlock(Block block)
-    {
-        if (block == null)
+        // A reset copy should not remain as a stale checklist icon.
+        if (isSpawnedInstance)
         {
-            Debug.LogWarning("Block is null.");
-            return;
+            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
-
-        if (!CanUseCheck())
-        {
-            Debug.Log("Not enough " + CheckType + " remaining!");
-            return;
-        }
-
-        if (block.CurrentDraggable != null)
-        {
-            Debug.Log("Replacing existing draggable on " + block.name);
-            DraggableObject old = block.CurrentDraggable;
-            block.RemoveDraggable(old);
-            old.currentBlock = null;
-            Destroy(old.gameObject);
-        }
-
-        DraggableObject copy = Instantiate(spawnPrefab != null ? spawnPrefab : this, block.transform);
-        copy.canSpawnMultiple = false;
-
-        RectTransform copyRect = copy.GetComponent<RectTransform>();
-        if (copyRect != null)
-        {
-            copyRect.anchorMin = new Vector2(0.5f, 0.5f);
-            copyRect.anchorMax = new Vector2(0.5f, 0.5f);
-            copyRect.pivot = new Vector2(0.5f, 0.5f);
-            copyRect.anchoredPosition = Vector2.zero;
-        }
-
-        block.SetDraggable(copy);
-        copy.currentBlock = block;
-        copy.isPlaced = true;
-
-        // Set the color on the block's ArticleBlockView
-        ArticleBlockView blockView = block.GetComponent<ArticleBlockView>();
-        if (blockView != null)
-        {
-            blockView.SetMarkColorFromDraggable(CheckType);
-            Debug.Log("Set color on block from click: " + CheckType);
-        }
-        else
-        {
-            Debug.LogWarning("ArticleBlockView not found on " + block.name);
-        }
-
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.UseCheck(CheckType);
-            GameManager.Instance.AddScore(10);
-        }
-
-        if (copy.correctFeedback != null)
-        {
-            copy.correctFeedback.SetActive(true);
-        }
-
-        Debug.Log("Placed " + CheckType + " on " + block.name + " via click.");
     }
 
     private void OnEnable()
     {
-        if (!isPlaced)
+        if (!isPlaced && ownCanvas != null)
         {
-            if (ownCanvas != null)
-            {
-                ownCanvas.sortingOrder = 100;
-            }
+            ownCanvas.overrideSorting = true;
+            ownCanvas.sortingOrder = 100;
         }
     }
 
     private void OnDestroy()
     {
-        if (currentBlock != null)
+        if (currentBlock != null &&
+            currentBlock.CurrentDraggable == this)
         {
             currentBlock.RemoveDraggable(this);
         }
