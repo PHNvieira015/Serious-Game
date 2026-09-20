@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 632586369243665709}
   - component: {fileID: 2732863069019474502}
   - component: {fileID: 6847909577502645618}
+  - component: {fileID: 5490943899281253625}
   m_Layer: 0
   m_Name: NPCButton
   m_TagString: Untagged
@@ -149,6 +150,21 @@ MonoBehaviour:
   avatarImage: {fileID: 6136169848424623447}
   avatarBackgroundImage: {fileID: 4766847960916571876}
   selectedColor: {r: 0, g: 0, b: 0, a: 0.12}
+  logSetup: 1
+--- !u!114 &5490943899281253625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586178283528301673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8880162dde8c4ab41bf120bda7f77fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
 --- !u!1 &1120050709909833205
 GameObject:
   m_ObjectHideFlags: 0

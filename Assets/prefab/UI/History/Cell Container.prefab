@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f9b9468732be4ca0d619aa2d6afe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewsCell
-  titleText: {fileID: 0}
+  titleText: {fileID: 7547477701518235939}
   clickButton: {fileID: 4902433778721221600}
   normalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   hoverColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
