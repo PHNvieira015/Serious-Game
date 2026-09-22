@@ -27,7 +27,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Quando voc\xEA tiver um tempinho, chegou mais uma not\xEDcia para analisar"
     DisplayType: 1
     Image: {fileID: 0}
@@ -37,7 +37,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "N\xE3o precisa ter pressa, t\xE1 ? s\xF3 queria te mandar antes que
       eu acabasse esquecendo, desculpa..."
     DisplayType: 1

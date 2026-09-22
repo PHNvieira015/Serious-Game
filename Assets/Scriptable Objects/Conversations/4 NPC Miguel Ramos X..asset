@@ -27,7 +27,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Seguinte, enviaram essa not\xEDcia aqui l\xE1 no grupo do RPG e n\xE3o
       to confiando muito n\xE3o, pode me dar um help ? "
     DisplayType: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Rola o D20 ai pro teste de investiga\xE7\xE3o e lets go!"
     DisplayType: 1
     Image: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: (LINK)
     DisplayType: 5
     Image: {fileID: 0}

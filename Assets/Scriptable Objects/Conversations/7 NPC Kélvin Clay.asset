@@ -27,7 +27,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Ouvi uns caras discutindo sobre isso no est\xFAdio hoje enquanto a
       gente arrumava as coisas para o ensaio. acabei salvando pra te mandar porque
       tu \xE9 sinistro"
@@ -39,7 +39,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Ouvi uns caras discutindo sobre isso no est\xFAdio hoje enquanto a
       gente arrumava as coisas para o ensaio. acabei salvando pra te mandar porque
       tu \xE9 sinistro"
@@ -51,7 +51,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Agora \xE9 contigo. Eu tenho um skate pra quebrar ao som de Chop Suey!"
     DisplayType: 5
     Image: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: (Link)
     DisplayType: 5
     Image: {fileID: 0}

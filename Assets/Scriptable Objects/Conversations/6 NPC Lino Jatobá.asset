@@ -27,7 +27,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Achei isso, voc\xEA pode olhar pra mim ?"
     DisplayType: 1
     Image: {fileID: 0}
@@ -37,7 +37,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Espero que n\xE3o seja nada ruim..."
     DisplayType: 1
     Image: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: (LINK)
     DisplayType: 5
     Image: {fileID: 0}

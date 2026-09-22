@@ -17,7 +17,7 @@ MonoBehaviour:
   NPCSpeakerAvatar: {fileID: 21300000, guid: f38a864081934ef47b9d0a10fefd54a5, type: 3}
   NPCSpeakerBackground: {fileID: 21300000, guid: 085124942d3e8d145a7ec3e1a192579d, type: 3}
   Nodes:
-  - IsNPC: 0
+  - IsNPC: 1
     Message: Oiee
     DisplayType: 1
     Image: {fileID: 0}
@@ -27,7 +27,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Estava ouvindo o meu hor\xF3scopo diario no spotify e acabei pegando
       um an\xFAncio sobre esssa not\xEDcia"
     DisplayType: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Voc\xEA poderia dar uma olhadinha nela, porfarvorzinho!"
     DisplayType: 1
     Image: {fileID: 0}

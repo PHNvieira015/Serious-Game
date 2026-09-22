@@ -64,42 +64,30 @@ public class ConversationViewer : MonoBehaviour
     {
         public string Text;
         public bool IsNPC;
+        public bool IsLink;
+        public ArticleData LinkedArticle;
+        public string LinkedURL;
     }
 
     private class ConversationProgress
     {
         public int NodeIndex;
         public bool MessageShown;
+
         public readonly List<BubbleRecord> Bubbles =
             new List<BubbleRecord>();
     }
 
-    private static readonly Dictionary<ConversationData, ConversationProgress>
-        conversationProgress =
-            new Dictionary<ConversationData, ConversationProgress>();
+    private static readonly Dictionary<
+        ConversationData,
+        ConversationProgress
+    > conversationProgress =
+        new Dictionary<ConversationData, ConversationProgress>();
 
     private ConversationProgress activeProgress;
+
     private bool openingConversation;
     private bool suspended;
-
-    private int currentNodeIndex
-    {
-        get { return activeProgress != null ? activeProgress.NodeIndex : 0; }
-        set
-        {
-            if (activeProgress != null)
-            {
-                activeProgress.NodeIndex = value;
-                activeProgress.MessageShown = false;
-            }
-        }
-    }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ClearSessionProgress()
-    {
-        conversationProgress.Clear();
-    }
     private bool isWaitingForChoice;
     private bool isTypingNPC;
 
@@ -114,6 +102,31 @@ public class ConversationViewer : MonoBehaviour
     private readonly List<UnityEngine.UI.Button> currentOptionButtons =
         new List<UnityEngine.UI.Button>();
 
+    private int currentNodeIndex
+    {
+        get
+        {
+            return activeProgress != null
+                ? activeProgress.NodeIndex
+                : 0;
+        }
+        set
+        {
+            if (activeProgress != null)
+            {
+                activeProgress.NodeIndex = value;
+                activeProgress.MessageShown = false;
+            }
+        }
+    }
+
+    [RuntimeInitializeOnLoadMethod(
+        RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ClearSessionProgress()
+    {
+        conversationProgress.Clear();
+    }
+
     private void Awake()
     {
         if (conversationPanel != null)
@@ -121,147 +134,101 @@ public class ConversationViewer : MonoBehaviour
             conversationPanel.SetActive(false);
         }
 
-        if (typingIndicator != null)
-        {
-            typingIndicator.SetActive(false);
-        }
+        SetTypingIndicator(false);
 
         if (closeButton != null)
         {
-            closeButton.onClick.RemoveListener(
-                CloseConversation
-            );
-
-            closeButton.onClick.AddListener(
-                CloseConversation
-            );
+            closeButton.onClick.RemoveListener(CloseConversation);
+            closeButton.onClick.AddListener(CloseConversation);
         }
     }
 
-    public void OpenConversation(
-        ConversationData conversation)
+    public void OpenConversation(ConversationData conversation)
     {
-        if (conversation == null)
-        {
-            Debug.LogError(
-                "[CHAT] ConversationData is null."
-            );
-
-            return;
-        }
-
-        if (conversation.Nodes == null ||
+        if (conversation == null ||
+            conversation.Nodes == null ||
             conversation.Nodes.Count == 0)
         {
-            Debug.LogError(
-                "[CHAT] Conversation has no nodes: " +
-                conversation.name
-            );
-
+            Debug.LogError("[CHAT] Conversation is null or has no nodes.");
             return;
         }
 
         bool wasOpen =
             currentConversation != null &&
             conversationPanel != null &&
-            conversationPanel.activeSelf;
+            conversationPanel.activeInHierarchy;
 
         Teardown();
 
         currentConversation = conversation;
-        if (!conversationProgress.TryGetValue(conversation, out activeProgress))
+
+        if (!conversationProgress.TryGetValue(
+            conversation,
+            out activeProgress))
         {
-            activeProgress = new ConversationProgress();
-            activeProgress.NodeIndex = conversation.StartNodeIndex;
+            activeProgress = new ConversationProgress
+            {
+                NodeIndex = conversation.StartNodeIndex
+            };
+
             conversationProgress.Add(conversation, activeProgress);
         }
 
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Opening conversation: " +
-                currentConversation.name
-            );
-
-            Debug.Log(
-                "[CHAT] Start node index: " +
-                currentNodeIndex
-            );
-
-            Debug.Log(
-                "[CHAT] Total nodes: " +
-                currentConversation.Nodes.Count
-            );
-        }
-
         openingConversation = true;
+
         if (conversationPanel != null)
         {
             conversationPanel.SetActive(true);
         }
+
         openingConversation = false;
         suspended = false;
 
         UpdateHeader();
         RestoreBubbles();
 
+        if (showDebugMessages)
+        {
+            Debug.Log(
+                "[CHAT] Opening " +
+                conversation.name +
+                " at node " +
+                currentNodeIndex
+            );
+        }
+
         if (wasOpen)
         {
-            if (OnConversationSwitched != null)
-            {
-                OnConversationSwitched.Invoke(
-                    currentConversation
-                );
-            }
+            OnConversationSwitched?.Invoke(conversation);
         }
         else
         {
-            if (OnConversationOpened != null)
-            {
-                OnConversationOpened.Invoke(
-                    currentConversation
-                );
-            }
+            OnConversationOpened?.Invoke(conversation);
         }
 
-        flowRoutine = StartCoroutine(
-            FlowRoutine()
-        );
+        StartFlow();
     }
 
-    public void StartConversation(
-        ConversationData conversation)
+    public void StartConversation(ConversationData conversation)
     {
         OpenConversation(conversation);
     }
 
     public void CloseConversation()
     {
-        ConversationData closedConversation =
-            currentConversation;
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Closing conversation."
-            );
-        }
+        ConversationData closedConversation = currentConversation;
 
         Teardown();
+
+        currentConversation = null;
+        activeProgress = null;
 
         if (conversationPanel != null)
         {
             conversationPanel.SetActive(false);
         }
 
-        currentConversation = null;
-
-        if (OnConversationClosed != null)
-        {
-            OnConversationClosed.Invoke(
-                closedConversation
-            );
-        }
+        OnConversationClosed?.Invoke(closedConversation);
     }
 
     private void UpdateHeader()
@@ -273,8 +240,7 @@ public class ConversationViewer : MonoBehaviour
 
         if (npcNameText != null)
         {
-            npcNameText.text =
-                currentConversation.NPCSpeakerName;
+            npcNameText.text = currentConversation.NPCSpeakerName;
         }
 
         if (npcAvatarImage != null)
@@ -283,8 +249,7 @@ public class ConversationViewer : MonoBehaviour
                 currentConversation.NPCSpeakerAvatar;
 
             npcAvatarImage.enabled =
-                currentConversation.NPCSpeakerAvatar !=
-                null;
+                currentConversation.NPCSpeakerAvatar != null;
         }
 
         if (npcAvatarBackgroundImage != null)
@@ -293,40 +258,60 @@ public class ConversationViewer : MonoBehaviour
                 currentConversation.NPCSpeakerBackground;
 
             npcAvatarBackgroundImage.enabled =
-                currentConversation.NPCSpeakerBackground !=
-                null;
+                currentConversation.NPCSpeakerBackground != null;
         }
     }
 
     private void Teardown()
     {
-        if (flowRoutine != null)
-        {
-            StopCoroutine(flowRoutine);
-            flowRoutine = null;
-        }
-
         StopAllCoroutines();
+        flowRoutine = null;
+
         StopAllTyping();
         ClearChat();
-
-        if (typingIndicator != null)
-        {
-            typingIndicator.SetActive(false);
-        }
+        SetTypingIndicator(false);
 
         isWaitingForChoice = false;
         isTypingNPC = false;
+        suspended = false;
 
         preparedArticle = null;
         preparedURL = string.Empty;
+    }
+
+    private bool CanRunFlow()
+    {
+        return isActiveAndEnabled &&
+            (conversationPanel == null ||
+             conversationPanel.activeInHierarchy);
+    }
+
+    private void StartFlow()
+    {
+        if (currentConversation == null || activeProgress == null)
+        {
+            return;
+        }
+
+        if (!CanRunFlow())
+        {
+            suspended = true;
+            return;
+        }
 
         suspended = false;
+
+        if (flowRoutine != null)
+        {
+            StopCoroutine(flowRoutine);
+        }
+
+        flowRoutine = StartCoroutine(FlowRoutine());
     }
 
     private IEnumerator FlowRoutine()
     {
-        yield return new WaitForSeconds(initialDelay);
+        yield return new WaitForSeconds(Mathf.Max(0f, initialDelay));
         yield return RefreshLayoutAndScroll();
 
         while (currentConversation != null && activeProgress != null)
@@ -339,17 +324,37 @@ public class ConversationViewer : MonoBehaviour
                 yield break;
             }
 
-            ConversationNode node = currentConversation.Nodes[currentNodeIndex];
+            ConversationNode node =
+                currentConversation.Nodes[currentNodeIndex];
+
             if (node == null)
             {
                 currentNodeIndex++;
                 continue;
             }
 
-            LogCurrentNode(node);
+            if (showDebugMessages)
+            {
+                Debug.Log(
+                    "[CHAT] Node: " +
+                    currentNodeIndex +
+                    " | Type: " +
+                    node.DisplayType +
+                    " | End: " +
+                    node.IsEndNode
+                );
+            }
+
             if (node.IsEndNode)
             {
                 PrepareArticleFromEndNode(node);
+
+                // Link end nodes also get a clickable bubble.
+                if (node.DisplayType == BlockType.Link)
+                {
+                    yield return DisplayNodeBubble(node);
+                }
+
                 yield return EndRoutine(node);
                 flowRoutine = null;
                 yield break;
@@ -362,6 +367,7 @@ public class ConversationViewer : MonoBehaviour
             else
             {
                 yield return PlayPlayerNode(node);
+
                 if (isWaitingForChoice)
                 {
                     flowRoutine = null;
@@ -373,172 +379,68 @@ public class ConversationViewer : MonoBehaviour
         flowRoutine = null;
     }
 
-    private void LogCurrentNode(
-        ConversationNode node)
+    private IEnumerator DisplayNodeBubble(ConversationNode node)
     {
-        if (!showDebugMessages)
+        if (activeProgress.MessageShown)
         {
-            return;
+            yield break;
         }
 
-        string articleName = "None";
+        isTypingNPC = node.IsNPC;
 
-        if (node.LinkedArticle != null)
+        if (node.IsNPC)
         {
-            articleName =
-                node.LinkedArticle.name;
-        }
-
-        Debug.Log(
-            "[CHAT] Processing node index: " +
-            currentNodeIndex +
-            " | IsNPC: " +
-            node.IsNPC +
-            " | IsEndNode: " +
-            node.IsEndNode +
-            " | DisplayType: " +
-            node.DisplayType +
-            " | LinkedArticle: " +
-            articleName
-        );
-    }
-
-    private void PrepareArticleFromEndNode(
-        ConversationNode endNode)
-    {
-        preparedArticle = null;
-        preparedURL = string.Empty;
-
-        if (endNode == null)
-        {
-            Debug.LogWarning(
-                "[CHAT] Cannot prepare article because " +
-                "the end node is null."
-            );
-
-            return;
-        }
-
-        preparedArticle =
-            endNode.LinkedArticle;
-
-        preparedURL =
-            GetNodeLinkURL(endNode);
-
-        if (preparedArticle == null)
-        {
-            Debug.LogWarning(
-                "[CHAT] End node has no LinkedArticle."
-            );
-
-            if (!string.IsNullOrWhiteSpace(
-                preparedURL
-            ))
-            {
-                Debug.Log(
-                    "[CHAT] End node has an external URL: " +
-                    preparedURL
-                );
-            }
-
-            return;
-        }
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] End node LinkedArticle found: " +
-                preparedArticle.name
-            );
-
-            Debug.Log(
-                "[CHAT] End node article title: " +
-                preparedArticle.Title
-            );
-        }
-
-        if (articleViewer == null)
-        {
-            Debug.LogError(
-                "[CHAT] ArticleViewer is not assigned " +
-                "in ConversationViewer."
-            );
-
-            return;
-        }
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Loading end node article into " +
-                "ArticleViewer."
-            );
-        }
-
-        articleViewer.LoadArticle(
-            preparedArticle
-        );
-
-        if (articleViewer.currentArticle ==
-            preparedArticle)
-        {
-            Debug.Log(
-                "[CHAT] ArticleViewer currentArticle was " +
-                "changed successfully to: " +
-                preparedArticle.name
-            );
-        }
-        else
-        {
-            Debug.LogError(
-                "[CHAT] ArticleViewer currentArticle did not " +
-                "change to the expected article."
-            );
-        }
-    }
-
-    private IEnumerator PlayNPCNode(ConversationNode node)
-    {
-        if (!activeProgress.MessageShown)
-        {
-            isTypingNPC = true;
-            if (typingIndicator != null)
-            {
-                typingIndicator.SetActive(true);
-                ScrollToBottom();
-            }
+            SetTypingIndicator(true);
+            ScrollToBottom();
 
             if (bubbleDelay > 0f)
             {
                 yield return new WaitForSeconds(bubbleDelay);
             }
 
-            if (typingIndicator != null)
-            {
-                typingIndicator.SetActive(false);
-            }
-
-            string text = BuildNodeMessage(node);
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                ChatBubble bubble = ShowNewBubble(text, true, true);
-                if (bubble != null && bubble.messageText != null)
-                {
-                    while (bubble != null && bubble.messageText.text != text)
-                    {
-                        yield return null;
-                    }
-                }
-            }
-
-            activeProgress.MessageShown = true;
-            isTypingNPC = false;
-            yield return RefreshLayoutAndScroll();
+            SetTypingIndicator(false);
         }
 
+        string text = BuildNodeMessage(node);
+
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            ChatBubble bubble = ShowNewBubble(
+                text,
+                node.IsNPC,
+                true,
+                node
+            );
+
+            if (bubble != null && bubble.messageText != null)
+            {
+                while (bubble != null &&
+                       bubble.messageText != null &&
+                       bubble.messageText.text != text)
+                {
+                    yield return null;
+                }
+            }
+        }
+
+        activeProgress.MessageShown = true;
+        isTypingNPC = false;
+
+        yield return RefreshLayoutAndScroll();
+    }
+
+    private IEnumerator PlayNPCNode(ConversationNode node)
+    {
+        yield return DisplayNodeBubble(node);
+
+        // Continue controls dialogue progression.
+        // The link bubble itself can already open its article.
         if (node.AutoAdvance)
         {
-            yield return new WaitForSeconds(node.AutoAdvanceDelay);
+            yield return new WaitForSeconds(
+                Mathf.Max(0f, node.AutoAdvanceDelay)
+            );
+
             currentNodeIndex++;
         }
         else if (requireContinueButton)
@@ -555,31 +457,22 @@ public class ConversationViewer : MonoBehaviour
     {
         ClearOptions();
 
-        if (!activeProgress.MessageShown)
-        {
-            if (!string.IsNullOrEmpty(node.Message))
-            {
-                ChatBubble bubble = ShowNewBubble(node.Message, false, true);
-                if (bubble != null && bubble.messageText != null)
-                {
-                    while (bubble != null && bubble.messageText.text != node.Message)
-                    {
-                        yield return null;
-                    }
-                }
-            }
-            activeProgress.MessageShown = true;
-        }
+        yield return DisplayNodeBubble(node);
 
-        if (node.PlayerOptions != null && node.PlayerOptions.Count > 0)
+        if (node.PlayerOptions != null &&
+            node.PlayerOptions.Count > 0)
         {
-            yield return new WaitForSeconds(optionDelay);
+            yield return new WaitForSeconds(
+                Mathf.Max(0f, optionDelay)
+            );
+
             isWaitingForChoice = true;
             CreateOptionButtons(node.PlayerOptions);
             yield break;
         }
 
-        if (requireContinueButton && !string.IsNullOrEmpty(node.Message))
+        if (requireContinueButton &&
+            !string.IsNullOrEmpty(node.Message))
         {
             yield return WaitForContinueButton(continueLabel);
         }
@@ -589,85 +482,221 @@ public class ConversationViewer : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForContinueButton(
-        string label)
+    private ChatBubble ShowNewBubble(
+        string text,
+        bool isNPC,
+        bool type,
+        ConversationNode node = null)
     {
-        if (optionsContainer == null)
-        {
-            Debug.LogError(
-                "[CHAT] Options Container is not assigned."
-            );
+        ChatBubble bubble = SpawnBubble(isNPC);
 
-            yield break;
+        if (bubble == null)
+        {
+            return null;
         }
 
-        if (optionButtonPrefab == null)
+        BubbleRecord record = new BubbleRecord
         {
-            Debug.LogError(
-                "[CHAT] Option Button Prefab is not assigned."
-            );
+            Text = text,
+            IsNPC = isNPC,
+            IsLink = node != null &&
+                node.DisplayType == BlockType.Link,
+            LinkedArticle = node != null
+                ? node.LinkedArticle
+                : null,
+            LinkedURL = node != null
+                ? GetNodeLinkURL(node)
+                : string.Empty
+        };
 
-            yield break;
+        activeProgress.Bubbles.Add(record);
+        activeProgress.MessageShown = true;
+
+        ConfigureBubble(bubble, record);
+
+        if (type)
+        {
+            bubble.StartTyping(text, isNPC, charInterval);
+        }
+        else
+        {
+            bubble.SetMessage(text, isNPC);
         }
 
+        return bubble;
+    }
+
+    private void ConfigureBubble(
+        ChatBubble bubble,
+        BubbleRecord record)
+    {
+        if (record.IsLink)
+        {
+            bubble.ConfigureAsLink(
+                record.LinkedArticle,
+                record.LinkedURL,
+                OpenLinkedArticle
+            );
+
+            if (record.LinkedArticle == null &&
+                !IsValidWebURL(record.LinkedURL))
+            {
+                Debug.LogWarning(
+                    "[CHAT] Link node has no LinkedArticle or valid URL."
+                );
+            }
+        }
+        else
+        {
+            bubble.ConfigureAsNormalBubble();
+        }
+    }
+
+    private void RestoreBubbles()
+    {
+        if (activeProgress == null)
+        {
+            return;
+        }
+
+        foreach (BubbleRecord record in activeProgress.Bubbles)
+        {
+            ChatBubble bubble = SpawnBubble(record.IsNPC);
+
+            if (bubble == null)
+            {
+                continue;
+            }
+
+            ConfigureBubble(bubble, record);
+            bubble.SetMessage(record.Text, record.IsNPC);
+        }
+
+        if (showDebugMessages)
+        {
+            Debug.Log(
+                "[CHAT] Restored " +
+                activeProgress.Bubbles.Count +
+                " bubbles, including their article links."
+            );
+        }
+    }
+
+    private void OpenLinkedArticle(ArticleData article, string url)
+    {
+        if (article != null)
+        {
+            if (articleViewer == null)
+            {
+                Debug.LogError("[CHAT] Assign ArticleViewer.");
+                return;
+            }
+
+            if (UIManager.Instance == null)
+            {
+                Debug.LogError("[CHAT] UIManager.Instance is missing.");
+                return;
+            }
+
+            if (showDebugMessages)
+            {
+                Debug.Log(
+                    "[CHAT] Opening article from bubble: " +
+                    article.name
+                );
+            }
+
+            // Finish loading before changing screens.
+            articleViewer.LoadArticle(article);
+
+            // Preserve dialogue progress even if this viewer stays active.
+            SuspendConversation();
+
+            UIManager.Instance.OpenArticle();
+            return;
+        }
+
+        if (IsValidWebURL(url))
+        {
+            Application.OpenURL(url);
+            return;
+        }
+
+        Debug.LogWarning(
+            "[CHAT] This bubble has no article or valid URL assigned."
+        );
+    }
+
+    private void PrepareArticleFromEndNode(ConversationNode node)
+    {
+        preparedArticle = node != null ? node.LinkedArticle : null;
+        preparedURL = node != null
+            ? GetNodeLinkURL(node)
+            : string.Empty;
+
+        // Load only when clicked, avoiding article resets on chat restore.
+    }
+
+    private void OpenPreparedArticle()
+    {
+        OpenLinkedArticle(preparedArticle, preparedURL);
+    }
+
+    private IEnumerator EndRoutine(ConversationNode endNode)
+    {
         ClearOptions();
 
-        bool clicked = false;
+        bool canOpenArticle =
+            preparedArticle != null ||
+            IsValidWebURL(preparedURL);
 
-        GameObject buttonObject =
-            Instantiate(
-                optionButtonPrefab,
-                optionsContainer
-            );
+        UnityEngine.UI.Button button = CreateButton(
+            canOpenArticle ? openArticleLabel : "End Conversation"
+        );
 
-        UnityEngine.UI.Button button =
-            buttonObject.GetComponent<
-                UnityEngine.UI.Button
-            >();
-
-        TMP_Text buttonText =
-            buttonObject.GetComponentInChildren<
-                TMP_Text
-            >();
-
-        if (buttonText != null)
+        if (button != null)
         {
-            buttonText.text = label;
+            if (canOpenArticle)
+            {
+                button.onClick.AddListener(OpenPreparedArticle);
+            }
+            else
+            {
+                button.onClick.AddListener(CloseConversation);
+            }
         }
+
+        yield return RefreshLayoutAndScroll();
+    }
+
+    private IEnumerator WaitForContinueButton(string label)
+    {
+        ClearOptions();
+
+        UnityEngine.UI.Button button = CreateButton(label);
 
         if (button == null)
         {
-            Debug.LogError(
-                "[CHAT] Continue button prefab has no " +
-                "Button component."
-            );
-
-            Destroy(buttonObject);
-            yield break;
+            // Stop instead of repeatedly processing the same node.
+            while (true)
+            {
+                yield return null;
+            }
         }
 
-        button.onClick.AddListener(
-            delegate
+        bool clicked = false;
+
+        button.onClick.AddListener(() =>
+        {
+            if (clicked)
             {
-                if (showDebugMessages)
-                {
-                    Debug.Log(
-                        "[CHAT] Continue button pressed."
-                    );
-                }
-
-                if (clicked)
-                {
-                    return;
-                }
-
-                // Save the next node immediately, even if the panel
-                // is closed before the coroutine resumes.
-                currentNodeIndex++;
-                clicked = true;
-                button.interactable = false;
+                return;
             }
-        );
+
+            currentNodeIndex++;
+            clicked = true;
+            button.interactable = false;
+        });
 
         yield return RefreshLayoutAndScroll();
 
@@ -679,318 +708,73 @@ public class ConversationViewer : MonoBehaviour
         ClearOptions();
     }
 
-    private IEnumerator EndRoutine(
-        ConversationNode endNode)
+    private UnityEngine.UI.Button CreateButton(string label)
     {
-        ClearOptions();
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Starting EndRoutine."
-            );
-        }
-
-        if (optionsContainer == null)
+        if (optionsContainer == null || optionButtonPrefab == null)
         {
             Debug.LogError(
-                "[CHAT] Options Container is not assigned."
+                "[CHAT] Assign Options Container and Option Button Prefab."
             );
 
-            yield break;
+            return null;
         }
 
-        if (optionButtonPrefab == null)
-        {
-            Debug.LogError(
-                "[CHAT] Option Button Prefab is not assigned."
-            );
-
-            yield break;
-        }
-
-        GameObject buttonObject =
-            Instantiate(
-                optionButtonPrefab,
-                optionsContainer
-            );
+        GameObject instance = Instantiate(
+            optionButtonPrefab,
+            optionsContainer
+        );
 
         UnityEngine.UI.Button button =
-            buttonObject.GetComponent<
-                UnityEngine.UI.Button
-            >();
+            instance.GetComponent<UnityEngine.UI.Button>();
 
-        TMP_Text buttonText =
-            buttonObject.GetComponentInChildren<
-                TMP_Text
-            >();
+        TMP_Text text =
+            instance.GetComponentInChildren<TMP_Text>(true);
+
+        if (text != null)
+        {
+            text.text = label;
+        }
 
         if (button == null)
         {
-            Debug.LogError(
-                "[CHAT] Final button prefab has no " +
-                "Button component."
-            );
-
-            Destroy(buttonObject);
-            yield break;
+            Debug.LogError("[CHAT] Option prefab needs a Button.");
+            Destroy(instance);
+            return null;
         }
 
-        bool hasPreparedArticle =
-            preparedArticle != null;
-
-        bool hasPreparedURL =
-            IsValidWebURL(preparedURL);
-
-        if (showDebugMessages)
-        {
-            string preparedArticleName = "None";
-
-            if (preparedArticle != null)
-            {
-                preparedArticleName =
-                    preparedArticle.name;
-            }
-
-            Debug.Log(
-                "[CHAT] Final button validation. " +
-                "PreparedArticle: " +
-                preparedArticleName +
-                " | PreparedURL: " +
-                preparedURL
-            );
-        }
-
-        if (hasPreparedArticle)
-        {
-            if (buttonText != null)
-            {
-                buttonText.text =
-                    openArticleLabel;
-            }
-
-            button.onClick.AddListener(
-                OpenPreparedArticle
-            );
-
-            Debug.Log(
-                "[CHAT] Created Open Article button for: " +
-                preparedArticle.name
-            );
-        }
-        else if (hasPreparedURL)
-        {
-            if (buttonText != null)
-            {
-                buttonText.text =
-                    openArticleLabel;
-            }
-
-            button.onClick.AddListener(
-                OpenPreparedArticle
-            );
-
-            Debug.Log(
-                "[CHAT] Created external URL button for: " +
-                preparedURL
-            );
-        }
-        else
-        {
-            if (buttonText != null)
-            {
-                buttonText.text =
-                    "End Conversation";
-            }
-
-            button.onClick.AddListener(
-                CloseConversation
-            );
-
-            Debug.LogWarning(
-                "[CHAT] End node has no LinkedArticle. " +
-                "Created End Conversation button instead."
-            );
-        }
-
-        yield return RefreshLayoutAndScroll();
+        currentOptionButtons.Add(button);
+        return button;
     }
 
-    private void OpenPreparedArticle()
+    private void CreateOptionButtons(List<PlayerOption> options)
     {
-        if (showDebugMessages)
+        ClearOptions();
+
+        foreach (PlayerOption option in options)
         {
-            Debug.Log(
-                "[CHAT] Open Article button pressed."
-            );
-        }
-
-        if (preparedArticle != null)
-        {
-            if (articleViewer == null)
-            {
-                Debug.LogError(
-                    "[CHAT] Cannot open article because " +
-                    "ArticleViewer is not assigned."
-                );
-
-                return;
-            }
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[CHAT] Loading article from final button: " +
-                    preparedArticle.name
-                );
-            }
-
-            articleViewer.LoadArticle(
-                preparedArticle
-            );
-
-            if (articleViewer.currentArticle !=
-                preparedArticle)
-            {
-                Debug.LogError(
-                    "[CHAT] ArticleViewer did not load " +
-                    "the expected article."
-                );
-
-                return;
-            }
-
-            if (UIManager.Instance == null)
-            {
-                Debug.LogError(
-                    "[CHAT] UIManager.Instance was not found."
-                );
-
-                return;
-            }
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[CHAT] Activating Article screen."
-                );
-            }
-
-            UIManager.Instance.OpenArticle();
-
-            if (UIManager.Instance.IsArticleOpen())
-            {
-                Debug.Log(
-                    "[CHAT] Article screen opened successfully."
-                );
-            }
-            else
-            {
-                Debug.LogError(
-                    "[CHAT] Article screen did not open."
-                );
-            }
-
-            return;
-        }
-
-        if (IsValidWebURL(preparedURL))
-        {
-            Debug.Log(
-                "[CHAT] Opening external URL: " +
-                preparedURL
-            );
-
-            Application.OpenURL(preparedURL);
-            return;
-        }
-
-        Debug.LogError(
-            "[CHAT] OpenPreparedArticle was called, but " +
-            "there is no prepared article or valid URL."
-        );
-    }
-
-    private void CreateOptionButtons(
-        List<PlayerOption> options)
-    {
-        if (optionsContainer == null ||
-            optionButtonPrefab == null)
-        {
-            Debug.LogWarning(
-                "[CHAT] Options Container or " +
-                "Option Button Prefab is missing."
-            );
-
-            return;
-        }
-
-        currentOptionButtons.Clear();
-
-        for (
-            int i = 0;
-            i < options.Count;
-            i++
-        )
-        {
-            PlayerOption option =
-                options[i];
-
-            GameObject buttonObject =
-                Instantiate(
-                    optionButtonPrefab,
-                    optionsContainer
-                );
-
             UnityEngine.UI.Button button =
-                buttonObject.GetComponent<
-                    UnityEngine.UI.Button
-                >();
+                CreateButton(option.OptionText);
 
-            TMP_Text buttonText =
-                buttonObject.GetComponentInChildren<
-                    TMP_Text
-                >();
-
-            if (buttonText != null)
+            if (button == null)
             {
-                buttonText.text =
-                    option.OptionText;
+                continue;
             }
 
-            if (button != null)
+            PlayerOption capturedOption = option;
+
+            button.onClick.AddListener(() =>
             {
-                PlayerOption capturedOption =
-                    option;
-
-                button.onClick.AddListener(
-                    delegate
-                    {
-                        OnOptionSelected(
-                            capturedOption
-                        );
-                    }
-                );
-
-                currentOptionButtons.Add(
-                    button
-                );
-            }
+                OnOptionSelected(capturedOption);
+            });
         }
 
-        if (lockOptionsUntilTypingDone &&
-            isTypingNPC)
+        if (lockOptionsUntilTypingDone && isTypingNPC)
         {
             SetOptionsInteractable(false);
-
-            StartCoroutine(
-                EnableOptionsWhenTypingDone()
-            );
+            StartCoroutine(EnableOptionsWhenTypingDone());
         }
 
-        StartCoroutine(
-            RefreshLayoutAndScroll()
-        );
+        StartCoroutine(RefreshLayoutAndScroll());
     }
 
     private IEnumerator EnableOptionsWhenTypingDone()
@@ -1003,22 +787,13 @@ public class ConversationViewer : MonoBehaviour
         SetOptionsInteractable(true);
     }
 
-    private void SetOptionsInteractable(
-        bool value)
+    private void SetOptionsInteractable(bool value)
     {
-        for (
-            int i = 0;
-            i < currentOptionButtons.Count;
-            i++
-        )
+        foreach (UnityEngine.UI.Button button in currentOptionButtons)
         {
-            UnityEngine.UI.Button currentButton =
-                currentOptionButtons[i];
-
-            if (currentButton != null)
+            if (button != null)
             {
-                currentButton.interactable =
-                    value;
+                button.interactable = value;
             }
         }
     }
@@ -1038,22 +813,28 @@ public class ConversationViewer : MonoBehaviour
         if (option.NextNodeIndex < 0 ||
             option.NextNodeIndex >= currentConversation.Nodes.Count)
         {
-            Debug.LogWarning("[CHAT] Option has invalid NextNodeIndex: " +
-                option.NextNodeIndex);
+            Debug.LogWarning(
+                "[CHAT] Invalid NextNodeIndex: " +
+                option.NextNodeIndex
+            );
+
             if (closeIfOptionTargetInvalid)
             {
                 CloseConversation();
             }
+
             return;
         }
 
         isWaitingForChoice = false;
+
         if (disableOptionOnClick)
         {
             SetOptionsInteractable(false);
         }
 
-        if (echoOptionAsPlayerBubble && !string.IsNullOrEmpty(option.OptionText))
+        if (echoOptionAsPlayerBubble &&
+            !string.IsNullOrEmpty(option.OptionText))
         {
             ShowNewBubble(option.OptionText, false, false);
             ScrollToBottom();
@@ -1061,239 +842,105 @@ public class ConversationViewer : MonoBehaviour
 
         ClearOptions();
         AdvanceToNextNode(option.NextNodeIndex);
+
         OnOptionChosen?.Invoke(option);
     }
 
-    private void AdvanceToNextNode(
-        int nextIndex)
+    private void AdvanceToNextNode(int nextIndex)
     {
         if (currentConversation == null)
         {
             return;
         }
 
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Advancing from node " +
-                currentNodeIndex +
-                " to node " +
-                nextIndex
-            );
-        }
-
         currentNodeIndex = nextIndex;
-
-        if (flowRoutine != null)
-        {
-            StopCoroutine(flowRoutine);
-        }
-
-        if (isActiveAndEnabled &&
-            (conversationPanel == null || conversationPanel.activeInHierarchy))
-        {
-            flowRoutine = StartCoroutine(FlowRoutine());
-        }
-        else
-        {
-            flowRoutine = null;
-            suspended = true;
-        }
+        StartFlow();
     }
 
-    private int FindNextPlayerNodeIndex(
-        int startIndex)
+    private ChatBubble SpawnBubble(bool isNPC)
     {
-        if (currentConversation == null)
-        {
-            return -1;
-        }
+        ChatBubble prefab =
+            isNPC ? npcBubblePrefab : playerBubblePrefab;
 
-        for (
-            int i = startIndex;
-            i < currentConversation.Nodes.Count;
-            i++
-        )
-        {
-            ConversationNode candidate =
-                currentConversation.Nodes[i];
-
-            if (candidate == null)
-            {
-                continue;
-            }
-
-            if (candidate.IsEndNode || candidate.IsNPC)
-            {
-                return -1;
-            }
-
-            return i;
-        }
-
-        return -1;
-    }
-
-    private ChatBubble SpawnBubble(
-        bool isNPC)
-    {
-        ChatBubble bubblePrefab;
-
-        if (isNPC)
-        {
-            bubblePrefab = npcBubblePrefab;
-        }
-        else
-        {
-            bubblePrefab = playerBubblePrefab;
-        }
-
-        if (bubblePrefab == null ||
-            messageContainer == null)
+        if (prefab == null || messageContainer == null)
         {
             Debug.LogWarning(
-                "[CHAT] Bubble Prefab or " +
-                "Message Container is missing."
+                "[CHAT] Assign bubble prefabs and Message Container."
             );
 
             return null;
         }
 
-        if (conversationPanel != null &&
-            !conversationPanel.activeSelf)
-        {
-            conversationPanel.SetActive(true);
-        }
-
-        ChatBubble bubble =
-            Instantiate(
-                bubblePrefab,
-                messageContainer
-            );
-
-        if (!bubble.gameObject.activeSelf)
-        {
-            bubble.gameObject.SetActive(true);
-        }
+        ChatBubble bubble = Instantiate(prefab, messageContainer);
+        bubble.gameObject.SetActive(true);
 
         spawnedBubbles.Add(bubble);
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Spawned bubble. IsNPC: " +
-                isNPC
-            );
-        }
-
         return bubble;
     }
 
-    private string BuildNodeMessage(
-        ConversationNode node)
+    private string BuildNodeMessage(ConversationNode node)
     {
-        if (node == null)
-        {
-            return string.Empty;
-        }
-
-        string displayText = node.Message;
-
-        if (displayText == null)
-        {
-            displayText = string.Empty;
-        }
+        string text = node.Message ?? string.Empty;
 
         if (node.DisplayType != BlockType.Link)
         {
-            return displayText;
+            return text;
         }
 
-        string linkURL =
-            GetNodeLinkURL(node);
+        string url = GetNodeLinkURL(node);
 
-        if (string.IsNullOrWhiteSpace(
-            linkURL
-        ))
+        if (!string.IsNullOrWhiteSpace(url))
         {
-            return displayText;
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return url;
+            }
+
+            if (!text.Contains(url))
+            {
+                text += "\n" + url;
+            }
         }
 
-        if (string.IsNullOrWhiteSpace(
-            displayText
-        ))
+        if (string.IsNullOrWhiteSpace(text))
         {
-            return linkURL;
+            return node.LinkedArticle != null
+                ? openArticleLabel + ": " + node.LinkedArticle.Title
+                : openArticleLabel;
         }
 
-        if (!displayText.Contains(linkURL))
-        {
-            displayText =
-                displayText +
-                "\n" +
-                linkURL;
-        }
-
-        return displayText;
+        return text;
     }
 
-    private string GetNodeLinkURL(
-        ConversationNode node)
+    private string GetNodeLinkURL(ConversationNode node)
     {
         if (node == null)
         {
             return string.Empty;
         }
 
-        if (!string.IsNullOrWhiteSpace(
-            node.LinkURL
-        ))
+        if (!string.IsNullOrWhiteSpace(node.LinkURL))
         {
             return node.LinkURL.Trim();
         }
 
         if (node.LinkedArticle != null &&
-            !string.IsNullOrWhiteSpace(
-                node.LinkedArticle.URL_site
-            ))
+            !string.IsNullOrWhiteSpace(node.LinkedArticle.URL_site))
         {
-            return node.LinkedArticle
-                .URL_site
-                .Trim();
+            return node.LinkedArticle.URL_site.Trim();
         }
 
         return string.Empty;
     }
 
-    private bool IsValidWebURL(
-        string url)
+    private bool IsValidWebURL(string url)
     {
-        if (string.IsNullOrWhiteSpace(url))
-        {
-            return false;
-        }
+        Uri parsed;
 
-        bool validURL =
-            Uri.TryCreate(
-                url,
-                UriKind.Absolute,
-                out Uri result
-            );
-
-        if (!validURL)
-        {
-            return false;
-        }
-
-        bool isHTTP =
-            result.Scheme ==
-            Uri.UriSchemeHttp;
-
-        bool isHTTPS =
-            result.Scheme ==
-            Uri.UriSchemeHttps;
-
-        return isHTTP || isHTTPS;
+        return !string.IsNullOrWhiteSpace(url) &&
+            Uri.TryCreate(url, UriKind.Absolute, out parsed) &&
+            (parsed.Scheme == Uri.UriSchemeHttp ||
+             parsed.Scheme == Uri.UriSchemeHttps);
     }
 
     private IEnumerator RefreshLayoutAndScroll()
@@ -1305,32 +952,38 @@ public class ConversationViewer : MonoBehaviour
         if (messageContainer != null)
         {
             UnityEngine.UI.LayoutRebuilder
-                .ForceRebuildLayoutImmediate(
-                    messageContainer
-                );
+                .ForceRebuildLayoutImmediate(messageContainer);
         }
 
         Canvas.ForceUpdateCanvases();
+        ScrollToBottom();
+    }
 
+    private void ScrollToBottom()
+    {
         if (scrollRect != null)
         {
-            scrollRect.verticalNormalizedPosition =
-                0f;
+            scrollRect.StopMovement();
+            scrollRect.verticalNormalizedPosition = 0f;
+        }
+    }
+
+    private void SetTypingIndicator(bool visible)
+    {
+        if (typingIndicator != null)
+        {
+            typingIndicator.SetActive(visible);
         }
     }
 
     private void ClearChat()
     {
-        for (
-            int i = 0;
-            i < spawnedBubbles.Count;
-            i++
-        )
+        foreach (ChatBubble bubble in spawnedBubbles)
         {
-            if (spawnedBubbles[i] != null)
+            if (bubble != null)
             {
-                spawnedBubbles[i].gameObject.SetActive(false);
-                Destroy(spawnedBubbles[i].gameObject);
+                bubble.gameObject.SetActive(false);
+                Destroy(bubble.gameObject);
             }
         }
 
@@ -1347,127 +1000,27 @@ public class ConversationViewer : MonoBehaviour
             return;
         }
 
-        for (
-            int i = optionsContainer.childCount - 1;
-            i >= 0;
-            i--
-        )
+        for (int i = optionsContainer.childCount - 1; i >= 0; i--)
         {
-            GameObject oldOption = optionsContainer.GetChild(i).gameObject;
-            oldOption.SetActive(false);
-            Destroy(oldOption);
+            GameObject instance = optionsContainer.GetChild(i).gameObject;
+
+            instance.SetActive(false);
+            Destroy(instance);
         }
     }
 
     private void StopAllTyping()
     {
-        for (
-            int i = 0;
-            i < spawnedBubbles.Count;
-            i++
-        )
+        foreach (ChatBubble bubble in spawnedBubbles)
         {
-            if (spawnedBubbles[i] != null)
-            {
-                spawnedBubbles[i].StopTyping();
-            }
-        }
-    }
-
-    private void ScrollToBottom()
-    {
-        if (scrollRect == null)
-        {
-            return;
-        }
-
-        Canvas.ForceUpdateCanvases();
-
-        scrollRect.verticalNormalizedPosition =
-            0f;
-    }
-
-    private void OnDestroy()
-    {
-        if (closeButton != null)
-        {
-            closeButton.onClick.RemoveListener(
-                CloseConversation
-            );
-        }
-    }
-
-    private ChatBubble ShowNewBubble(string text, bool isNPC, bool type)
-    {
-        ChatBubble bubble = SpawnBubble(isNPC);
-        if (bubble == null)
-        {
-            return null;
-        }
-
-        activeProgress.Bubbles.Add(new BubbleRecord
-        {
-            Text = text,
-            IsNPC = isNPC
-        });
-        activeProgress.MessageShown = true;
-        bubble.ConfigureAsNormalBubble();
-        if (type)
-        {
-            bubble.StartTyping(text, isNPC, charInterval);
-        }
-        else
-        {
-            bubble.SetMessage(text, isNPC);
-        }
-        return bubble;
-    }
-
-    private void RestoreBubbles()
-    {
-        if (activeProgress == null)
-        {
-            return;
-        }
-
-        foreach (BubbleRecord record in activeProgress.Bubbles)
-        {
-            ChatBubble bubble = SpawnBubble(record.IsNPC);
             if (bubble != null)
             {
-                bubble.ConfigureAsNormalBubble();
-                bubble.SetMessage(record.Text, record.IsNPC);
+                bubble.StopTyping();
             }
         }
-
-        if (showDebugMessages)
-        {
-            Debug.Log("[CHAT] Restored " + activeProgress.Bubbles.Count +
-                " bubbles. Resuming node: " + currentNodeIndex);
-        }
     }
 
-    private void Update()
-    {
-        // Also handle a panel that is a child of the viewer, where hiding
-        // the panel does not disable this component.
-        if (openingConversation || currentConversation == null ||
-            activeProgress == null || conversationPanel == null)
-        {
-            return;
-        }
-
-        if (!conversationPanel.activeInHierarchy && !suspended)
-        {
-            OnDisable();
-        }
-        else if (conversationPanel.activeInHierarchy && suspended)
-        {
-            OnEnable();
-        }
-    }
-
-    private void OnDisable()
+    private void SuspendConversation()
     {
         if (currentConversation == null || activeProgress == null)
         {
@@ -1475,28 +1028,70 @@ public class ConversationViewer : MonoBehaviour
         }
 
         suspended = true;
+
         StopAllCoroutines();
         flowRoutine = null;
         StopAllTyping();
+
         isTypingNPC = false;
         isWaitingForChoice = false;
-        if (typingIndicator != null)
-        {
-            typingIndicator.SetActive(false);
-        }
+
+        SetTypingIndicator(false);
     }
 
-    private void OnEnable()
+    private void ResumeConversation()
     {
-        if (openingConversation || !suspended ||
-            currentConversation == null || activeProgress == null)
+        if (openingConversation ||
+            !suspended ||
+            currentConversation == null ||
+            activeProgress == null ||
+            !CanRunFlow())
         {
             return;
         }
 
         suspended = false;
+
         ClearChat();
         RestoreBubbles();
-        flowRoutine = StartCoroutine(FlowRoutine());
+        StartFlow();
+    }
+
+    private void Update()
+    {
+        if (openingConversation ||
+            currentConversation == null ||
+            activeProgress == null ||
+            conversationPanel == null)
+        {
+            return;
+        }
+
+        if (!conversationPanel.activeInHierarchy && !suspended)
+        {
+            SuspendConversation();
+        }
+        else if (conversationPanel.activeInHierarchy && suspended)
+        {
+            ResumeConversation();
+        }
+    }
+
+    private void OnDisable()
+    {
+        SuspendConversation();
+    }
+
+    private void OnEnable()
+    {
+        ResumeConversation();
+    }
+
+    private void OnDestroy()
+    {
+        if (closeButton != null)
+        {
+            closeButton.onClick.RemoveListener(CloseConversation);
+        }
     }
 }
