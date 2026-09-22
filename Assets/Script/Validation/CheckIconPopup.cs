@@ -10,7 +10,7 @@ public class CheckIconPopup : MonoBehaviour
     {
         public Button button;
 
-        [Tooltip("Assign the original sidebar draggable for this icon.")]
+        [Tooltip("Original sidebar draggable for this option.")]
         public DraggableObject iconSource;
 
         [System.NonSerialized]
@@ -20,24 +20,27 @@ public class CheckIconPopup : MonoBehaviour
     [Header("Popup")]
     public RectTransform popupPanel;
 
-    [Tooltip("Full-screen transparent button behind the popup.")]
+    [Tooltip("Optional transparent button behind the popup.")]
     public Button outsideClickButton;
 
-    [Header("Icon Buttons")]
+    [Header("Options")]
     public List<IconOption> options = new List<IconOption>();
 
     [Header("Position")]
-    public Vector2 offset = new Vector2(0f, -8f);
+    [Tooltip("Assign the article ScrollRect's viewport.")]
+    public RectTransform visibleArea;
+
+    [Min(0f)]
+    public float gap = 8f;
 
     [Min(0f)]
     public float edgePadding = 8f;
 
-    [Header("Debug")]
-    public bool showDebugMessages = true;
-
     private Block targetBlock;
     private RectTransform currentAnchor;
     private bool initialized;
+
+    private readonly Vector3[] corners = new Vector3[4];
 
     public bool IsOpen =>
         popupPanel != null &&
@@ -52,74 +55,56 @@ public class CheckIconPopup : MonoBehaviour
     private void InitializeButtons()
     {
         if (initialized)
-        {
             return;
-        }
 
         initialized = true;
 
         if (outsideClickButton != null)
-        {
             outsideClickButton.onClick.AddListener(Hide);
-        }
 
         foreach (IconOption option in options)
         {
             if (option == null || option.button == null)
-            {
                 continue;
-            }
 
             IconOption capturedOption = option;
 
-            option.clickAction = () =>
-            {
-                SelectOption(capturedOption);
-            };
+            option.clickAction = () => SelectOption(capturedOption);
 
-            option.button.onClick.AddListener(
-                option.clickAction
-            );
+            option.button.onClick.AddListener(option.clickAction);
         }
     }
 
-    public void Toggle(
-        Block block,
-        RectTransform checklistContainer)
+    public void Toggle(Block block, RectTransform anchor)
     {
         if (IsOpen &&
             targetBlock == block &&
-            currentAnchor == checklistContainer)
+            currentAnchor == anchor)
         {
             Hide();
             return;
         }
 
-        Show(block, checklistContainer);
+        Show(block, anchor);
     }
 
-    public void Show(
-        Block block,
-        RectTransform checklistContainer)
+    public void Show(Block block, RectTransform anchor)
     {
         InitializeButtons();
 
-        if (block == null ||
-            checklistContainer == null ||
-            popupPanel == null)
+        if (block == null || anchor == null || popupPanel == null)
         {
             Debug.LogWarning(
-                "[CHECK POPUP] Assign the Block, Checklist " +
-                "Container, and Popup Panel."
+                "[CHECK POPUP] Assign Block, anchor and Popup Panel.",
+                this
             );
 
             return;
         }
 
         targetBlock = block;
-        currentAnchor = checklistContainer;
+        currentAnchor = anchor;
 
-        // The blocker goes above the article, below the popup.
         if (outsideClickButton != null)
         {
             outsideClickButton.gameObject.SetActive(true);
@@ -133,21 +118,12 @@ public class CheckIconPopup : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(popupPanel);
 
         PositionPopup();
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHECK POPUP] Opened for " + targetBlock.name
-            );
-        }
     }
 
     private void LateUpdate()
     {
         if (!IsOpen)
-        {
             return;
-        }
 
         if (targetBlock == null ||
             currentAnchor == null ||
@@ -161,27 +137,67 @@ public class CheckIconPopup : MonoBehaviour
         PositionPopup();
     }
 
+    private Rect GetBounds(
+        RectTransform rect,
+        RectTransform relativeTo)
+    {
+        rect.GetWorldCorners(corners);
+
+        Vector2 minimum = new Vector2(
+            float.PositiveInfinity,
+            float.PositiveInfinity
+        );
+
+        Vector2 maximum = new Vector2(
+            float.NegativeInfinity,
+            float.NegativeInfinity
+        );
+
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 local = relativeTo.InverseTransformPoint(corners[i]);
+            Vector2 point = new Vector2(local.x, local.y);
+
+            minimum = Vector2.Min(minimum, point);
+            maximum = Vector2.Max(maximum, point);
+        }
+
+        return Rect.MinMaxRect(
+            minimum.x,
+            minimum.y,
+            maximum.x,
+            maximum.y
+        );
+    }
+
     private void PositionPopup()
     {
-        if (popupPanel == null || currentAnchor == null)
-        {
+        RectTransform parent = popupPanel.parent as RectTransform;
+
+        if (parent == null || currentAnchor == null)
             return;
+
+        Rect bounds = parent.rect;
+
+        if (visibleArea != null)
+        {
+            Rect visible = GetBounds(visibleArea, parent);
+
+            bounds = Rect.MinMaxRect(
+                Mathf.Max(bounds.xMin, visible.xMin),
+                Mathf.Max(bounds.yMin, visible.yMin),
+                Mathf.Min(bounds.xMax, visible.xMax),
+                Mathf.Min(bounds.yMax, visible.yMax)
+            );
         }
 
-        RectTransform popupParent =
-            popupPanel.parent as RectTransform;
+        Rect anchorBounds = GetBounds(currentAnchor, parent);
 
-        if (popupParent == null)
+        if (!bounds.Overlaps(anchorBounds))
         {
+            Hide();
             return;
         }
-
-        Vector3[] corners = new Vector3[4];
-        currentAnchor.GetWorldCorners(corners);
-
-        // Corner zero is the checklist's bottom-left corner.
-        Vector3 localCorner =
-            popupParent.InverseTransformPoint(corners[0]);
 
         popupPanel.anchorMin = new Vector2(0.5f, 0.5f);
         popupPanel.anchorMax = new Vector2(0.5f, 0.5f);
@@ -189,94 +205,96 @@ public class CheckIconPopup : MonoBehaviour
         popupPanel.localScale = Vector3.one;
         popupPanel.localRotation = Quaternion.identity;
 
-        Vector2 position = new Vector2(
-            localCorner.x + offset.x,
-            localCorner.y + offset.y
-        );
-
-        Rect bounds = popupParent.rect;
-
         float width = popupPanel.rect.width;
         float height = popupPanel.rect.height;
 
-        float minX = bounds.xMin + edgePadding;
-        float maxX = bounds.xMax - edgePadding - width;
+        float left = bounds.xMin + edgePadding;
+        float right = bounds.xMax - edgePadding;
+        float bottom = bounds.yMin + edgePadding;
+        float top = bounds.yMax - edgePadding;
 
-        float minY = bounds.yMin + edgePadding + height;
-        float maxY = bounds.yMax - edgePadding;
+        float spaceBelow = anchorBounds.yMin - gap - bottom;
+        float spaceAbove = top - anchorBounds.yMax - gap;
 
-        position.x = maxX >= minX
-            ? Mathf.Clamp(position.x, minX, maxX)
-            : minX;
+        bool openBelow =
+            height <= spaceBelow ||
+            (height > spaceAbove && spaceBelow >= spaceAbove);
 
-        position.y = maxY >= minY
-            ? Mathf.Clamp(position.y, minY, maxY)
-            : maxY;
+        float x = anchorBounds.xMin;
 
-        popupPanel.localPosition = new Vector3(
-            position.x,
-            position.y,
-            0f
-        );
+        // With a top-left pivot, y is the popup's top edge.
+        float y = openBelow
+            ? anchorBounds.yMin - gap
+            : anchorBounds.yMax + gap + height;
+
+        x = right - width >= left
+            ? Mathf.Clamp(x, left, right - width)
+            : left;
+
+        y = bottom + height <= top
+            ? Mathf.Clamp(y, bottom + height, top)
+            : top;
+
+        popupPanel.localPosition = new Vector3(x, y, 0f);
     }
 
     private void SelectOption(IconOption option)
     {
         if (!IsOpen || targetBlock == null)
-        {
             return;
-        }
 
         if (option == null || option.iconSource == null)
         {
             Debug.LogWarning(
-                "[CHECK POPUP] Assign an Icon Source " +
-                "for this popup button."
+                "[CHECK POPUP] Assign this option's Icon Source.",
+                this
             );
 
             return;
         }
 
-        CheckType type = option.iconSource.CheckType;
-
-        // Choosing the current mark does not spend another check.
-        if (targetBlock.CurrentDraggable != null &&
-            targetBlock.CurrentDraggable.CheckType == type)
+        if (TryPlace(targetBlock, option.iconSource))
         {
             ButtonClickMarker.ClearSelection();
             Hide();
-            return;
+        }
+    }
+
+    public bool TryPlaceSelectedType(Block block, CheckType type)
+    {
+        foreach (IconOption option in options)
+        {
+            if (option == null || option.iconSource == null)
+                continue;
+
+            if (option.iconSource.CheckType == type)
+                return TryPlace(block, option.iconSource);
         }
 
-        bool placed = option.iconSource.TryPlaceCopyOnBlock(
-            targetBlock,
-            type
+        Debug.LogWarning(
+            "[CHECK POPUP] No Icon Source assigned for " + type,
+            this
         );
 
-        if (!placed)
-        {
-            Debug.LogWarning(
-                "[CHECK POPUP] Could not place " +
-                type +
-                " on " +
-                targetBlock.name
-            );
+        return false;
+    }
 
-            return;
+    private bool TryPlace(Block block, DraggableObject source)
+    {
+        if (block == null || source == null)
+            return false;
+
+        CheckType type = source.CheckType;
+
+        // Keep the existing icon without spending another check.
+        if (block.CurrentDraggable != null &&
+            block.CurrentDraggable.CheckType == type)
+        {
+            return true;
         }
 
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHECK POPUP] Marked " +
-                targetBlock.name +
-                " as " +
-                type
-            );
-        }
-
-        ButtonClickMarker.ClearSelection();
-        Hide();
+        // Shared placement handles the mark, replacement and container.
+        return source.TryPlaceCopyOnBlock(block, type);
     }
 
     public void Hide()
@@ -284,12 +302,11 @@ public class CheckIconPopup : MonoBehaviour
         targetBlock = null;
         currentAnchor = null;
 
-        if (popupPanel != null)
-        {
+        if (popupPanel != null && popupPanel.gameObject.activeSelf)
             popupPanel.gameObject.SetActive(false);
-        }
 
-        if (outsideClickButton != null)
+        if (outsideClickButton != null &&
+            outsideClickButton.gameObject.activeSelf)
         {
             outsideClickButton.gameObject.SetActive(false);
         }
@@ -297,15 +314,15 @@ public class CheckIconPopup : MonoBehaviour
 
     private void OnDisable()
     {
-        Hide();
+        // Do not call Hide here: it can cause recursive SetActive calls.
+        targetBlock = null;
+        currentAnchor = null;
     }
 
     private void OnDestroy()
     {
         if (outsideClickButton != null)
-        {
             outsideClickButton.onClick.RemoveListener(Hide);
-        }
 
         foreach (IconOption option in options)
         {
@@ -313,9 +330,7 @@ public class CheckIconPopup : MonoBehaviour
                 option.button != null &&
                 option.clickAction != null)
             {
-                option.button.onClick.RemoveListener(
-                    option.clickAction
-                );
+                option.button.onClick.RemoveListener(option.clickAction);
             }
         }
     }

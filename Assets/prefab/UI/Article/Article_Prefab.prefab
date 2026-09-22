@@ -40,7 +40,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -790}
+  m_AnchoredPosition: {x: 239, y: -790}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4617797578138388370
@@ -126,6 +126,7 @@ MonoBehaviour:
   blockText: {fileID: 8194726649687735365}
   textContainer: {fileID: 19518035749393530}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 1565380133480150986}
@@ -623,7 +624,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -1230}
+  m_AnchoredPosition: {x: 239, y: -1230}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &213305034981298242
@@ -709,6 +710,7 @@ MonoBehaviour:
   blockText: {fileID: 2618180013802034490}
   textContainer: {fileID: 696731243574604402}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 5952115164144135276}
@@ -881,7 +883,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -1450}
+  m_AnchoredPosition: {x: 239, y: -1450}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7858233374954201072
@@ -967,6 +969,7 @@ MonoBehaviour:
   blockText: {fileID: 5659982111801044182}
   textContainer: {fileID: 1520574265506063180}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 5797816829062891548}
@@ -1139,7 +1142,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -680}
+  m_AnchoredPosition: {x: 239, y: -680}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1472768839764506640
@@ -1225,6 +1228,7 @@ MonoBehaviour:
   blockText: {fileID: 4354872627606008805}
   textContainer: {fileID: 2181719345174071840}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 1371924801495453584}
@@ -1397,7 +1401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -1120}
+  m_AnchoredPosition: {x: 239, y: -1120}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8909813901400700088
@@ -1483,6 +1487,7 @@ MonoBehaviour:
   blockText: {fileID: 8719943736411642779}
   textContainer: {fileID: 2287294368828315211}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 6931417983654482538}
@@ -1730,7 +1735,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -1340}
+  m_AnchoredPosition: {x: 239, y: -1340}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8116626101988246309
@@ -1816,6 +1821,7 @@ MonoBehaviour:
   blockText: {fileID: 2605665650928557303}
   textContainer: {fileID: 2922622399466727160}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 6584766270488671843}
@@ -2235,7 +2241,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 744454075593344427}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.80425954
+  m_Size: 0.1326002
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2417,7 +2423,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 263.54907, y: 0}
+  m_AnchoredPosition: {x: -431, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4078091118933902491
@@ -2503,6 +2509,7 @@ MonoBehaviour:
   blockText: {fileID: 1012146048387182154}
   textContainer: {fileID: 4781539321249166215}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 6748057790085931253}
@@ -2758,7 +2765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -1010}
+  m_AnchoredPosition: {x: 239, y: -1010}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8541923419933976279
@@ -2844,6 +2851,7 @@ MonoBehaviour:
   blockText: {fileID: 8116930689869327251}
   textContainer: {fileID: 5003491894065689056}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 7479926461564601987}
@@ -3244,7 +3252,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -900}
+  m_AnchoredPosition: {x: 239, y: -900}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2191447761426620358
@@ -3330,6 +3338,7 @@ MonoBehaviour:
   blockText: {fileID: 4627720832817991771}
   textContainer: {fileID: 5721491068549951021}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 8596473747866999839}
@@ -3614,7 +3623,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -220}
+  m_AnchoredPosition: {x: 239, y: -220}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8794877173705849521
@@ -3700,6 +3709,7 @@ MonoBehaviour:
   blockText: {fileID: 1514547182326715531}
   textContainer: {fileID: 6849678596991618277}
   imageContainer: {fileID: 6663750510633117982}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 0}
@@ -4045,7 +4055,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 933.5491, y: -110}
+  m_AnchoredPosition: {x: 239, y: -110}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4698942594731507667
@@ -4131,6 +4141,7 @@ MonoBehaviour:
   blockText: {fileID: 224295804960930563}
   textContainer: {fileID: 7826523486542383811}
   imageContainer: {fileID: 0}
+  checklistContainer: {fileID: 0}
   markedVisual: {fileID: 0}
   selectedCheckTypeText: {fileID: 0}
   blockComponent: {fileID: 871803932055147536}

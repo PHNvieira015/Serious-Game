@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ChecklistPopupButton :
-    MonoBehaviour,
-    IPointerClickHandler
+public class CheckListContainer : MonoBehaviour, IPointerClickHandler
 {
     [Header("References")]
     public Block block;
+
+    [Tooltip("The container that receives the placed icon.")]
     public RectTransform checklistContainer;
+
     public CheckIconPopup iconPopup;
+
+    private int lastClickFrame = -1;
 
     private void Awake()
     {
@@ -17,31 +20,19 @@ public class ChecklistPopupButton :
 
     private void CacheReferences()
     {
-        if (checklistContainer == null)
-        {
-            checklistContainer = GetComponent<RectTransform>();
-        }
-
         if (block == null)
-        {
             block = GetComponentInParent<Block>();
-        }
 
-        if (block == null)
-        {
-            ArticleBlockView view =
-                GetComponentInParent<ArticleBlockView>();
+        ArticleBlockView view = GetComponentInParent<ArticleBlockView>();
 
-            if (view != null)
-            {
-                block = view.blockComponent;
-            }
-        }
+        if (block == null && view != null)
+            block = view.blockComponent;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
+        if (eventData.button != PointerEventData.InputButton.Left ||
+            eventData.dragging)
         {
             return;
         }
@@ -51,24 +42,39 @@ public class ChecklistPopupButton :
 
     public void OpenPopup()
     {
+        // Prevent a duplicate call from a Button OnClick in the same frame.
+        if (lastClickFrame == Time.frameCount)
+            return;
+
+        lastClickFrame = Time.frameCount;
+
         CacheReferences();
 
-        if (iconPopup == null)
+        if (block == null ||
+            checklistContainer == null ||
+            iconPopup == null)
         {
             Debug.LogWarning(
-                "[CHECKLIST] Assign Icon Popup on " +
-                gameObject.name
+                "[CHECKLIST] Assign Block, Checklist Container and Icon Popup.",
+                this
             );
 
             return;
         }
 
-        if (block == null || checklistContainer == null)
+        ButtonClickMarker selected = ButtonClickMarker.GetSelected();
+
+        if (selected != null)
         {
-            Debug.LogWarning(
-                "[CHECKLIST] Assign Block and Checklist Container on " +
-                gameObject.name
+            iconPopup.Hide();
+
+            bool placed = iconPopup.TryPlaceSelectedType(
+                block,
+                selected.GetCheckType()
             );
+
+            if (placed)
+                ButtonClickMarker.ClearSelection();
 
             return;
         }
