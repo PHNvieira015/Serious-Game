@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Block : MonoBehaviour,
+    IPointerEnterHandler,
+    IPointerExitHandler
 {
     private ArticleBlock articleBlock;
     private bool isSolved;
@@ -14,7 +16,7 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private CheckType blockType;
 
     [SerializeField]
-    private CheckType markType;
+    private CheckType markType = CheckType.None;
 
     public ArticleBlock ArticleBlock => articleBlock;
     public bool IsSolved => isSolved;
@@ -37,64 +39,86 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         isHovered = false;
         currentDraggable = null;
 
-        markType = default(CheckType);
+        markType = CheckType.None;
+        blockType = CheckType.None;
+
+        UpdateVisuals();
 
         if (articleBlock == null)
         {
-            Debug.LogError($"Block {name}: ArticleBlock is null.");
+            Debug.LogError(
+                "Block " + name + ": ArticleBlock is null.",
+                this
+            );
+
             return;
         }
 
         blockType = articleBlock.CheckType;
+    }
 
-        UpdateVisuals();
+    public void SetMarkType(CheckType type)
+    {
+        markType = type;
+    }
+
+    // Connect this to TMP_Dropdown's Dynamic int event.
+    public void SetMarkTypeFromDropdown(int value)
+    {
+        if (!System.Enum.IsDefined(typeof(CheckType), value))
+        {
+            Debug.LogWarning(
+                "[BLOCK] Invalid CheckType value: " + value,
+                this
+            );
+
+            return;
+        }
+
+        markType = (CheckType)value;
+
+        Debug.Log(
+            "[BLOCK] " + name + " Mark Type: " + markType,
+            this
+        );
     }
 
     public bool ValidateCheck(DraggableObject action)
     {
-        if (articleBlock == null)
+        if (articleBlock == null ||
+            action == null ||
+            isSolved)
         {
             return false;
         }
 
-        if (action == null)
-        {
-            return false;
-        }
-
-        if (isSolved)
-        {
-            return false;
-        }
-
-        CheckType correctCheck = blockType;
-        CheckType playerCheck = action.CheckType;
-
-        return playerCheck == correctCheck;
+        return action.CheckType == blockType;
     }
 
     public bool ValidateCurrentDraggable()
     {
-        if (currentDraggable == null)
+        return ValidateMark();
+    }
+
+    public bool ValidateMark()
+    {
+        if (articleBlock == null ||
+            isSolved ||
+            markType == CheckType.None)
         {
             return false;
         }
 
-        return ValidateCheck(currentDraggable);
+        return markType == blockType;
     }
 
     public void SetDraggable(DraggableObject draggable)
     {
         currentDraggable = draggable;
 
-        if (draggable != null)
-        {
-            markType = draggable.CheckType;
-        }
-        else
-        {
-            markType = default(CheckType);
-        }
+        markType = draggable != null
+            ? draggable.CheckType
+            : CheckType.None;
     }
 
     public void RemoveDraggable(DraggableObject draggable)
@@ -102,7 +126,7 @@ public class Block : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (currentDraggable == draggable)
         {
             currentDraggable = null;
-            markType = default(CheckType);
+            markType = CheckType.None;
         }
     }
 
