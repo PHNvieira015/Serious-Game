@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775b654f7a6429140af8de946fb24861, type: 3}
   m_Name: 9 NPC Matilda_Xavier
   m_EditorClassIdentifier: Assembly-CSharp::ConversationData
-  ConversationTitle: 
-  NPCSpeakerName: 
+  ConversationTitle: Matilda Xavier
+  NPCSpeakerName: Matilda Xavier
   NPCSpeakerAvatar: {fileID: 0}
   NPCSpeakerBackground: {fileID: 0}
   Nodes:
