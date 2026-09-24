@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775b654f7a6429140af8de946fb24861, type: 3}
+  m_Name: 10 NPC May_Stark
+  m_EditorClassIdentifier: Assembly-CSharp::ConversationData
+  ConversationTitle: 
+  NPCSpeakerName: 
+  NPCSpeakerAvatar: {fileID: 0}
+  NPCSpeakerBackground: {fileID: 0}
+  Nodes:
+  - IsNPC: 0
+    Message: 
+    DisplayType: 1
+    Image: {fileID: 0}
+    LinkedArticle: {fileID: 0}
+    LinkURL: 
+    PlayerOptions: []
+    IsEndNode: 0
+    AutoAdvance: 0
+    AutoAdvanceDelay: 0
+  StartNodeIndex: 0
