@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS4_E
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Intelig\xEAncia artificial pode alterar votos sem que eleitor perceba,
+    aponta alerta nas redes"
+  Subtitle: "Mensagem questiona se os mecanismos de seguran\xE7a das urnas acompanham
+    o avan\xE7o das novas tecnologias."
+  URL_site: https://observadordigital.example/eleicoes/inteligencia-artificial-urnas
+  Writer:
+    WriterName: "Reda\xE7\xE3o Observador Digital"
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 'Publicado em: 18 de setembro de 2026'
+  Blocks:
+  - Type: 1
+    Text: "\tO avan\xE7o da intelig\xEAncia artificial abriu uma nova preocupa\xE7\xE3o
+      para as elei\xE7\xF5es: a possibilidade de alterar votos nas urnas eletr\xF4nicas.
+      Sistemas capazes de invadir contas banc\xE1rias tamb\xE9m poderiam ultrapassar
+      as barreiras dos equipamentos eleitorais, segundo um alerta compartilhado nas
+      redes."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tFraudes em contas banc\xE1rias n\xE3o demonstram acesso \xE0s
+      urnas. S\xE3o sistemas diferentes. A urna n\xE3o possui internet, wi-fi ou
+      conex\xE3o celular. Dizer que uma IA \xE9 poderosa n\xE3o explica como ela
+      conseguiria entrar no equipamento."
+  - Type: 1
+    Text: "\tA aus\xEAncia de internet durante a vota\xE7\xE3o n\xE3o impediria a
+      a\xE7\xE3o. A intelig\xEAncia artificial poderia acessar a urna remotamente
+      durante uma atualiza\xE7\xE3o anterior \xE0 abertura das se\xE7\xF5es e deixar
+      comandos preparados para funcionar quando os eleitores come\xE7assem a votar."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tA not\xEDcia inventa uma forma de acesso: as urnas n\xE3o recebem
+      atualiza\xE7\xF5es pela internet. Os programas s\xE3o preparados e lacrados
+      antes da elei\xE7\xE3o, com fiscaliza\xE7\xE3o. Confira como a instala\xE7\xE3o
+      realmente acontece nos canais da Justi\xE7a Eleitoral."
+  - Type: 1
+    Text: "\tNesse cen\xE1rio, a tela mostraria normalmente o nome e a foto escolhidos,
+      mas o programa registraria o voto para outra candidatura. Como as verifica\xE7\xF5es
+      acontecem antes da vota\xE7\xE3o, a mudan\xE7a passaria despercebida pelos
+      fiscais e pelo eleitor."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tO texto descreve uma troca de votos sem apresentar evid\xEAncia
+      e reduz a fiscaliza\xE7\xE3o a uma checagem anterior. Existem diferentes etapas
+      de auditoria, e os programas recebem assinaturas digitais que permitem verificar
+      altera\xE7\xF5es. Imaginar uma fraude n\xE3o comprova que ela aconteceu ou
+      que funciona."
+  - Type: 1
+    Text: "\tO boletim impresso ao final apenas repetiria os n\xFAmeros j\xE1 modificados
+      pelo programa. Sem um comprovante individual de cada voto, n\xE3o existiria
+      fiscaliza\xE7\xE3o capaz de conferir o resultado, deixando a decis\xE3o nas
+      m\xE3os do sistema."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\t\xC9 falso que n\xE3o exista fiscaliza\xE7\xE3o sem comprovante
+      individual. O Boletim de Urna apresenta os totais daquela se\xE7\xE3o e pode
+      ser comparado com os dados da totaliza\xE7\xE3o. Ele faz parte de um conjunto
+      de verifica\xE7\xF5es; a not\xEDcia ignora esse conjunto para declarar o resultado
+      imposs\xEDvel de conferir."

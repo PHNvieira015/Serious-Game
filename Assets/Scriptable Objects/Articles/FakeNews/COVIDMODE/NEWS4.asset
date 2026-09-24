@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS4
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Aposentadoria poder\xE1 ser suspensa para maiores de 60 anos que descumprirem
+    isolamento"
+  Subtitle: "Medida tamb\xE9m prev\xEA multa para familiares e busca reduzir a circula\xE7\xE3o
+    de idosos durante a emerg\xEAncia sanit\xE1ria."
+  URL_site: https://boletimprevidenciario.example/beneficios/novas-regras-isolamento
+  Writer:
+    WriterName: "Reda\xE7\xE3o Boletim Previdenci\xE1rio"
+    WriterPhoto: {fileID: 0}
+    WriterDescription: "Publicado em: 20 de mar\xE7o de 2020"
+  Blocks:
+  - Type: 1
+    Text: "\tA Medida Provis\xF3ria n\xBA 922, de 18 de mar\xE7o de 2020, estabelece
+      novas regras para aposentados durante a emerg\xEAncia do coronav\xEDrus. Pessoas
+      com mais de 60 anos que forem identificadas circulando nas ruas poder\xE3o
+      ter o pagamento da aposentadoria suspenso por tempo indeterminado."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tA MP n\xBA 922 existiu, mas \xE9 de 28 de fevereiro de 2020,
+      n\xE3o de 18 de mar\xE7o. Ela tratava, entre outros assuntos, da contrata\xE7\xE3o
+      tempor\xE1ria de servidores aposentados. N\xE3o determinava suspens\xE3o de
+      aposentadoria por sair de casa. Confira a data e o texto da norma."
+  - Type: 1
+    Text: "\tA determina\xE7\xE3o integra as a\xE7\xF5es de prote\xE7\xE3o aos idosos,
+      considerados mais vulner\xE1veis \xE0 doen\xE7a. O bloqueio ser\xE1 aplicado
+      aos benefici\xE1rios que desrespeitarem a orienta\xE7\xE3o de permanecer em
+      casa, como forma de garantir o cumprimento do isolamento."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tO boato usa uma orienta\xE7\xE3o real de prote\xE7\xE3o aos idosos
+      para tornar o bloqueio convincente. Por\xE9m, recomendar ficar em casa n\xE3o
+      significa autorizar o corte da aposentadoria. A medida citada n\xE3o previa
+      essa puni\xE7\xE3o."
+  - Type: 1
+    Text: "\tO comunicado tamb\xE9m prev\xEA responsabiliza\xE7\xE3o de filhos e
+      netos maiores de 18 anos. A multa ser\xE1 de R$ 1.045 para familiares que permitirem
+      o descumprimento da medida. A orienta\xE7\xE3o \xE9 que a fam\xEDlia organize
+      as compras e outras necessidades do aposentado."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tA MP n\xE3o estabelecia essa multa para filhos ou netos. O valor
+      de R$ 1.045 d\xE1 apar\xEAncia de precis\xE3o, mas um n\xFAmero exato tamb\xE9m
+      pode ser inventado. Procure o artigo da norma que supostamente prev\xEA a cobran\xE7a."
+  - Type: 1
+    Text: "\tComo medidas provis\xF3rias t\xEAm for\xE7a de lei desde sua publica\xE7\xE3o,
+      as regras j\xE1 est\xE3o valendo, mesmo antes da vota\xE7\xE3o no Congresso.
+      Familiares devem orientar os aposentados sobre as novas exig\xEAncias para
+      evitar a interrup\xE7\xE3o dos pagamentos."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tMedidas provis\xF3rias realmente t\xEAm for\xE7a de lei desde
+      a publica\xE7\xE3o. Isso, por\xE9m, n\xE3o torna verdadeiras as puni\xE7\xF5es
+      inventadas pela not\xEDcia. \xC9 preciso conferir o que a MP determina, n\xE3o
+      apenas se ela est\xE1 em vigor."

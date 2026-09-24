@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS3
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Livro de 1981 antecipou v\xEDrus em Wuhan e doen\xE7a que se espalharia
+    em 2020"
+  Subtitle: "Romance de Dean Koontz voltou a chamar aten\xE7\xE3o ap\xF3s leitores
+    encontrarem passagens que coincidem com a emerg\xEAncia sanit\xE1ria atual."
+  URL_site: https://arquivoatual.example/cultura/livro-dean-koontz-coronavirus
+  Writer:
+    WriterName: "Reda\xE7\xE3o Arquivo Atual"
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 'Publicado em: 26 de fevereiro de 2020'
+  Blocks:
+  - Type: 1
+    Text: "\tUm suspense publicado em 1981 voltou a circular entre leitores por um
+      detalhe que passou despercebido durante d\xE9cadas. Em The Eyes of Darkness,
+      do americano Dean Koontz, um agente chamado Wuhan-400 recebe esse nome por
+      ter sido desenvolvido nas proximidades da cidade chinesa de Wuhan. A localiza\xE7\xE3o
+      \xE9 a mesma que, desde o fim do ano passado, aparece nos notici\xE1rios sobre
+      o novo coronav\xEDrus. Exemplares dispon\xEDveis atualmente permitem conferir
+      a refer\xEAncia, que antecederia em quase quarenta anos a crise sanit\xE1ria."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tO livro \xE9 de 1981, mas o nome original era Gorki-400. Wuhan-400
+      apareceu em edi\xE7\xF5es posteriores. A not\xEDcia mistura a data da primeira
+      publica\xE7\xE3o com um texto modificado depois. Para conferir, compare as
+      edi\xE7\xF5es."
+  - Type: 1
+    Text: "\tO material compartilhado re\xFAne a capa do romance e fotografias de
+      p\xE1ginas em ingl\xEAs. Em uma delas, aparece o nome Wuhan-400; em outra,
+      a descri\xE7\xE3o de uma doen\xE7a semelhante \xE0 pneumonia que se espalharia
+      pelo mundo por volta de 2020. A sequ\xEAncia acrescenta uma indica\xE7\xE3o
+      de tempo \xE0 refer\xEAncia geogr\xE1fica encontrada na obra. Assim, a aproxima\xE7\xE3o
+      com os acontecimentos atuais n\xE3o se limita ao nome de uma cidade: tamb\xE9m
+      alcan\xE7a o per\xEDodo e o tipo de doen\xE7a."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tA passagem sobre 2020 vem de End of Days, de Sylvia Browne, publicado
+      em 2008, n\xE3o do livro de Koontz. Colocar as p\xE1ginas juntas n\xE3o faz
+      delas uma \xFAnica obra. Confira a origem de cada trecho."
+  - Type: 1
+    Text: "\tH\xE1 diferen\xE7as entre o agente descrito na narrativa e o coronav\xEDrus
+      identificado pelas autoridades. No romance, os efeitos s\xE3o mais r\xE1pidos
+      e a letalidade \xE9 maior, caracter\xEDsticas compat\xEDveis com o tom dram\xE1tico
+      de um suspense. Essas diferen\xE7as, por\xE9m, n\xE3o alteram os pontos centrais
+      da antecipa\xE7\xE3o: Wuhan, uma amea\xE7a infecciosa e a dissemina\xE7\xE3o
+      de uma doen\xE7a respirat\xF3ria em 2020. N\xE3o se trata de considerar cada
+      passagem uma descri\xE7\xE3o m\xE9dica, mas de reconhecer a precis\xE3o do
+      cen\xE1rio apresentado."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tO v\xEDrus fict\xEDcio mata 100% dos infectados, o que n\xE3o
+      corresponde \xE0 covid-19. A not\xEDcia descarta essa diferen\xE7a e destaca
+      apenas as semelhan\xE7as. Uma coincid\xEAncia n\xE3o comprova uma previs\xE3o:
+      \xE9 preciso comparar tamb\xE9m o que n\xE3o combina."
+  - Type: 1
+    Text: "\tN\xE3o \xE9 poss\xEDvel afirmar como Koontz teria chegado a essa combina\xE7\xE3o
+      de informa\xE7\xF5es. A publica\xE7\xE3o, entretanto, oferece um registro anterior
+      \xE0 emerg\xEAncia atual, e as fotografias permitem que o pr\xF3prio leitor
+      compare os trechos com o notici\xE1rio. Mesmo para quem descarta previs\xF5es,
+      permanece o fato de que o livro j\xE1 reunia o local e o per\xEDodo de uma
+      crise que o mundo s\xF3 conheceria d\xE9cadas depois."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "\tO texto afirma que o livro previu o local e o ano, mas essas
+      informa\xE7\xF5es vieram de obras diferentes. Antes de perguntar como o autor
+      previu, confira se ele realmente previu. As p\xE1ginas apresentadas n\xE3o
+      demonstram isso."

@@ -12,70 +12,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
   m_Name: NEWS3_E
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
-  Title: "Exclusivo: \xC1udio gravado em reuni\xE3o privada revela negocia\xE7\xE3o
-    de minist\xE9rios em troca de apoio no 2\xBA turno"
-  Subtitle: 
+  Title: "Pesquisa revela que 8 em cada 10 brasileiros querem candidatos sem experi\xEAncia
+    pol\xEDtica "
+  Subtitle: "Levantamento digital aponta mudan\xE7a no perfil desejado pelos eleitores
+    para as pr\xF3ximas elei\xE7\xF5es. "
+  URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
-    WriterName: "Reda\xE7\xE3o Pol\xEDtica"
+    WriterName: "Reda\xE7\xE3o Panorama Eleitoral"
     WriterPhoto: {fileID: 0}
-    WriterDescription: "Publicado em: S\xE1bado, 03 de Outubro de 2026, \xE0s 22h45"
+    WriterDescription: 'Publicado em: 18 de setembro de 2026'
   Blocks:
   - Type: 1
-    Text: "\tUma grava\xE7\xE3o telef\xF4nica de quatro minutos de dura\xE7\xE3o,
-      obtida com exclusividade pela reportagem no final da noite deste s\xE1bado,
-      mostra o candidato l\xEDder nas pesquisas negociando o controle de duas estatais
-      e tr\xEAs minist\xE9rios com lideran\xE7as partid\xE1rias em troca de sustenta\xE7\xE3o
-      pol\xEDtica. O di\xE1logo teria ocorrido na \xFAltima quinta-feira durante
-      um jantar com portas fechadas na capital federal."
-    Image: {fileID: 0}
-    CheckType: 2
-    Hint: "Not\xEDcia publicada no s\xE1bado \xE0 noite (22h45), a poucas horas da
-      elei\xE7\xE3o."
-    Explanation: "Ataque Assim\xE9trico em Per\xEDodo de Sil\xEAncio. Inspirado no
-      caso real da Eslov\xE1quia (2023), os criadores de deepfakes soltam os conte\xFAdos
-      no momento em que a imprensa tradicional e os checadores t\xEAm restri\xE7\xF5es
-      legais ou tempo insuficiente para desmentir antes que o eleitor vote."
-  - Type: 1
-    Text: "\tNa grava\xE7\xE3o, a voz atribu\xEDda ao candidato pronuncia com clareza:
-      \"N\xF3s j\xE1 alinhamos a verba or\xE7ament\xE1ria para a infraestrutura.
-      O compromisso de voc\xEAs \xE9 garantir a bancada votando fechada a partir
-      de janeiro. O eleitor n\xE3o precisa saber dos termos deste acordo agora para
-      n\xE3o gerar desgaste na reta final\"."
-    Image: {fileID: 0}
-    CheckType: 4
-    Hint: "Ritmo de fala perfeito com frases gramaticalmente impec\xE1veis e vocabul\xE1rio
-      altamente formal dentro de uma suposta \"conversa vazada de bastidor\"."
-    Explanation: "Cad\xEAncia Sint\xE9tica e Aus\xEAncia de Ru\xEDdo Fisiol\xF3gico.
-      Em grava\xE7\xF5es clandestinas reais, h\xE1 ru\xEDdos de fundo, interrup\xE7\xF5es,
-      hesita\xE7\xF5es (\"\xE9hh...\", \"humm...\") e, principalmente, pausas de
-      respira\xE7\xE3o. Modelos de IA de clonagem de voz frequentemente geram falas
-      sem a necessidade biol\xF3gica de puxar o ar entre frases longas, criando uma
-      cad\xEAncia levemente rob\xF3tica e cont\xEDnua."
-  - Type: 1
-    Text: "O arquivo de \xE1udio foi submetido a uma an\xE1lise preliminar pelo instituto
-      de per\xEDcia digital TechVerify Forensics, que emitiu um laudo inicial apontando
-      98,4% de probabilidade de autenticidade na frequ\xEAncia vocal do candidato.
-      O relat\xF3rio destaca a correspond\xEAncia de timbres e a aus\xEAncia de cortes
-      na pista principal de \xE1udio. "
-    Image: {fileID: 0}
-    CheckType: 0
-    Hint: 
-    Explanation: "Falsa Per\xEDcia. A not\xEDcia cita uma empresa de seguran\xE7a
-      privada inexistente para dar um falso selo de autoridade \xE0 fraude. Per\xEDcias
-      forenses reais n\xE3o emitem porcentagens decimais cravadas de \"chance de
-      autenticidade\" em poucas horas, pois o processo de an\xE1lise espectrogr\xE1fica
-      exige isolamento de frequ\xEAncias e compara\xE7\xE3o com matrizes originais."
-  - Type: 1
-    Text: "\tA assessoria do candidato foi acionada \xE0s 23h, mas informou que n\xE3o
-      se manifestar\xE1 antes de consultar o corpo jur\xEDdico. Por ter sido divulgado
-      durante o per\xEDodo de restri\xE7\xE3o de propaganda e sil\xEAncio eleitoral
-      da v\xE9spera da vota\xE7\xE3o, a checagem oficial por parte das plataformas
-      e do Tribunal Eleitoral enfrentar\xE1 limita\xE7\xF5es de tempo antes da abertura
-      das urnas."
+    Text: "\tOs participantes responderam \xE0 pergunta: \u201CVoc\xEA apoia a renova\xE7\xE3o
+      pol\xEDtica para melhorar o pa\xEDs?\u201D. Para os respons\xE1veis, as respostas
+      positivas demonstram prefer\xEAncia por candidatos sem experi\xEAncia. Os dados
+      refor\xE7am um cen\xE1rio de transforma\xE7\xE3o e uma nova perspectiva para
+      a representa\xE7\xE3o pol\xEDtica."
     Image: {fileID: 0}
     CheckType: 4
     Hint: 
-    Explanation: " Desinforma\xE7\xE3o de Baixa intensidade (Corros\xE3o de Confian\xE7a).
-      Diferente de fake news apelativas, as manipula\xE7\xF5es mais perigosas por
-      IA n\xE3o tentam convencer o leitor de um absurdo, mas sim semear uma d\xFAvida
-      plaus\xEDvel no eleitor indeferido poucas horas antes de ele ir \xE0s urnas."
+    Explanation: "\tA pergunta fala em \u201Crenova\xE7\xE3o\u201D, mas a manchete
+      afirma prefer\xEAncia por candidatos sem experi\xEAncia. Uma coisa n\xE3o significa
+      necessariamente a outra. Compare sempre o que foi perguntado com a conclus\xE3o
+      publicada."
+  - Type: 1
+    Text: "\tUma pesquisa do Instituto Panorama Cidad\xE3o revelou que 82% dos brasileiros
+      preferem candidatos que nunca ocuparam cargos pol\xEDticos. O levantamento
+      reuniu 2.400 respostas em um formul\xE1rio aberto nas redes sociais, com participa\xE7\xE3o
+      de pessoas das cinco regi\xF5es do pa\xEDs."
+    Image: {fileID: 0}
+    CheckType: 4
+    Hint: 
+    Explanation: "\t2.400 respostas em um formul\xE1rio aberto n\xE3o demonstram
+      o que todos os brasileiros pensam. Quem decidiu participar pode ter opini\xF5es
+      diferentes de quem n\xE3o viu a enquete. Ter respostas das cinco regi\xF5es
+      n\xE3o resolve esse problema."
+  - Type: 1
+    Text: "\tA coleta pela internet garantiu uma participa\xE7\xE3o ampla e democr\xE1tica.
+      Como qualquer pessoa podia responder, o resultado representa o eleitorado nacional,
+      com margem de erro de dois pontos percentuais. A diversidade de regi\xF5es
+      refor\xE7a a confiabilidade dos n\xFAmeros apresentados."
+    Image: {fileID: 0}
+    CheckType: 4
+    Hint: 
+    Explanation: "\tPermitir que qualquer pessoa responda n\xE3o torna a enquete
+      representativa. A margem de erro de dois pontos \xE9 apresentada sem explicar
+      seu c\xE1lculo. Um n\xFAmero preciso n\xE3o corrige uma coleta inadequada."
+  - Type: 1
+    Text: "\tEspecialistas em comportamento eleitoral avaliam que o resultado confirma
+      uma tend\xEAncia nacional de renova\xE7\xE3o. Nesse contexto, o levantamento
+      demonstra que a popula\xE7\xE3o est\xE1 pronta para novas lideran\xE7as, consolidando
+      um cen\xE1rio de mudan\xE7a para as pr\xF3ximas elei\xE7\xF5es."
+    Image: {fileID: 0}
+    CheckType: 4
+    Hint: 
+    Explanation: "\t\u201CCen\xE1rio de mudan\xE7a\u201D e \u201Ctend\xEAncia de
+      renova\xE7\xE3o\u201D repetem a conclus\xE3o sem acrescentar evid\xEAncias.
+      Os especialistas tamb\xE9m n\xE3o s\xE3o identificados. Esse estilo pode aparecer
+      em textos de IA ou humanos: o problema \xE9 a falta de sustenta\xE7\xE3o, n\xE3o
+      quem escreveu."

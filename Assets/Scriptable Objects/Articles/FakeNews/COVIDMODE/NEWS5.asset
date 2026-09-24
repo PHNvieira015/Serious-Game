@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: NEWS5
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Intelig\xEAncia artificial da Unicamp ajuda a medir danos da Covid-19 nos
+    pulm\xF5es"
+  Subtitle: "Ferramenta analisa tomografias e tamb\xE9m \xE9 utilizada em pesquisas
+    sobre Covid longa."
+  URL_site: 
+  Writer:
+    WriterName: "Gabriella Ramos, g1 Campinas e Regi\xE3o"
+    WriterPhoto: {fileID: 375808283027584635, guid: a28486b3beb8b95469532ba85d53891b, type: 3}
+    WriterDescription: 'Publicado em: 25 de junho de 2023'
+  Blocks:
+  - Type: 1
+    Text: "\tPesquisadores da Unicamp desenvolveram uma intelig\xEAncia artificial
+      para identificar \xE1reas afetadas nos pulm\xF5es em imagens de tomografia.
+      O trabalho come\xE7ou em 2020 para ajudar a acompanhar a evolu\xE7\xE3o da
+      Covid-19."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tO texto apresenta uma pesquisa da Unicamp e explica seu objetivo:
+      medir \xE1reas afetadas nos pulm\xF5es. Essas informa\xE7\xF5es correspondem
+      \xE0 reportagem original. N\xE3o promete cura nem afirma que a ferramenta substitui
+      m\xE9dicos."
+  - Type: 1
+    Text: "\tO programa identifica os limites dos pulm\xF5es e calcula o volume das
+      regi\xF5es alteradas. Segundo a professora Let\xEDcia Rittner, essas altera\xE7\xF5es
+      tamb\xE9m podem aparecer em outras doen\xE7as respirat\xF3rias. Portanto, encontr\xE1-las
+      n\xE3o significa, por si s\xF3, confirmar Covid-19."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tO programa mede altera\xE7\xF5es nas imagens, mas elas tamb\xE9m
+      podem ocorrer em outras doen\xE7as. Essa diferen\xE7a \xE9 importante: identificar
+      uma \xE1rea alterada n\xE3o \xE9 o mesmo que descobrir sua causa. A explica\xE7\xE3o
+      respeita o limite apresentado pela pesquisadora."
+  - Type: 1
+    Text: "\tO m\xE9todo foi desenvolvido por Diedre Santos do Carmo, orientado por
+      Let\xEDcia Rittner e Roberto de Alencar Lotufo. A equipe utilizou imagens de
+      diferentes pa\xEDses para melhorar o funcionamento do programa em exames feitos
+      por equipamentos distintos."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tOs nomes permitem verificar quem desenvolveu a pesquisa. O texto
+      tamb\xE9m explica como o programa foi treinado e por que precisava analisar
+      exames de diferentes equipamentos. S\xE3o informa\xE7\xF5es confer\xEDveis,
+      n\xE3o apenas uma refer\xEAncia vaga a \u201Ccientistas\u201D."
+  - Type: 1
+    Text: "\tNa \xE9poca da reportagem, a ferramenta estava dispon\xEDvel para pesquisadores
+      e era estudada para acompanhar efeitos da Covid longa. Esses resultados ainda
+      eram preliminares. A falta de computadores adequados nas unidades de sa\xFAde
+      dificultava seu uso mais amplo."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "\tA reportagem distingue o uso em pesquisa da aplica\xE7\xE3o ampla
+      nos servi\xE7os de sa\xFAde. Tamb\xE9m informa que os estudos sobre Covid longa
+      eram preliminares. Esses limites evitam apresentar uma possibilidade como resultado
+      definitivo."
