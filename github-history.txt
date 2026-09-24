@@ -1,0 +1,2545 @@
+commit e9fc251f6795ca9e83da5147d06f7515a66b94a5
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-02T20:38:38-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-02T20:38:38-03:00
+
+    Initial commit
+
+ .gitattributes                                     |    2 +
+ .gitignore                                         |   75 +
+ .vsconfig                                          |    6 +
+ Assets/DefaultVolumeProfile.asset                  |  795 ++++++
+ Assets/DefaultVolumeProfile.asset.meta             |    8 +
+ Assets/InputSystem_Actions.inputactions            | 1057 ++++++++
+ Assets/InputSystem_Actions.inputactions.meta       |   14 +
+ Assets/Scenes.meta                                 |    8 +
+ Assets/Scenes/SampleScene.unity                    | 1272 +++++++++
+ Assets/Scenes/SampleScene.unity.meta               |    7 +
+ Assets/Script.meta                                 |    8 +
+ Assets/Script/ArticleViewer.cs                     |  268 ++
+ Assets/Script/ArticleViewer.cs.meta                |    2 +
+ Assets/Script/GameManager.cs                       |  204 ++
+ Assets/Script/GameManager.cs.meta                  |    2 +
+ Assets/Script/ScriptableObject.meta                |    8 +
+ Assets/Script/ScriptableObject/ArticleData.cs      |   13 +
+ Assets/Script/ScriptableObject/ArticleData.cs.meta |    2 +
+ Assets/Script/ScriptableObject/GeneralClasses.cs   |   78 +
+ .../Script/ScriptableObject/GeneralClasses.cs.meta |    2 +
+ Assets/Scriptable Objects.meta                     |    8 +
+ Assets/Scriptable Objects/Articles.meta            |    8 +
+ Assets/Scriptable Objects/Articles/FakeNews.meta   |    8 +
+ .../Articles/FakeNews/Election Scandal.asset       |   43 +
+ .../Articles/FakeNews/Election Scandal.asset.meta  |    8 +
+ Assets/Settings.meta                               |    8 +
+ Assets/Settings/Lit2DSceneTemplate.scenetemplate   |   71 +
+ .../Settings/Lit2DSceneTemplate.scenetemplate.meta |    8 +
+ Assets/Settings/Renderer2D.asset                   |   69 +
+ Assets/Settings/Renderer2D.asset.meta              |    8 +
+ Assets/Settings/Scenes.meta                        |    8 +
+ Assets/Settings/Scenes/URP2DSceneTemplate.unity    |  350 +++
+ .../Settings/Scenes/URP2DSceneTemplate.unity.meta  |    7 +
+ Assets/Settings/UniversalRP.asset                  |  143 +
+ Assets/Settings/UniversalRP.asset.meta             |    8 +
+ Assets/Sprite.meta                                 |    8 +
+ Assets/Sprite/Buttons.meta                         |    8 +
+ Assets/Sprite/Buttons/Considerar Fonte.png         |  Bin 0 -> 11927 bytes
+ Assets/Sprite/Buttons/Considerar Fonte.png.meta    |  169 ++
+ Assets/Sprite/Buttons/Consulte especialista.png    |  Bin 0 -> 13656 bytes
+ .../Sprite/Buttons/Consulte especialista.png.meta  |  169 ++
+ Assets/Sprite/Buttons/Fonte de Apoio.png           |  Bin 0 -> 11139 bytes
+ Assets/Sprite/Buttons/Fonte de Apoio.png.meta      |  169 ++
+ .../Sprite/Buttons/Isso \303\251 uma Piada.png"    |  Bin 0 -> 9496 bytes
+ .../Buttons/Isso \303\251 uma Piada.png.meta"      |  169 ++
+ Assets/Sprite/Buttons/Leia Mais.png                |  Bin 0 -> 10437 bytes
+ Assets/Sprite/Buttons/Leia Mais.png.meta           |  169 ++
+ Assets/Sprite/Buttons/Verifique Autor.png          |  Bin 0 -> 8978 bytes
+ Assets/Sprite/Buttons/Verifique Autor.png.meta     |  169 ++
+ Assets/Sprite/Buttons/Verifique a Data.png         |  Bin 0 -> 8080 bytes
+ Assets/Sprite/Buttons/Verifique a Data.png.meta    |  169 ++
+ "Assets/Sprite/Buttons/\303\251 preconceito.png"   |  Bin 0 -> 12583 bytes
+ .../Sprite/Buttons/\303\251 preconceito.png.meta"  |  169 ++
+ Assets/UI Toolkit.meta                             |    8 +
+ Assets/UI Toolkit/Font.meta                        |    8 +
+ Assets/UI Toolkit/Font/NotInter-Regular SDF.asset  | 2752 +++++++++++++++++++
+ .../Font/NotInter-Regular SDF.asset.meta           |    8 +
+ Assets/UI Toolkit/Sample.uxml                      |   29 +
+ Assets/UI Toolkit/Sample.uxml.meta                 |   10 +
+ Assets/UI Toolkit/SampleStyle.uss                  |   25 +
+ Assets/UI Toolkit/SampleStyle.uss.meta             |   12 +
+ Assets/UI Toolkit/Setting.asset                    |   52 +
+ Assets/UI Toolkit/Setting.asset.meta               |    8 +
+ Assets/UI Toolkit/UnityThemes.meta                 |    8 +
+ .../UnityThemes/UnityDefaultRuntimeTheme.tss       |    1 +
+ .../UnityThemes/UnityDefaultRuntimeTheme.tss.meta  |   12 +
+ Assets/UniversalRenderPipelineGlobalSettings.asset |  426 +++
+ ...niversalRenderPipelineGlobalSettings.asset.meta |    8 +
+ Assets/prefab.meta                                 |    8 +
+ Assets/prefab/-------------------------.prefab     |   33 +
+ .../prefab/-------------------------.prefab.meta   |    7 +
+ Packages/manifest.json                             |   56 +
+ Packages/packages-lock.json                        |  562 ++++
+ ProjectSettings/AudioManager.asset                 |   19 +
+ ProjectSettings/ClusterInputManager.asset          |    6 +
+ ProjectSettings/DynamicsManager.asset              |   36 +
+ ProjectSettings/EditorBuildSettings.asset          |   13 +
+ ProjectSettings/EditorSettings.asset               |   50 +
+ ProjectSettings/GraphicsSettings.asset             |   69 +
+ ProjectSettings/InputManager.asset                 |  487 ++++
+ ProjectSettings/MemorySettings.asset               |   35 +
+ ProjectSettings/MultiplayerManager.asset           |    7 +
+ ProjectSettings/NavMeshAreas.asset                 |   91 +
+ ProjectSettings/NetworkManager.asset               |    8 +
+ ProjectSettings/PackageManagerSettings.asset       |   40 +
+ ProjectSettings/Physics2DSettings.asset            |   56 +
+ ProjectSettings/PresetManager.asset                |    7 +
+ ProjectSettings/ProjectSettings.asset              |  793 ++++++
+ ProjectSettings/ProjectVersion.txt                 |    2 +
+ ProjectSettings/QualitySettings.asset              |  336 +++
+ ProjectSettings/SceneTemplateSettings.json         |  121 +
+ ProjectSettings/ShaderGraphSettings.asset          |   19 +
+ ProjectSettings/TagManager.asset                   |   43 +
+ ProjectSettings/TimeManager.asset                  |    9 +
+ ProjectSettings/URPProjectSettings.asset           |   16 +
+ ProjectSettings/UnityConnectSettings.asset         |   40 +
+ ProjectSettings/VFXManager.asset                   |   12 +
+ ProjectSettings/VersionControlSettings.asset       |    7 +
+ ProjectSettings/XRSettings.asset                   |   10 +
+ README.md                                          |    2 +
+ UIElementsSchema/UIElements.xsd                    |   34 +
+ .../Unity.Multiplayer.PlayMode.Editor.xsd          |   50 +
+ UIElementsSchema/Unity.Profiling.Editor.UI.xsd     |  142 +
+ UIElementsSchema/Unity.Profiling.Editor.xsd        |  130 +
+ UIElementsSchema/Unity.UI.Builder.xsd              | 2762 ++++++++++++++++++++
+ UIElementsSchema/Unity.UIToolkit.Editor.xsd        |  126 +
+ UIElementsSchema/UnityEditor.Accessibility.xsd     |  121 +
+ UIElementsSchema/UnityEditor.Audio.UIElements.xsd  |  101 +
+ .../UnityEditor.Experimental.GraphView.xsd         |   75 +
+ ...Editor.Inspector.GraphicsSettingsInspectors.xsd |   27 +
+ UIElementsSchema/UnityEditor.Inspector.xsd         |   31 +
+ UIElementsSchema/UnityEditor.Overlays.xsd          |  130 +
+ .../UnityEditor.PackageManager.UI.Internal.xsd     |  970 +++++++
+ UIElementsSchema/UnityEditor.Rendering.xsd         |   82 +
+ UIElementsSchema/UnityEditor.Search.xsd            |   31 +
+ .../UnityEditor.ShaderGraph.Drawing.xsd            |   97 +
+ .../UnityEditor.ShortcutManagement.xsd             |   52 +
+ UIElementsSchema/UnityEditor.Tilemaps.External.xsd |   38 +
+ UIElementsSchema/UnityEditor.Tilemaps.xsd          |  364 +++
+ UIElementsSchema/UnityEditor.Toolbars.xsd          |   37 +
+ ...ityEditor.U2D.Animation.SpriteLibraryEditor.xsd |  177 ++
+ .../UnityEditor.U2D.Animation.Upgrading.xsd        |   30 +
+ UIElementsSchema/UnityEditor.U2D.Animation.xsd     |  395 +++
+ UIElementsSchema/UnityEditor.U2D.Layout.xsd        |   73 +
+ .../UnityEditor.U2D.Sprites.SpriteEditorTool.xsd   |   27 +
+ ...tor.U2D.Tooling.Analyzer.UIElement.OKCancel.xsd |   27 +
+ .../UnityEditor.U2D.Tooling.Analyzer.UIElement.xsd |  107 +
+ .../UnityEditor.U2D.Tooling.Analyzer.xsd           |  122 +
+ .../UnityEditor.UIElements.Debugger.xsd            |   28 +
+ .../UnityEditor.UIElements.ProjectSettings.xsd     |  127 +
+ UIElementsSchema/UnityEditor.UIElements.xsd        |  793 ++++++
+ UIElementsSchema/UnityEngine.UIElements.xsd        | 2495 ++++++++++++++++++
+ 132 files changed, 22122 insertions(+)
+
+commit 514fb042e47e6aed8271f9aaf5e6473e62fe0189
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-15T18:17:43-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-15T18:17:43-03:00
+
+    UI WIP
+    
+    News UI Working
+    
+    Test the Side Bar (too little space, maybe we can use the chat space too)
+
+ Assets/Scenes/SampleScene.unity                    | 11167 +++++++++++++++--
+ Assets/Scenes/sketch.unity                         |  1272 ++
+ Assets/Scenes/sketch.unity.meta                    |     7 +
+ Assets/Script/ArticleViewer.cs                     |   322 +-
+ Assets/Script/ScriptableObject/GeneralClasses.cs   |    33 +-
+ .../Articles/FakeNews/Election Scandal.asset       |    11 +
+ Assets/TextMesh Pro.meta                           |     8 +
+ Assets/TextMesh Pro/Fonts.meta                     |     8 +
+ Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt |    46 +
+ .../Fonts/LiberationSans - OFL.txt.meta            |     8 +
+ Assets/TextMesh Pro/Fonts/LiberationSans.ttf       |   Bin 0 -> 350200 bytes
+ Assets/TextMesh Pro/Fonts/LiberationSans.ttf.meta  |    19 +
+ Assets/TextMesh Pro/Resources.meta                 |     8 +
+ .../TextMesh Pro/Resources/Fonts & Materials.meta  |     9 +
+ .../LiberationSans SDF - Drop Shadow.mat           |   106 +
+ .../LiberationSans SDF - Drop Shadow.mat.meta      |     8 +
+ .../LiberationSans SDF - Fallback.asset            |   348 +
+ .../LiberationSans SDF - Fallback.asset.meta       |     8 +
+ .../LiberationSans SDF - Outline.mat               |   104 +
+ .../LiberationSans SDF - Outline.mat.meta          |     8 +
+ .../Fonts & Materials/LiberationSans SDF.asset     |  8095 +++++++++++++
+ .../LiberationSans SDF.asset.meta                  |     8 +
+ .../LineBreaking Following Characters.txt          |     1 +
+ .../LineBreaking Following Characters.txt.meta     |     8 +
+ .../Resources/LineBreaking Leading Characters.txt  |     1 +
+ .../LineBreaking Leading Characters.txt.meta       |     8 +
+ Assets/TextMesh Pro/Resources/Sprite Assets.meta   |     9 +
+ .../Resources/Sprite Assets/EmojiOne.asset         |   659 +
+ .../Resources/Sprite Assets/EmojiOne.asset.meta    |     8 +
+ Assets/TextMesh Pro/Resources/Style Sheets.meta    |     9 +
+ .../Style Sheets/Default Style Sheet.asset         |    81 +
+ .../Style Sheets/Default Style Sheet.asset.meta    |     8 +
+ Assets/TextMesh Pro/Resources/TMP Settings.asset   |    52 +
+ .../TextMesh Pro/Resources/TMP Settings.asset.meta |     8 +
+ Assets/TextMesh Pro/Shaders.meta                   |     8 +
+ Assets/TextMesh Pro/Shaders/SDFFunctions.hlsl      |   178 +
+ Assets/TextMesh Pro/Shaders/SDFFunctions.hlsl.meta |    10 +
+ .../Shaders/TMP_Bitmap-Custom-Atlas.shader         |   145 +
+ .../Shaders/TMP_Bitmap-Custom-Atlas.shader.meta    |     9 +
+ .../TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader  |   155 +
+ .../Shaders/TMP_Bitmap-Mobile.shader.meta          |     9 +
+ Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader      |   145 +
+ Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader.meta |     9 +
+ Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader |   326 +
+ .../Shaders/TMP_SDF Overlay.shader.meta            |     9 +
+ Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader     |   321 +
+ .../TextMesh Pro/Shaders/TMP_SDF SSD.shader.meta   |     9 +
+ .../Shaders/TMP_SDF-HDRP LIT.shadergraph           | 12074 +++++++++++++++++++
+ .../Shaders/TMP_SDF-HDRP LIT.shadergraph.meta      |    10 +
+ .../Shaders/TMP_SDF-HDRP UNLIT.shadergraph         | 11759 ++++++++++++++++++
+ .../Shaders/TMP_SDF-HDRP UNLIT.shadergraph.meta    |    10 +
+ .../Shaders/TMP_SDF-Mobile Masking.shader          |   258 +
+ .../Shaders/TMP_SDF-Mobile Masking.shader.meta     |     9 +
+ .../Shaders/TMP_SDF-Mobile Overlay.shader          |   252 +
+ .../Shaders/TMP_SDF-Mobile Overlay.shader.meta     |     9 +
+ .../TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader |   106 +
+ .../Shaders/TMP_SDF-Mobile SSD.shader.meta         |     9 +
+ .../Shaders/TMP_SDF-Mobile-2-Pass.shader           |   389 +
+ .../Shaders/TMP_SDF-Mobile-2-Pass.shader.meta      |     9 +
+ Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader  |   250 +
+ .../Shaders/TMP_SDF-Mobile.shader.meta             |     9 +
+ .../Shaders/TMP_SDF-Surface-Mobile.shader          |   139 +
+ .../Shaders/TMP_SDF-Surface-Mobile.shader.meta     |     9 +
+ Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader |   159 +
+ .../Shaders/TMP_SDF-Surface.shader.meta            |     9 +
+ .../Shaders/TMP_SDF-URP Lit.shadergraph            | 11932 ++++++++++++++++++
+ .../Shaders/TMP_SDF-URP Lit.shadergraph.meta       |    10 +
+ .../Shaders/TMP_SDF-URP Unlit.shadergraph          | 11629 ++++++++++++++++++
+ .../Shaders/TMP_SDF-URP Unlit.shadergraph.meta     |    10 +
+ Assets/TextMesh Pro/Shaders/TMP_SDF.shader         |   326 +
+ Assets/TextMesh Pro/Shaders/TMP_SDF.shader.meta    |     9 +
+ Assets/TextMesh Pro/Shaders/TMP_Sprite.shader      |   131 +
+ Assets/TextMesh Pro/Shaders/TMP_Sprite.shader.meta |     9 +
+ Assets/TextMesh Pro/Shaders/TMPro.cginc            |    84 +
+ Assets/TextMesh Pro/Shaders/TMPro.cginc.meta       |     9 +
+ Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc     |   165 +
+ .../TextMesh Pro/Shaders/TMPro_Mobile.cginc.meta   |     9 +
+ Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc |    80 +
+ .../Shaders/TMPro_Properties.cginc.meta            |     9 +
+ Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc    |    99 +
+ .../TextMesh Pro/Shaders/TMPro_Surface.cginc.meta  |     9 +
+ Assets/TextMesh Pro/Sprites.meta                   |     8 +
+ .../TextMesh Pro/Sprites/EmojiOne Attribution.txt  |     3 +
+ .../Sprites/EmojiOne Attribution.txt.meta          |     7 +
+ Assets/TextMesh Pro/Sprites/EmojiOne.json          |   156 +
+ Assets/TextMesh Pro/Sprites/EmojiOne.json.meta     |     8 +
+ Assets/TextMesh Pro/Sprites/EmojiOne.png           |   Bin 0 -> 112319 bytes
+ Assets/TextMesh Pro/Sprites/EmojiOne.png.meta      |   431 +
+ Assets/prefab/UI.meta                              |     8 +
+ Assets/prefab/UI/Article.meta                      |     8 +
+ Assets/prefab/UI/Article/ActionButton.prefab       |   384 +
+ Assets/prefab/UI/Article/ActionButton.prefab.meta  |     7 +
+ Assets/prefab/UI/Article/Button_Box.prefab         |   487 +
+ Assets/prefab/UI/Article/Button_Box.prefab.meta    |     7 +
+ Assets/prefab/UI/Article/Container Text.prefab     |   367 +
+ .../prefab/UI/Article/Container Text.prefab.meta   |     7 +
+ Assets/prefab/UI/Article/Container_Image.prefab    |   254 +
+ .../prefab/UI/Article/Container_Image.prefab.meta  |     7 +
+ Assets/prefab/UI/Article/Subtitle.prefab           |   155 +
+ Assets/prefab/UI/Article/Subtitle.prefab.meta      |     7 +
+ Assets/prefab/UI/Article/Title.prefab              |   155 +
+ Assets/prefab/UI/Article/Title.prefab.meta         |     7 +
+ Assets/prefab/UI/Chat.meta                         |     8 +
+ Assets/prefab/UI/Chat/ChatButton.prefab            |   550 +
+ Assets/prefab/UI/Chat/ChatButton.prefab.meta       |     7 +
+ Assets/prefab/UI/Scrollbar.prefab                  |   239 +
+ Assets/prefab/UI/Scrollbar.prefab.meta             |     7 +
+ Assets/prefab/UI_MainFrame_Chat_News.prefab        |   666 +
+ Assets/prefab/UI_MainFrame_Chat_News.prefab.meta   |     7 +
+ 109 files changed, 76962 insertions(+), 772 deletions(-)
+
+commit 3403b9f95f41f0d74db411e0e34264a301e7946e
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-16T23:29:47-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-16T23:29:47-03:00
+
+    WIP Verification system
+
+ Assets/Scenes/SampleScene.unity                    | 3995 +++-----------------
+ Assets/Script/ArticleBlockView.cs                  |  187 +
+ Assets/Script/ArticleBlockView.cs.meta             |    2 +
+ Assets/Script/ArticleViewer.cs                     |  727 ++--
+ Assets/Script/ArticleViewer.cs.meta                |    2 +-
+ Assets/Script/Classes.meta                         |    8 +
+ Assets/Script/Classes/GeneralClasses.cs            |   52 +
+ .../GeneralClasses.cs.meta                         |    0
+ Assets/Script/ScriptableObject/ArticleData.cs      |   19 +-
+ Assets/Script/ScriptableObject/GeneralClasses.cs   |   89 -
+ .../Articles/Article Model.asset                   |   39 +
+ .../Articles/Article Model.asset.meta              |    8 +
+ .../Articles/FakeNews/Election Scandal.asset       |   32 +-
+ Assets/prefab/UI/Article/Article.meta              |    8 +
+ .../UI/Article/{ => Article}/ActionButton.prefab   |    0
+ .../Article/{ => Article}/ActionButton.prefab.meta |    0
+ .../UI/Article/{ => Article}/Button_Box.prefab     |    0
+ .../Article/{ => Article}/Button_Box.prefab.meta   |    0
+ .../Subtitle_Article_Prebab.prefab}                |    0
+ .../Subtitle_Article_Prebab.prefab.meta}           |    0
+ .../Title_Article_Prebab.prefab}                   |    0
+ .../Title_Article_Prebab.prefab.meta}              |    0
+ Assets/prefab/UI/Article/Article_Prefab.prefab     | 2292 +++++++++++
+ .../prefab/UI/Article/Article_Prefab.prefab.meta   |    7 +
+ Assets/prefab/UI/Article/Container_Image.prefab    |    2 +-
+ Assets/prefab/UI/Article/Container_Text.prefab     |  254 ++
+ .../prefab/UI/Article/Container_Text.prefab.meta   |    7 +
+ 27 files changed, 3931 insertions(+), 3799 deletions(-)
+
+commit 181d8c26d5e7694fe96d6f3f720beb9f2e515a26
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-17T23:23:34-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-17T23:23:34-03:00
+
+    WIP Drag & Drop
+
+ Assets/Script/ArticleBlockView.cs                  |  79 +---
+ Assets/Script/ArticleViewer.cs                     | 445 +++++++--------------
+ Assets/Script/Drag and Drop.meta                   |   8 +
+ Assets/Script/Drag and Drop/Block.cs               | 121 ++++++
+ Assets/Script/Drag and Drop/Block.cs.meta          |   2 +
+ Assets/Script/Drag and Drop/DraggableObject.cs     | 252 ++++++++++++
+ .../Script/Drag and Drop/DraggableObject.cs.meta   |   2 +
+ Assets/Script/GameManager.cs                       |  13 +
+ .../UI/Article/Article/Title_Article_Prebab.prefab |  14 +-
+ Assets/prefab/UI/Article/Container Text.prefab     |  23 +-
+ Assets/prefab/UI/Article/Container_Text.prefab     |  53 ++-
+ 11 files changed, 635 insertions(+), 377 deletions(-)
+
+commit d642ae711b63667d55f4b1f698c9074db27be48c
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-17T23:25:44-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-17T23:25:44-03:00
+
+    WIP Drag
+
+ Assets/Script/Drag and Drop/DraggableObject.cs | 134 ++++++++++++++++++-------
+ 1 file changed, 99 insertions(+), 35 deletions(-)
+
+commit 023bafac7d5368cca8f19e6feb8e12788d6df6da
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-17T23:26:10-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-17T23:26:10-03:00
+
+    WIP Drag
+
+ Assets/Scenes/SampleScene.unity                    | 215 ++++++++++++---------
+ .../Articles/FakeNews/Election Scandal.asset       |  37 ++--
+ ProjectSettings/TagManager.asset                   |   6 +-
+ 3 files changed, 141 insertions(+), 117 deletions(-)
+
+commit f73fee99b42b1128901cff16ffbb53e67aa2c6ac
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-18T23:08:24-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-18T23:08:24-03:00
+
+    Scritpable Object Working
+    
+    Fixed Article Scriptable Object
+    Next:
+    Improve block mark, clean codes
+    Validating the result,
+    show the correction
+
+ Assets/Scenes/SampleScene.unity                    | 790 ++++++++++++++++++---
+ Assets/Script/ArticleBlockView.cs                  |  31 +-
+ Assets/Script/ArticleViewer.cs                     | 269 +------
+ Assets/Script/Drag and Drop/Block.cs               |  26 +-
+ Assets/Script/Drag and Drop/DraggableObject.cs     |   4 -
+ .../Articles/FakeNews/Election Scandal.asset       |  20 +-
+ .../prefab/UI/Article/Article/ActionButton.prefab  |  22 +-
+ Assets/prefab/UI/Article/Container Text.prefab     |  27 +-
+ Assets/prefab/UI/Article/Container_Image.prefab    |  23 +
+ Assets/prefab/UI/Article/Container_Text.prefab     |  49 +-
+ 10 files changed, 843 insertions(+), 418 deletions(-)
+
+commit 69d2c7fe499df8809d5682770a5b094e1cfa4a98
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-08-20T01:49:05-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-08-20T01:49:05-03:00
+
+    Putting Icons
+    
+    Changing UI Chat images
+
+ Assets/Scenes/SampleScene.unity                    |  62 ++++++++-
+ Assets/Sprite/Figma.meta                           |   8 ++
+ Assets/Sprite/Figma/Ui_Chat.meta                   |   8 ++
+ Assets/Sprite/Figma/Ui_Chat/ChatButton.meta        |   8 ++
+ .../Ui_Chat/ChatButton/Blakeley Churco (3).png     | Bin 0 -> 6232 bytes
+ .../ChatButton/Blakeley Churco (3).png.meta        | 143 +++++++++++++++++++++
+ .../Ui_Chat/ChatButton/BordaBlackeley (1).png      | Bin 0 -> 1410 bytes
+ .../Ui_Chat/ChatButton/BordaBlackeley (1).png.meta | 143 +++++++++++++++++++++
+ .../Ui_Chat/ChatButton/Charlote Monroe (1).png     | Bin 0 -> 5479 bytes
+ .../ChatButton/Charlote Monroe (1).png.meta        | 143 +++++++++++++++++++++
+ .../Figma/Ui_Chat/ChatButton/Elipses_BordasBG.meta |   8 ++
+ .../Elipses_BordasBG/Elipse Charlotte.png          | Bin 0 -> 1985 bytes
+ .../Elipses_BordasBG/Elipse Charlotte.png.meta     | 143 +++++++++++++++++++++
+ .../ChatButton/Elipses_BordasBG/Elipse Iris.png    | Bin 0 -> 1977 bytes
+ .../Elipses_BordasBG/Elipse Iris.png.meta          | 143 +++++++++++++++++++++
+ .../ChatButton/Elipses_BordasBG/Elipse Jardel.png  | Bin 0 -> 2001 bytes
+ .../Elipses_BordasBG/Elipse Jardel.png.meta        | 143 +++++++++++++++++++++
+ .../ChatButton/Elipses_BordasBG/Elipse Kelvin.png  | Bin 0 -> 2006 bytes
+ .../Elipses_BordasBG/Elipse Kelvin.png.meta        | 143 +++++++++++++++++++++
+ .../ChatButton/Elipses_BordasBG/Elipse Miguel.png  | Bin 0 -> 2079 bytes
+ .../Elipses_BordasBG/Elipse Miguel.png.meta        | 143 +++++++++++++++++++++
+ .../ChatButton/Elipses_BordasBG/Elipse Rafael.png  | Bin 0 -> 1980 bytes
+ .../Elipses_BordasBG/Elipse Rafael.png.meta        | 143 +++++++++++++++++++++
+ .../ChatButton/Elipses_BordasBG/lipse Lino.png     | Bin 0 -> 2056 bytes
+ .../Elipses_BordasBG/lipse Lino.png.meta           | 143 +++++++++++++++++++++
+ .../ChatButton/Jardel Falc\303\243o (1).png"       | Bin 0 -> 7807 bytes
+ .../ChatButton/Jardel Falc\303\243o (1).png.meta"  | 143 +++++++++++++++++++++
+ .../Ui_Chat/ChatButton/K\303\251lvin Clay (1).png" | Bin 0 -> 6090 bytes
+ .../ChatButton/K\303\251lvin Clay (1).png.meta"    | 143 +++++++++++++++++++++
+ .../Ui_Chat/ChatButton/Lino Jatob\303\241 (1).png" | Bin 0 -> 8392 bytes
+ .../ChatButton/Lino Jatob\303\241 (1).png.meta"    | 143 +++++++++++++++++++++
+ .../Figma/Ui_Chat/ChatButton/Miguel Ramos (1).png  | Bin 0 -> 6882 bytes
+ .../Ui_Chat/ChatButton/Miguel Ramos (1).png.meta   | 143 +++++++++++++++++++++
+ .../Figma/Ui_Chat/ChatButton/Rafael Costa (1).png  | Bin 0 -> 7033 bytes
+ .../Ui_Chat/ChatButton/Rafael Costa (1).png.meta   | 143 +++++++++++++++++++++
+ .../Figma/Ui_Chat/ChatButton/iris Castelo.png      | Bin 0 -> 6993 bytes
+ .../Figma/Ui_Chat/ChatButton/iris Castelo.png.meta | 143 +++++++++++++++++++++
+ Assets/Sprite/Figma/Ui_Chat/Serach_Bar.png         | Bin 0 -> 868 bytes
+ Assets/Sprite/Figma/Ui_Chat/Serach_Bar.png.meta    | 143 +++++++++++++++++++++
+ Assets/prefab/UI/Chat/ChatButton.prefab            |  18 +--
+ 40 files changed, 2531 insertions(+), 12 deletions(-)
+
+commit 4663df88830539865bfcb8be21f5f0675671e742
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-20T22:55:21-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-20T22:55:21-03:00
+
+    WIP Chat
+
+ Assets/Scenes/SampleScene.unity                    | 2408 +++++++++++++++++++-
+ Assets/prefab/UI/Chat.meta                         |    2 +-
+ Assets/prefab/UI/Chat/ChatBlock_NPC.prefab         |  459 ++++
+ Assets/prefab/UI/Chat/ChatBlock_NPC.prefab.meta    |    7 +
+ Assets/prefab/UI/Chat/ChatBlock_Player.prefab      |  459 ++++
+ Assets/prefab/UI/Chat/ChatBlock_Player.prefab.meta |    7 +
+ Assets/prefab/UI/Conversation.meta                 |    8 +
+ .../UI/{Chat => Conversation}/ChatButton.prefab    |    0
+ .../{Chat => Conversation}/ChatButton.prefab.meta  |    0
+ 9 files changed, 3263 insertions(+), 87 deletions(-)
+
+commit c13760ccf1a7cac7931da70092c58ad754814619
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-22T15:51:20-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-22T15:51:20-03:00
+
+    WIP Chat
+
+ Assets/Scenes/SampleScene.unity                    | 645 +++++++++++++++++++--
+ Assets/Script/Article.meta                         |   8 +
+ Assets/Script/{ => Article}/ArticleBlockView.cs    |  12 +-
+ .../Script/{ => Article}/ArticleBlockView.cs.meta  |   0
+ Assets/Script/{ => Article}/ArticleViewer.cs       |  16 +-
+ Assets/Script/{ => Article}/ArticleViewer.cs.meta  |   0
+ Assets/Script/Chat.meta                            |   8 +
+ Assets/Script/Chat/ConversationTrigger.cs          |  51 ++
+ Assets/Script/Chat/ConversationTrigger.cs.meta     |   2 +
+ Assets/Script/Chat/ConversationViewer.cs           | 261 +++++++++
+ Assets/Script/Chat/ConversationViewer.cs.meta      |   2 +
+ Assets/Script/Classes/GeneralClasses.cs            |  14 +-
+ Assets/Script/Drag and Drop/Block.cs               |   2 +-
+ Assets/Script/GameManager.cs                       |  20 +-
+ Assets/Script/ScriptableObject/ConversationData.cs |  55 ++
+ .../ScriptableObject/ConversationData.cs.meta      |   2 +
+ .../Articles/Article Model.asset                   |  20 +-
+ Assets/Scriptable Objects/Conversations.meta       |   8 +
+ .../Conversations/NewConversation.asset            |  27 +
+ .../Conversations/NewConversation.asset.meta       |   8 +
+ Assets/prefab/UI/Chat/ChatBlock_NPC.prefab         |  10 +-
+ Assets/prefab/UI/Chat/ChatBlock_Player.prefab      |  11 +-
+ 22 files changed, 1074 insertions(+), 108 deletions(-)
+
+commit aca12fc5949607b726bd19b72a6a87321c31f74a
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-22T20:45:29-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-22T20:45:29-03:00
+
+    WIP UI
+
+ Assets/Scenes/SampleScene.unity | 969 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 809 insertions(+), 160 deletions(-)
+
+commit 6d00c89f02a6593af0932168ce79b1de934b462c
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-22T21:22:20-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-22T21:22:20-03:00
+
+    draggable fixed
+
+ Assets/Script/Drag and Drop/DraggableObject.cs | 268 ++++++++++++++++++-------
+ 1 file changed, 192 insertions(+), 76 deletions(-)
+
+commit 1aff77b08a43abf75d00f672608162883e82fbc7
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-22T21:31:29-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-22T21:31:29-03:00
+
+    WIP UI Article and Chat
+
+ Assets/Scenes/SampleScene.unity                   | 5063 +++--------------
+ Assets/Script/Chat/ConversationViewer.cs          |   86 +-
+ Assets/prefab/UI/Frames.meta                      |    8 +
+ Assets/prefab/UI/Frames/Frame_Article.prefab      | 5994 +++++++++++++++++++++
+ Assets/prefab/UI/Frames/Frame_Article.prefab.meta |    7 +
+ Assets/prefab/UI/Frames/Frame_Chat.prefab         | 3980 ++++++++++++++
+ Assets/prefab/UI/Frames/Frame_Chat.prefab.meta    |    7 +
+ 7 files changed, 10922 insertions(+), 4223 deletions(-)
+
+commit 6e360dc5c721c2329c10da72cc4ff8fb743295db
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-22T22:13:02-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-22T22:13:02-03:00
+
+    WIP Validation Check
+
+ Assets/Scenes/SampleScene.unity                | 100 +++++++++++++-
+ Assets/Script/Article/ArticleValidator.cs      | 175 +++++++++++++++++++++++++
+ Assets/Script/Article/ArticleValidator.cs.meta |   2 +
+ Assets/Script/Drag and Drop/Block.cs           |  86 +++++++++++-
+ Assets/Script/Drag and Drop/DraggableObject.cs |  58 ++++++--
+ 5 files changed, 401 insertions(+), 20 deletions(-)
+
+commit 7e2ce0200de495b3ac6bf863cf29ca47492e26b1
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-23T21:45:29-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-23T21:45:29-03:00
+
+    Update ArticleValidator.cs
+
+ Assets/Script/Article/ArticleValidator.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6fe855be153f5f7c11f21a07e0d99ff94492c0a0
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-24T22:08:13-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-24T22:08:13-03:00
+
+    Update SampleScene.unity
+
+ Assets/Scenes/SampleScene.unity | 228 ++++++++++++++++++++++++++--------------
+ 1 file changed, 152 insertions(+), 76 deletions(-)
+
+commit 32335b5dea04a418aadb6e203e59e01b456f9066
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-08-26T07:55:22-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-08-26T07:55:22-03:00
+
+    Ui changes, outlines and structure
+
+ Assets/Scenes/SampleScene.unity                    |  783 +++++-
+ .../Articles/FakeNews/Election Scandal.asset       |   21 +-
+ Assets/Sprite/Figma/UI_SideBar.meta                |    8 +
+ Assets/Sprite/Figma/UI_SideBar/Ai_Check.png        |  Bin 0 -> 3453 bytes
+ Assets/Sprite/Figma/UI_SideBar/Ai_Check.png.meta   |  169 ++
+ Assets/Sprite/Figma/UI_SideBar/Callendar.png       |  Bin 0 -> 2972 bytes
+ Assets/Sprite/Figma/UI_SideBar/Callendar.png.meta  |  169 ++
+ Assets/Sprite/Figma/UI_SideBar/Label_Check.png     |  Bin 0 -> 1976 bytes
+ .../Sprite/Figma/UI_SideBar/Label_Check.png.meta   |  143 +
+ Assets/Sprite/Figma/UI_SideBar/Source_Check.png    |  Bin 0 -> 4755 bytes
+ .../Sprite/Figma/UI_SideBar/Source_Check.png.meta  |  169 ++
+ Assets/Sprite/Figma/UI_SideBar/Specialist.png      |  Bin 0 -> 3308 bytes
+ Assets/Sprite/Figma/UI_SideBar/Specialist.png.meta |  195 ++
+ Assets/Sprite/Figma/UI_SideBar/True_Check.png      |  Bin 0 -> 5179 bytes
+ Assets/Sprite/Figma/UI_SideBar/True_Check.png.meta |  143 +
+ Assets/Sprite/Figma/image 35.png                   |  Bin 0 -> 2614440 bytes
+ Assets/Sprite/Figma/image 35.png.meta              |  143 +
+ Assets/TextMesh Pro/Fonts/Syne.meta                |    8 +
+ Assets/TextMesh Pro/Fonts/Syne/OFL.txt             |   93 +
+ Assets/TextMesh Pro/Fonts/Syne/OFL.txt.meta        |    7 +
+ Assets/TextMesh Pro/Fonts/Syne/README.txt          |   67 +
+ Assets/TextMesh Pro/Fonts/Syne/README.txt.meta     |    7 +
+ .../Fonts/Syne/Syne-VariableFont_wght SDF.asset    | 2833 ++++++++++++++++++++
+ .../Syne/Syne-VariableFont_wght SDF.asset.meta     |    8 +
+ .../Fonts/Syne/Syne-VariableFont_wght.ttf          |  Bin 0 -> 145260 bytes
+ .../Fonts/Syne/Syne-VariableFont_wght.ttf.meta     |   21 +
+ Assets/TextMesh Pro/Fonts/Syne/static.meta         |    8 +
+ .../TextMesh Pro/Fonts/Syne/static/Syne-Bold.ttf   |  Bin 0 -> 69172 bytes
+ .../Fonts/Syne/static/Syne-Bold.ttf.meta           |   21 +
+ .../Fonts/Syne/static/Syne-ExtraBold.ttf           |  Bin 0 -> 69252 bytes
+ .../Fonts/Syne/static/Syne-ExtraBold.ttf.meta      |   21 +
+ .../TextMesh Pro/Fonts/Syne/static/Syne-Medium.ttf |  Bin 0 -> 69024 bytes
+ .../Fonts/Syne/static/Syne-Medium.ttf.meta         |   21 +
+ .../Fonts/Syne/static/Syne-Regular.ttf             |  Bin 0 -> 68720 bytes
+ .../Fonts/Syne/static/Syne-Regular.ttf.meta        |   21 +
+ .../Fonts/Syne/static/Syne-SemiBold.ttf            |  Bin 0 -> 69160 bytes
+ .../Fonts/Syne/static/Syne-SemiBold.ttf.meta       |   21 +
+ 37 files changed, 5038 insertions(+), 62 deletions(-)
+
+commit 1dc0e8bbc98d4a2d0caf22240cc5312a32a15ce4
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-29T16:18:07-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-29T16:18:07-03:00
+
+    WIP Feedback Panel
+    
+    Feedbackpanel Testing
+    gonna do the the Chat Main Frame
+
+ Assets/Scenes/SampleScene.unity                    | 4621 ++++++++++++++++++--
+ Assets/Script/Article/ArticleFeedbackPanel.cs      |  259 ++
+ Assets/Script/Article/ArticleFeedbackPanel.cs.meta |    2 +
+ Assets/Script/Article/ArticleValidator.cs          |  244 +-
+ Assets/Script/Article/ArticleViewer.cs             |  184 +-
+ 5 files changed, 4751 insertions(+), 559 deletions(-)
+
+commit 4bc339570d2fa69143b047d63d3a3ff3e5e9b7be
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-31T16:04:41-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-31T16:04:41-03:00
+
+    WIP Scene
+
+ Assets/Scenes/SampleScene.unity | 230 ++++++++++++++++++++--------------------
+ 1 file changed, 115 insertions(+), 115 deletions(-)
+
+commit 3b42e70776156243fd4a9797ed1a958adb9db389
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-08-31T17:24:31-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-08-31T17:24:31-03:00
+
+    a
+
+ Assets/Script/Lixeira.cs                           |  6 ++
+ Assets/Script/Lixeira.cs.meta                      |  2 +
+ Assets/Script/Lixo.cs                              | 66 ++++++++++++++++++++++
+ Assets/Script/Lixo.cs.meta                         |  2 +
+ Assets/Script/TipoLixo.cs                          |  9 +++
+ Assets/Script/TipoLixo.cs.meta                     |  2 +
+ Assets/UI Toolkit/New Folder.meta                  |  8 +++
+ Assets/UniversalRenderPipelineGlobalSettings.asset |  8 ++-
+ Packages/packages-lock.json                        | 10 ++--
+ ProjectSettings/PackageManagerSettings.asset       |  6 +-
+ .../MultiplayerRolesSettings.asset                 | 17 ++++++
+ ProjectSettings/ProjectVersion.txt                 |  4 +-
+ 12 files changed, 127 insertions(+), 13 deletions(-)
+
+commit 2d1a1a6facacda044a077e9f197449854d6116ae
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-08-31T17:45:08-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-08-31T17:45:08-03:00
+
+    scrollbar changes
+
+ Assets/Scenes/SampleScene.unity | 46 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 39 insertions(+), 7 deletions(-)
+
+commit 67a11d0a91dcf7d210e7ccb2260af809ea01fa3b
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-31T21:24:26-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-31T21:24:26-03:00
+
+    Revert "scrollbar changes"
+    
+    This reverts commit 2d1a1a6facacda044a077e9f197449854d6116ae.
+
+ Assets/Scenes/SampleScene.unity | 46 +++++++----------------------------------
+ 1 file changed, 7 insertions(+), 39 deletions(-)
+
+commit aee0ce2a78e8da2564230eacd52f09b50c6cf403
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-31T21:24:30-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-31T21:27:46-03:00
+
+    Revert "a"
+    
+    This reverts commit 3b42e70776156243fd4a9797ed1a958adb9db389.
+
+ Assets/Script/Lixeira.cs                           |  6 --
+ Assets/Script/Lixeira.cs.meta                      |  2 -
+ Assets/Script/Lixo.cs                              | 66 ----------------------
+ Assets/Script/Lixo.cs.meta                         |  2 -
+ Assets/Script/TipoLixo.cs                          |  9 ---
+ Assets/Script/TipoLixo.cs.meta                     |  2 -
+ Assets/UI Toolkit/New Folder.meta                  |  8 ---
+ ProjectSettings/PackageManagerSettings.asset       |  6 +-
+ .../MultiplayerRolesSettings.asset                 | 17 ------
+ ProjectSettings/ProjectVersion.txt                 |  4 +-
+ 10 files changed, 5 insertions(+), 117 deletions(-)
+
+commit 76f4aca6d5cda2d5c77307e55db91b1aa8831588
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-08-31T21:59:47-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-08-31T21:59:47-03:00
+
+    Reverted
+    
+    Working icons
+    WIP Feedback panel
+    WIP Chat conversation
+
+ Assets/DefaultVolumeProfile.asset                  | 784 +--------------------
+ Assets/Resources.meta                              |   8 +
+ Assets/Scenes/SampleScene.unity                    |  61 +-
+ Assets/Script/Article/ArticleFeedbackPanel.cs      |  47 +-
+ Assets/Script/UIController.cs                      | 228 ++++++
+ Assets/Script/UIController.cs.meta                 |   2 +
+ Assets/Settings/UniversalRP.asset                  |  64 +-
+ Assets/UniversalRenderPipelineGlobalSettings.asset | 450 ++++++------
+ ProjectSettings/GraphicsSettings.asset             |   2 +-
+ ProjectSettings/ProjectSettings.asset              |   9 +-
+ ProjectSettings/UnityConnectSettings.asset         |   2 +-
+ 11 files changed, 576 insertions(+), 1081 deletions(-)
+
+commit 69c779ad4f9c3e46bd3675dbf48e416786305c95
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-03T05:34:28-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-03T05:34:28-03:00
+
+    WIP Feedback
+    
+    Feedback works, improving UI.
+
+ Assets/DefaultVolumeProfile.asset                  |  785 ++-
+ Assets/Scenes/SampleScene.unity                    | 6286 +++++++----------
+ Assets/Script/Article/ArticleBlockView.cs          |   40 +-
+ Assets/Script/Article/ArticleFeedbackPanel.cs      |   63 +-
+ Assets/Script/Article/ArticleValidator.cs          |  111 +-
+ .../Articles/FakeNews/Election Scandal.asset       |   14 +-
+ Assets/UniversalRenderPipelineGlobalSettings.asset |   58 +-
+ .../prefab/UI/Article/Article/ActionButton.prefab  |   24 +-
+ Assets/prefab/UI/Article/Container Text.prefab     |  320 +-
+ Assets/prefab/UI/Article/Container_Image.prefab    |   21 +-
+ Assets/prefab/UI/Article/Writer_NameBlock.prefab   |  572 ++
+ .../prefab/UI/Article/Writer_NameBlock.prefab.meta |    7 +
+ Assets/prefab/UI/Frames/Frame_Article.prefab       | 7415 +++++---------------
+ Packages/packages-lock.json                        |   10 +-
+ ProjectSettings/ProjectSettings.asset              |    1 +
+ 15 files changed, 6210 insertions(+), 9517 deletions(-)
+
+commit cd284c119b4191c673b99103c72e50aec2ae1674
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-03T05:47:12-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-03T05:47:12-03:00
+
+    changed chat buttons
+    
+    Chat Button improvements
+
+ Assets/Scenes/SampleScene.unity                 | 6981 ++++++++---------------
+ Assets/prefab/UI/Conversation/ChatButton.prefab |  252 +-
+ 2 files changed, 2363 insertions(+), 4870 deletions(-)
+
+commit 592fc41fcbc772c9565663699e369287036120b7
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-06T14:12:46-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-06T14:12:46-03:00
+
+    WIP Validation improvements
+
+ Assets/Script/ClickMarker.meta                     |  8 ++
+ Assets/Script/ClickMarker/BlockClickReceiver.cs    | 70 ++++++++++++++++
+ .../Script/ClickMarker/BlockClickReceiver.cs.meta  |  2 +
+ Assets/Script/ClickMarker/ButtonClickMarker.cs     | 95 ++++++++++++++++++++++
+ .../Script/ClickMarker/ButtonClickMarker.cs.meta   |  2 +
+ Assets/Script/Drag and Drop/DraggableObject.cs     | 80 ++++++++++++++----
+ .../prefab/UI/Article/Article/ActionButton.prefab  | 17 +++-
+ Assets/prefab/UI/Article/Container Text.prefab     | 14 ++++
+ 8 files changed, 273 insertions(+), 15 deletions(-)
+
+commit ca6201163d9e52bcd9502236f544bed1397b5f64
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-06T14:29:47-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-06T14:29:47-03:00
+
+    WIP Feedback
+
+ Assets/Scenes/SampleScene.unity | 156 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 136 insertions(+), 20 deletions(-)
+
+commit f76b14267fe21a9d67a07932399f010f185639ec
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-06T14:55:03-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-06T14:55:03-03:00
+
+    WIP text color change
+
+ Assets/Scenes/SampleScene.unity                | 1474 +++++++++++++++++++++---
+ Assets/Script/Article/ArticleBlockView.cs      |   83 +-
+ Assets/Script/Drag and Drop/DraggableObject.cs |   32 +-
+ Assets/prefab/UI/Article/Container Text.prefab |   89 +-
+ Assets/prefab/UI/Article/Container_Text.prefab |   40 +-
+ 5 files changed, 1533 insertions(+), 185 deletions(-)
+
+commit 0d0a960d6d84ba11433dac74a888dca124dd7a2a
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-07T11:46:33-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-07T11:46:33-03:00
+
+    History WIP
+
+ Assets/Scenes/SampleScene.unity                 | 3155 ++++++++++++++++++++---
+ Assets/Script/History.meta                      |    8 +
+ Assets/Script/History/GridPopulator.cs          |  111 +
+ Assets/Script/History/GridPopulator.cs.meta     |    2 +
+ Assets/Script/History/NewsCell.cs               |   62 +
+ Assets/Script/History/NewsCell.cs.meta          |    2 +
+ Assets/Script/History/NewsGridPopulator.cs      |   67 +
+ Assets/Script/History/NewsGridPopulator.cs.meta |    2 +
+ Assets/prefab/UI/Article/Container Text.prefab  |   78 +-
+ Assets/prefab/UI/History.meta                   |    8 +
+ Assets/prefab/UI/History/NewsCell.prefab        |  203 ++
+ Assets/prefab/UI/History/NewsCell.prefab.meta   |    7 +
+ 12 files changed, 3270 insertions(+), 435 deletions(-)
+
+commit 2f166830ccc9df134607f4755cf0f17f938f4cb2
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-07T17:10:28-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-07T17:10:28-03:00
+
+    WIP History
+
+ Assets/Scenes/SampleScene.unity                 | 445 ++++++++++++++++++++++--
+ Assets/Script/History/GridPopulator.cs          | 111 ------
+ Assets/Script/History/GridPopulator.cs.meta     |   2 -
+ Assets/Script/History/NewsCell.cs               |  20 +-
+ Assets/Script/History/NewsGridPopulator.cs      |  97 ++++--
+ Assets/Script/History/NewsGridPopulator.cs.meta |   2 +-
+ 6 files changed, 515 insertions(+), 162 deletions(-)
+
+commit 742b0b095b6317e60565ff7cb128a309577353a4
+Author:     PHNvieira015 <damenesvid580@gmail.com>
+AuthorDate: 2026-09-08T18:40:52-03:00
+Commit:     PHNvieira015 <damenesvid580@gmail.com>
+CommitDate: 2026-09-08T18:40:52-03:00
+
+    Noticias Start
+
+ Assets/Scenes/SampleScene.unity                    | 298 ++++++++++-----------
+ .../Articles/FakeNews/COVIDMODE.meta               |   8 +
+ .../Articles/FakeNews/COVIDMODE/NEWS1.asset        |  80 ++++++
+ .../Articles/FakeNews/COVIDMODE/NEWS1.asset.meta   |   8 +
+ .../Articles/FakeNews/COVIDMODE/NEWS2.asset        |  78 ++++++
+ .../Articles/FakeNews/COVIDMODE/NEWS2.asset.meta   |   8 +
+ .../FakeNews/ELEI\303\207\303\225ESMODE.meta"      |   8 +
+ .../ELEI\303\207\303\225ESMODE/NEWS1_E.asset"      |  75 ++++++
+ .../ELEI\303\207\303\225ESMODE/NEWS1_E.asset.meta" |   8 +
+ .../ELEI\303\207\303\225ESMODE/NEWS2_E.asset"      |  76 ++++++
+ .../ELEI\303\207\303\225ESMODE/NEWS2_E.asset.meta" |   8 +
+ .../ELEI\303\207\303\225ESMODE/NEWS3_E.asset"      |  81 ++++++
+ .../ELEI\303\207\303\225ESMODE/NEWS3_E.asset.meta" |   8 +
+ Assets/UniversalRenderPipelineGlobalSettings.asset |  24 +-
+ Packages/packages-lock.json                        |  10 +-
+ .../MultiplayerRolesSettings.asset                 |  17 ++
+ ProjectSettings/ProjectVersion.txt                 |   4 +-
+ 17 files changed, 625 insertions(+), 174 deletions(-)
+
+commit 6bf3937bf4f2bb6cc858d1b5e24a98aedef0e956
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-09T05:02:22-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-09T05:02:22-03:00
+
+    put chat arts.
+
+ Assets/Scenes/SampleScene.unity    | 650 ++++++++++++++++++++++++++++++-------
+ Packages/packages-lock.json        |  10 +-
+ ProjectSettings/ProjectVersion.txt |   4 +-
+ 3 files changed, 539 insertions(+), 125 deletions(-)
+
+commit 1570e49afc417b9a0766e8400f508b80be6ad7f6
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-10T00:19:40-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-10T00:19:40-03:00
+
+    Sidebar and Ui History
+    
+    Put more icons and distrubuted the UI in the side panel, pu life bar (credibilityBar) and created a button that take us to the UI History panel, When you click the button, the icons disappear, leaving only the back button.
+
+ Assets/Scenes/SampleScene.unity                    | 1466 ++++++++++++++++++--
+ Assets/Sprite/Figma/UI_SideBar/Back_Icon.png       |  Bin 0 -> 2981 bytes
+ Assets/Sprite/Figma/UI_SideBar/Back_Icon.png.meta  |  143 ++
+ .../Sprite/Figma/UI_SideBar/Credibility_Icon.png   |  Bin 0 -> 1388 bytes
+ .../Figma/UI_SideBar/Credibility_Icon.png.meta     |  143 ++
+ .../Sprite/Figma/UI_SideBar/Gameplay_History.png   |  Bin 0 -> 2625 bytes
+ .../Figma/UI_SideBar/Gameplay_History.png.meta     |  169 +++
+ .../UI_SideBar/baseline-pause-circle-outline.png   |  Bin 0 -> 3465 bytes
+ .../baseline-pause-circle-outline.png.meta         |  143 ++
+ 9 files changed, 1964 insertions(+), 100 deletions(-)
+
+commit 5a638c22afa28871adfce6b598b5649818b01042
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-10T21:43:08-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-10T21:43:08-03:00
+
+    Fixed UI scale
+    
+    (was the horizontal Layout group in UI Division)
+
+ Assets/Scenes/SampleScene.unity | 54 ++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
+
+commit 5d1eee818c2a9ee60b40870557209018797fa28f
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-10T22:48:04-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-10T22:48:04-03:00
+
+    WIP UI
+
+ Assets/Scenes/SampleScene.unity               | 200 ++++++++++++-----------
+ Assets/Script/Article/ArticleFeedbackPanel.cs |   2 +-
+ Assets/Script/History/NewsGridPopulator.cs    |   3 +-
+ Assets/Script/Nova pasta.meta                 |   8 +
+ Assets/Script/UIController.cs                 | 226 ++++++++------------------
+ 5 files changed, 181 insertions(+), 258 deletions(-)
+
+commit c84a0b83e451b3be4ef472a3f228270b64c68c08
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-10T22:52:24-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-10T22:52:24-03:00
+
+    UI Fix
+
+ Assets/Scenes/SampleScene.unity | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 6e9bce81992536f3e64e45e494a3776f0cd0b431
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-10T23:45:05-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-10T23:45:05-03:00
+
+    UI Fixes
+
+ Assets/Scenes/SampleScene.unity                    | 17661 ++++++++++---------
+ Assets/Script/Article/ArticleFeedbackPanel.cs      |    39 +-
+ Assets/Script/Nova pasta.meta                      |     8 -
+ Assets/Script/{UIController.cs => UIManager.cs}    |   157 +-
+ .../{UIController.cs.meta => UIManager.cs.meta}    |     0
+ Assets/prefab/UI/Article/Article_Prefab.prefab     |  5858 ++++--
+ 6 files changed, 13773 insertions(+), 9950 deletions(-)
+
+commit dad3d2a9e76d1e456f808f85a62ac19f08a95db3
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-10T23:48:22-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-10T23:48:22-03:00
+
+    UI Fixes
+
+ Assets/Scenes/SampleScene.unity | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 173b1c0ad8d9b1187bba8cb4ac02b42a56dc317a
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-12T08:16:27-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-12T08:16:27-03:00
+
+    Updated UI Hierarchy
+    
+    WIP Viewport for each Screen
+
+ Assets/Scenes/SampleScene.unity                    | 453 +++++++++++----------
+ .../prefab/UI/Article/Article_Space_Writer.prefab  |  77 ++++
+ .../UI/Article/Article_Space_Writer.prefab.meta    |   7 +
+ 3 files changed, 326 insertions(+), 211 deletions(-)
+
+commit aa9d070fd57a75f72d9487d9994ecc2bed95a6dd
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-12T09:07:28-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-12T09:07:28-03:00
+
+    article added URL
+
+ Assets/Script/ScriptableObject/ArticleData.cs | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit ab070c795e418c4fcbf728d6844ff6986c9c6e4c
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-12T09:50:35-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-12T09:50:35-03:00
+
+    Fixed Feedback skipping
+
+ Assets/Scenes/SampleScene.unity                    | 540 +++++++++++++++------
+ Assets/Script/Article/ArticleFeedbackPanel.cs      | 114 ++++-
+ ...cle_Space_Writer.prefab => Space_Writer.prefab} |  10 +-
+ ...Writer.prefab.meta => Space_Writer.prefab.meta} |   0
+ 4 files changed, 512 insertions(+), 152 deletions(-)
+
+commit f96bebd486a29364069a748eaee55b0f525fcfa7
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-12T10:09:12-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-12T10:09:12-03:00
+
+    Feedback Scroll Working
+
+ Assets/Scenes/SampleScene.unity | 2004 +++++++++++++++++++++++++--------------
+ 1 file changed, 1274 insertions(+), 730 deletions(-)
+
+commit e045eead7043cc6c82619ceb901a768de7fdf721
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-12T14:36:21-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-12T14:36:21-03:00
+
+    UI improvements
+    
+    Close Button
+
+ Assets/Scenes/SampleScene.unity                | 124 +++++++++--
+ Assets/Script/Article/ArticleFeedbackPanel.cs  |  78 ++-----
+ Assets/prefab/UI/Article/Article_Prefab.prefab |  24 +-
+ Assets/prefab/UI/Close_Button.prefab           | 293 +++++++++++++++++++++++++
+ Assets/prefab/UI/Close_Button.prefab.meta      |   7 +
+ 5 files changed, 443 insertions(+), 83 deletions(-)
+
+commit 388ae892f07657f6cfe9c0b519abf16366fb92bc
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-13T11:11:24-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-13T11:11:24-03:00
+
+    WIP UI
+
+ Assets/Scenes/Main Scene.unity                     | 18390 +++++++++++++++++++
+ ...ampleScene.unity.meta => Main Scene.unity.meta} |     0
+ ...{SampleScene.unity => Version 12.09.2026.unity} |     0
+ Assets/Scenes/Version 12.09.2026.unity.meta        |     7 +
+ ProjectSettings/EditorBuildSettings.asset          |     2 +-
+ 5 files changed, 18398 insertions(+), 1 deletion(-)
+
+commit 68eba63c64fa97817b05f42ececf5cb8de181b05
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-13T17:17:15-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-13T17:17:15-03:00
+
+    WIP Chat
+    
+    Chat works, need to fine tune it
+    And work on the player options (maybe)
+
+ Assets/Script/Chat/ChatBubble.cs                   |  118 +++
+ Assets/Script/Chat/ChatBubble.cs.meta              |    2 +
+ Assets/Script/Chat/ConversationButton.cs           |   83 ++
+ Assets/Script/Chat/ConversationButton.cs.meta      |    2 +
+ Assets/Script/Chat/ConversationListUI.cs           |  151 +++
+ Assets/Script/Chat/ConversationListUI.cs.meta      |    2 +
+ Assets/Script/Chat/ConversationTrigger.cs          |    1 -
+ Assets/Script/Chat/ConversationViewer.cs           |  527 +++++++---
+ .../Scriptable Objects/Conversations/NPC AA.asset  |   43 +
+ .../Conversations/NPC AA.asset.meta                |    8 +
+ .../Scriptable Objects/Conversations/NPC BB.asset  |   43 +
+ .../Conversations/NPC BB.asset.meta                |    8 +
+ Assets/prefab/UI/Chat/BublePrefab.prefab           |  441 ++++++++
+ Assets/prefab/UI/Chat/BublePrefab.prefab.meta      |    7 +
+ .../{ChatButton.prefab => NPCButton.prefab}        |   34 +-
+ ...hatButton.prefab.meta => NPCButton.prefab.meta} |    0
+ Assets/prefab/UI/Frames/Frame_Chat.prefab          | 1103 +++++---------------
+ 17 files changed, 1578 insertions(+), 995 deletions(-)
+
+commit f602e1f7cfae46829a3b05d32e15336ca5bf2ce9
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-13T20:58:44-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-13T20:58:44-03:00
+
+    (WIP) Chat URL issue
+
+ Assets/Scenes/Main Scene.unity                     | 4847 ++++++++++++--------
+ Assets/Script/Chat/ChatBubble.cs                   |  283 +-
+ Assets/Script/Chat/ConversationViewer.cs           |  726 ++-
+ Assets/Script/Classes/GeneralClasses.cs            |    3 +-
+ Assets/Script/ScriptableObject/ConversationData.cs |    8 +-
+ .../Scriptable Objects/Conversations/NPC AA.asset  |   16 +
+ Assets/prefab/UI/Chat/BublePrefab.prefab           |   45 +
+ Assets/prefab/UI/Chat/ChatBlock_NPC.prefab         |    4 +-
+ .../UI/Chat/UI_Chat_Player_Typewritter.prefab      |  260 ++
+ .../UI/Chat/UI_Chat_Player_Typewritter.prefab.meta |    7 +
+ Assets/prefab/UI/Frames/Frame_Chat.prefab          |  372 +-
+ 11 files changed, 4161 insertions(+), 2410 deletions(-)
+
+commit f3a1a4086640673ef9c90184965a86092414a4e1
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-13T21:48:36-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-13T21:48:36-03:00
+
+    Fixed Chat interaction to article
+
+ Assets/Scenes/Main Scene.unity                     | 194 ++++-
+ Assets/Script/Article/ArticleViewer.cs             | 279 +++++--
+ Assets/Script/Chat/ConversationViewer.cs           | 798 +++++++++++++++------
+ .../Scriptable Objects/Conversations/NPC AA.asset  |   8 +-
+ 4 files changed, 1024 insertions(+), 255 deletions(-)
+
+commit 98981afbc17fd7bf975826afb38309f63f150826
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-13T21:52:40-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-13T21:52:40-03:00
+
+    Improving on article change
+
+ Assets/Scenes/Main Scene.unity                     |  44 ++---
+ Assets/Script/Article/ArticleViewer.cs             | 187 +++++++++++++++++++--
+ .../Scriptable Objects/Conversations/NPC AA.asset  |  10 ++
+ 3 files changed, 205 insertions(+), 36 deletions(-)
+
+commit 0e255178f1f81a4db5ec7c3560ce8d727ffce906
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-14T18:39:41-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-14T18:39:41-03:00
+
+    Chat Header Fix
+    
+    Corrected Outline and background for header
+
+ Assets/Scenes/Main Scene.unity     | 98 +++++++++++++++++++++++++++++++-------
+ Packages/packages-lock.json        | 10 ++--
+ ProjectSettings/ProjectVersion.txt |  4 +-
+ 3 files changed, 89 insertions(+), 23 deletions(-)
+
+commit 3708ab3734f089935474446c9d67888b6308dc5a
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-14T18:43:52-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-14T18:43:52-03:00
+
+    UI Fixes 2
+
+ Assets/Scenes/Main Scene.unity | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+commit 7466349c23f2cc6c2f7edc9ad0a09ca3520f16e6
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-14T19:09:00-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-14T19:09:00-03:00
+
+    UI fixes side panel
+
+ Assets/Scenes/Main Scene.unity | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit ce4cea57e180a4ba0c6fc715a3861f734635ded8
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-14T23:06:19-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-14T23:06:19-03:00
+
+    UI fixes, scale (solution Layout Element preferred)
+
+ Assets/Scenes/Main Scene.unity     | 6759 ++++++++++++++++++++++--------------
+ Packages/packages-lock.json        |   10 +-
+ ProjectSettings/ProjectVersion.txt |    4 +-
+ 3 files changed, 4231 insertions(+), 2542 deletions(-)
+
+commit f3b91a788fcffcf2be71b3236d96f236bae66d7e
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-15T07:43:08-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-15T07:43:08-03:00
+
+    article screen created
+
+ Assets/Scenes/Main Scene.unity                     | 1251 +++++++++++++++++---
+ Assets/Sprite/Figma/ScrollBar.meta                 |    8 +
+ Assets/Sprite/Figma/ScrollBar/Rectangle 114.png    |  Bin 0 -> 2830 bytes
+ .../Sprite/Figma/ScrollBar/Rectangle 114.png.meta  |  143 +++
+ Assets/Sprite/Figma/Ui_Article.meta                |    8 +
+ Assets/Sprite/Figma/Ui_Article/Home.png            |  Bin 0 -> 1591 bytes
+ Assets/Sprite/Figma/Ui_Article/Home.png.meta       |  143 +++
+ Assets/Sprite/Figma/Ui_Article/Rectangle 316.png   |  Bin 0 -> 9374 bytes
+ .../Sprite/Figma/Ui_Article/Rectangle 316.png.meta |  143 +++
+ 9 files changed, 1515 insertions(+), 181 deletions(-)
+
+commit 83c87fbd50e25efbae9e248f5876a242d4900e54
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-15T18:16:32-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-15T18:16:32-03:00
+
+    article browser fixed
+
+ Assets/Scenes/Main Scene.unity               | 16 +++++++++-------
+ Packages/packages-lock.json                  | 10 +++++-----
+ ProjectSettings/PackageManagerSettings.asset |  6 +++---
+ ProjectSettings/ProjectVersion.txt           |  4 ++--
+ 4 files changed, 19 insertions(+), 17 deletions(-)
+
+commit b4d4527258fe5e00fbfced4e720cc2597f1ea551
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-15T18:56:40-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-15T18:56:40-03:00
+
+    .
+
+ Assets/Scenes/Main Scene.unity                 | 1891 +++++++++++++++---------
+ Assets/prefab/UI/Conversation/NPCButton.prefab |    6 +-
+ 2 files changed, 1199 insertions(+), 698 deletions(-)
+
+commit b5dd28c972dc63e3a4aae2bc4e18e05ea8f79463
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-15T19:28:15-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-15T19:28:15-03:00
+
+    mexer no ui history
+
+ Assets/Scenes/Main Scene.unity                     | 6604 +++++++++++---------
+ .../ChatButton/Blakeley Churco (3).png.meta        |   41 +-
+ .../Ui_Chat/ChatButton/BordaBlackeley (1).png.meta |   41 +-
+ .../ChatButton/Charlote Monroe (1).png.meta        |   41 +-
+ .../ChatButton/Jardel Falc\303\243o (1).png.meta"  |   41 +-
+ .../ChatButton/K\303\251lvin Clay (1).png.meta"    |   41 +-
+ .../ChatButton/Lino Jatob\303\241 (1).png.meta"    |   41 +-
+ .../Ui_Chat/ChatButton/Miguel Ramos (1).png.meta   |   41 +-
+ .../Ui_Chat/ChatButton/Rafael Costa (1).png.meta   |   41 +-
+ .../Figma/Ui_Chat/ChatButton/iris Castelo.png.meta |   41 +-
+ Assets/prefab/UI/History/Cell Container.prefab     |  294 +
+ .../prefab/UI/History/Cell Container.prefab.meta   |    7 +
+ Assets/prefab/UI/History/Celll Content.prefab      |  267 +
+ Assets/prefab/UI/History/Celll Content.prefab.meta |    7 +
+ Assets/prefab/UI/History/NewsCell.prefab           |  331 +-
+ 15 files changed, 4909 insertions(+), 2970 deletions(-)
+
+commit 03e660467422172c01d6f038c762f8ded9d6869e
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-15T21:55:32-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-15T21:55:32-03:00
+
+    UI_History Month Object
+
+ Assets/Scenes/Main Scene.unity                    | 1798 +++++++++++++++++++--
+ Assets/prefab/UI/History/Month Object.prefab      |  267 +++
+ Assets/prefab/UI/History/Month Object.prefab.meta |    7 +
+ 3 files changed, 1946 insertions(+), 126 deletions(-)
+
+commit 0bbaf5ede9936a2af0484281990bc5a95c683479
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-15T22:01:13-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-15T22:01:13-03:00
+
+    Improve History UI
+
+ Assets/Scenes/Main Scene.unity | 264 +++++++++++++++++++++++++----------------
+ 1 file changed, 160 insertions(+), 104 deletions(-)
+
+commit 415d361e2c559edeb3b9bc78f9680a680d653218
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-15T22:46:07-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-15T22:46:07-03:00
+
+    (WIP) UI scaling
+
+ Assets/Scenes/Main Scene.unity                 | 693 +++++++++++++------------
+ Assets/prefab/UI/Article/Article_Prefab.prefab |  31 --
+ 2 files changed, 366 insertions(+), 358 deletions(-)
+
+commit c4ac1e3f2938b97edf4bb15efb36a313ede2fae6
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-16T00:00:41-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-16T00:00:41-03:00
+
+    UI History and buttons fixed
+    
+    Still need to adjust the UI scale for some reason
+
+ Assets/Scenes/Main Scene.unity                     | 19007 +++++++++++--------
+ .../prefab/UI/Article/Article/ActionButton.prefab  |    52 +-
+ Assets/prefab/UI/History/GridRow.prefab            |   817 +
+ Assets/prefab/UI/History/GridRow.prefab.meta       |     7 +
+ 4 files changed, 11974 insertions(+), 7909 deletions(-)
+
+commit a56108ad8706832b77bfb92f7308883a1f0927f7
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-16T04:15:05-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-16T04:15:05-03:00
+
+    History screen 80% concluded
+
+ Assets/Scenes/Main Scene.unity                     | 2608 +++++++++++++++++---
+ Assets/Sprite/Figma/Ui_History.meta                |    8 +
+ Assets/Sprite/Figma/Ui_History/Button_NextYear.png |  Bin 0 -> 14837 bytes
+ .../Figma/Ui_History/Button_NextYear.png.meta      |  143 ++
+ .../Figma/Ui_History/Button_PreviousYear.png       |  Bin 0 -> 14818 bytes
+ .../Figma/Ui_History/Button_PreviousYear.png.meta  |  143 ++
+ .../Sprite/Figma/Ui_History/Rectangle 272 (2).png  |  Bin 0 -> 336 bytes
+ .../Figma/Ui_History/Rectangle 272 (2).png.meta    |  143 ++
+ Assets/Sprite/Figma/Ui_History/Rectangle 272.png   |  Bin 0 -> 555 bytes
+ .../Sprite/Figma/Ui_History/Rectangle 272.png.meta |  143 ++
+ Assets/Sprite/Figma/Ui_History/RoundedBorder.png   |  Bin 0 -> 99268 bytes
+ .../Sprite/Figma/Ui_History/RoundedBorder.png.meta |  143 ++
+ .../Figma/Ui_History/Rounded_Container_Down.png    |  Bin 0 -> 568 bytes
+ .../Ui_History/Rounded_Container_Down.png.meta     |  143 ++
+ Assets/prefab/UI/History/GridRow.prefab            |   50 +-
+ Assets/prefab/UI/History/Month Object.prefab       |    2 +-
+ Packages/packages-lock.json                        |   10 +-
+ ProjectSettings/ProjectVersion.txt                 |    4 +-
+ 18 files changed, 3115 insertions(+), 425 deletions(-)
+
+commit bd687344ba87860e9d9386081660ea0ffdf3fb92
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-16T04:16:02-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-16T04:16:02-03:00
+
+    .
+
+ Assets/Scenes/Main Scene.unity | 102 ++++++++++++++++++++---------------------
+ 1 file changed, 51 insertions(+), 51 deletions(-)
+
+commit 7f3afb8e55e95261efab1b65aaf15a5f3aac13ca
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-16T23:17:57-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-16T23:17:57-03:00
+
+    Chat Fix
+
+ Assets/Scenes/Main Scene.unity                     | 5969 +++++++++-----------
+ Assets/Script/Chat/ConversationButton.cs           |   21 +
+ Assets/Script/Chat/ConversationViewer.cs           |   14 +-
+ Assets/Script/ScriptableObject/ConversationData.cs |    3 +
+ Assets/Script/UIManager.cs                         |    2 +
+ ...wConversation.asset => 0 NewConversation.asset} |    2 +-
+ ...ion.asset.meta => 0 NewConversation.asset.meta} |    0
+ .../{NPC AA.asset => 1 NPC Blakeley Churco.asset}  |    7 +-
+ ...asset.meta => 1 NPC Blakeley Churco.asset.meta} |    0
+ .../Conversations/2 NPC \303\215ris Castelo.asset" |   60 +
+ .../2 NPC \303\215ris Castelo.asset.meta"          |    0
+ .../{NPC BB.asset => 3 NPC Charlotee Monroe.asset} |   27 +-
+ .../3 NPC Charlotee Monroe.asset.meta              |    8 +
+ .../Conversations/4 NPC Miguel Ramos X..asset      |   30 +
+ .../Conversations/4 NPC Miguel Ramos X..asset.meta |    8 +
+ .../Conversations/5 NPC Rafael Costa.asset         |   30 +
+ .../Conversations/5 NPC Rafael Costa.asset.meta    |    8 +
+ .../Conversations/6 NPC Lino Jatob\303\241.asset"  |   30 +
+ .../6 NPC Lino Jatob\303\241.asset.meta"           |    8 +
+ .../Conversations/7 NPC K\303\251lvin Clay.asset"  |   30 +
+ .../7 NPC K\303\251lvin Clay.asset.meta"           |    8 +
+ .../8 NPC Jardel Falc\303\243o.asset"              |   30 +
+ .../8 NPC Jardel Falc\303\243o.asset.meta"         |    8 +
+ Assets/prefab/UI/Conversation/NPCButton.prefab     |   25 +-
+ Packages/packages-lock.json                        |   10 +-
+ ProjectSettings/ProjectVersion.txt                 |    4 +-
+ 26 files changed, 2837 insertions(+), 3505 deletions(-)
+
+commit 2b13837dba74bf06f60e839b9938c299bff7561f
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-16T23:58:12-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-16T23:58:12-03:00
+
+    Starting screen
+    
+    basic starting screen
+    WIP article improvement (checklist)
+    Conversation Fixes
+
+ Assets/Scenes/1 Starting Scene.unity               | 2338 +++++++++++
+ Assets/Scenes/1 Starting Scene.unity.meta          |    7 +
+ .../{Main Scene.unity => 2 Main Scene.unity}       | 4246 +++++++++++++-------
+ ...in Scene.unity.meta => 2 Main Scene.unity.meta} |    0
+ .../Article.meta => Script/Starting Scene.meta}    |    2 +-
+ Assets/Script/Starting Scene/SceneControl.cs       |   10 +
+ Assets/Script/Starting Scene/SceneControl.cs.meta  |    2 +
+ .../UI/Article/{Article => }/ActionButton.prefab   |    0
+ .../Article/{Article => }/ActionButton.prefab.meta |    0
+ Assets/prefab/UI/Article/Blocks.meta               |    8 +
+ .../prefab/UI/Article/Blocks/Article_Date.prefab   |  160 +
+ .../UI/Article/Blocks/Article_Date.prefab.meta     |    7 +
+ Assets/prefab/UI/Article/Blocks/ImageBlock.prefab  |  357 ++
+ .../UI/Article/Blocks/ImageBlock.prefab.meta       |    7 +
+ .../prefab/UI/Article/Blocks/SubtitleBlock.prefab  |  262 ++
+ .../UI/Article/Blocks/SubtitleBlock.prefab.meta    |    7 +
+ Assets/prefab/UI/Article/Blocks/TextBlock.prefab   |  260 ++
+ .../prefab/UI/Article/Blocks/TextBlock.prefab.meta |    7 +
+ Assets/prefab/UI/Article/Blocks/TitleBlock.prefab  |  261 ++
+ .../UI/Article/Blocks/TitleBlock.prefab.meta       |    7 +
+ .../UI/Article/Blocks/Writer_NameBlock.prefab      |  572 +++
+ .../UI/Article/Blocks/Writer_NameBlock.prefab.meta |    7 +
+ .../UI/Article/{Article => }/Button_Box.prefab     |    0
+ .../Article/{Article => }/Button_Box.prefab.meta   |    0
+ .../{Article => }/Subtitle_Article_Prebab.prefab   |    0
+ .../Subtitle_Article_Prebab.prefab.meta            |    0
+ .../{Article => }/Title_Article_Prebab.prefab      |    0
+ .../{Article => }/Title_Article_Prebab.prefab.meta |    0
+ Assets/prefab/UI/StartScene.meta                   |    8 +
+ Assets/prefab/UI/StartScene/Button.prefab          |  276 ++
+ Assets/prefab/UI/StartScene/Button.prefab.meta     |    7 +
+ ProjectSettings/EditorBuildSettings.asset          |    5 +-
+ 32 files changed, 7462 insertions(+), 1361 deletions(-)
+
+commit cba5d4b3c34734b93b218810ba63d34abe9e0d00
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-17T00:14:05-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-17T00:14:05-03:00
+
+    Article Fix Checklist
+
+ Assets/Scenes/2 Main Scene.unity                  | 929 +++++++++++++++++++++-
+ Assets/prefab/UI/Article/Blocks/TextBlock.prefab  | 267 ++++++-
+ Assets/prefab/UI/Article/Blocks/TitleBlock.prefab | 267 ++++++-
+ 3 files changed, 1455 insertions(+), 8 deletions(-)
+
+commit 9028ebfb84719e79a55e4bb441569a4920041172
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-17T00:38:51-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-17T00:38:51-03:00
+
+    Checklist completed
+    
+    Icons Colors (Placeholder color)
+
+ Assets/Resources/PerformanceTestRunInfo.json       |   1 +
+ Assets/Resources/PerformanceTestRunSettings.json   |   1 +
+ Assets/Scenes/2 Main Scene.unity                   | 875 +++++++++++----------
+ Assets/Script/Chat/ConversationViewer.cs           | 514 ++++++------
+ Assets/UniversalRenderPipelineGlobalSettings.asset |  14 +-
+ 5 files changed, 721 insertions(+), 684 deletions(-)
+
+commit dc61cf5dabf01f1edbaab584f328100d63b6a6bc
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-17T00:39:00-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-17T00:39:00-03:00
+
+    test2
+
+ Assets/Resources/PerformanceTestRunInfo.json.meta     | 7 +++++++
+ Assets/Resources/PerformanceTestRunSettings.json.meta | 7 +++++++
+ 2 files changed, 14 insertions(+)
+
+commit 11419e43cf77d72cf779319136257476842f187d
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-17T00:46:29-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-17T00:46:29-03:00
+
+    Chat improvement
+    
+    Chat history Saved
+    Feedback BG changed
+
+ Assets/DefaultVolumeProfile.asset                  | 785 +--------------------
+ Assets/Resources/PerformanceTestRunInfo.json       |   1 -
+ Assets/Resources/PerformanceTestRunInfo.json.meta  |   7 -
+ Assets/Resources/PerformanceTestRunSettings.json   |   1 -
+ .../Resources/PerformanceTestRunSettings.json.meta |   7 -
+ Assets/Scenes/2 Main Scene.unity                   |   2 +-
+ Assets/UniversalRenderPipelineGlobalSettings.asset | 204 ++----
+ ProjectSettings/ProjectSettings.asset              |   1 -
+ 8 files changed, 80 insertions(+), 928 deletions(-)
+
+commit 7798af8d8274863dc93a992221e0269845dace19
+Author:     PHNvieira015 <damenesvid580@gmail.com>
+AuthorDate: 2026-09-17T19:23:59-03:00
+Commit:     PHNvieira015 <damenesvid580@gmail.com>
+CommitDate: 2026-09-17T19:23:59-03:00
+
+    NPC conversation Update
+
+ Assets/Scenes/2 Main Scene.unity                   | 20 ++++++------
+ .../Conversations/1 NPC Blakeley Churco.asset      |  8 +++--
+ .../Conversations/2 NPC \303\215ris Castelo.asset" | 16 +++++-----
+ .../Conversations/3 NPC Charlotee Monroe.asset     | 37 ++++++++++++++++++++--
+ .../Conversations/4 NPC Miguel Ramos X..asset      | 32 ++++++++++++++++++-
+ .../Conversations/5 NPC Rafael Costa.asset         | 33 ++++++++++++++++++-
+ .../Conversations/6 NPC Lino Jatob\303\241.asset"  | 32 ++++++++++++++++++-
+ 7 files changed, 151 insertions(+), 27 deletions(-)
+
+commit 111335e3bdd09d43b6da9aef437d58c7fdc72549
+Author:     PHNvieira015 <damenesvid580@gmail.com>
+AuthorDate: 2026-09-18T17:24:22-03:00
+Commit:     PHNvieira015 <damenesvid580@gmail.com>
+CommitDate: 2026-09-18T17:24:22-03:00
+
+    NPC conversation Update #2
+
+ .../Conversations/2 NPC \303\215ris Castelo.asset" |  5 ++-
+ .../Conversations/4 NPC Miguel Ramos X..asset      |  3 +-
+ .../Conversations/7 NPC K\303\251lvin Clay.asset"  | 46 +++++++++++++++++++++-
+ 3 files changed, 50 insertions(+), 4 deletions(-)
+
+commit dde200470be7dd4c055156d6c80e0d05da2d3740
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-18T17:25:43-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-18T17:25:43-03:00
+
+    FeedBack Screen 70%
+
+ Assets/Scenes/2 Main Scene.unity                   |  3678 ++-
+ Assets/Sprite/Figma/Ui_Chat/Subtract.png           |   Bin 0 -> 12967 bytes
+ Assets/Sprite/Figma/Ui_Chat/Subtract.png.meta      |   312 +
+ Assets/Sprite/Figma/Ui_FeedBack.meta               |     8 +
+ Assets/Sprite/Figma/Ui_FeedBack/Barra_Trechos.png  |   Bin 0 -> 2408 bytes
+ .../Figma/Ui_FeedBack/Barra_Trechos.png.meta       |   182 +
+ Assets/Sprite/Figma/Ui_FeedBack/Inside_Bar.png     |   Bin 0 -> 315 bytes
+ .../Sprite/Figma/Ui_FeedBack/Inside_Bar.png.meta   |   182 +
+ .../Figma/Ui_FeedBack/Trechos-Desativado.png       |   Bin 0 -> 7161 bytes
+ .../Figma/Ui_FeedBack/Trechos-Desativado.png.meta  |   182 +
+ .../Sprite/Figma/Ui_FeedBack/Trechos_Ativado.png   |   Bin 0 -> 6731 bytes
+ .../Figma/Ui_FeedBack/Trechos_Ativado.png.meta     |   182 +
+ .../Sprite/Figma/Ui_FeedBack/Trechos_Container.png |   Bin 0 -> 16441 bytes
+ .../Figma/Ui_FeedBack/Trechos_Container.png.meta   |   182 +
+ .../breaking-news-alt-1-outline-rounded.png        |   Bin 0 -> 2178 bytes
+ .../breaking-news-alt-1-outline-rounded.png.meta   |   182 +
+ .../Figma/Ui_FeedBack/outline-cancel (1).png       |   Bin 0 -> 4395 bytes
+ .../Figma/Ui_FeedBack/outline-cancel (1).png.meta  |   182 +
+ .../Ui_FeedBack/round-check-circle-outline (1).png |   Bin 0 -> 4294 bytes
+ .../round-check-circle-outline (1).png.meta        |   182 +
+ Assets/TextMesh Pro/Fonts/Tektur.meta              |     8 +
+ Assets/TextMesh Pro/Fonts/Tektur/OFL.txt           |    93 +
+ Assets/TextMesh Pro/Fonts/Tektur/OFL.txt.meta      |     7 +
+ Assets/TextMesh Pro/Fonts/Tektur/README.txt        |    81 +
+ Assets/TextMesh Pro/Fonts/Tektur/README.txt.meta   |     7 +
+ .../Tektur/Tektur-VariableFont_wdth,wght SDF.asset |  2721 ++
+ .../Tektur-VariableFont_wdth,wght SDF.asset.meta   |     8 +
+ .../Fonts/Tektur/Tektur-VariableFont_wdth,wght.ttf |   Bin 0 -> 162656 bytes
+ .../Tektur/Tektur-VariableFont_wdth,wght.ttf.meta  |    21 +
+ Assets/TextMesh Pro/Fonts/Tektur/static.meta       |     8 +
+ .../Fonts/Tektur/static/Tektur-Black.ttf           |   Bin 0 -> 74820 bytes
+ .../Fonts/Tektur/static/Tektur-Black.ttf.meta      |    21 +
+ .../Fonts/Tektur/static/Tektur-Bold.ttf            |   Bin 0 -> 75880 bytes
+ .../Fonts/Tektur/static/Tektur-Bold.ttf.meta       |    21 +
+ .../Fonts/Tektur/static/Tektur-ExtraBold.ttf       |   Bin 0 -> 75836 bytes
+ .../Fonts/Tektur/static/Tektur-ExtraBold.ttf.meta  |    21 +
+ .../Fonts/Tektur/static/Tektur-Medium.ttf          |   Bin 0 -> 76248 bytes
+ .../Fonts/Tektur/static/Tektur-Medium.ttf.meta     |    21 +
+ .../Fonts/Tektur/static/Tektur-Regular.ttf         |   Bin 0 -> 75604 bytes
+ .../Fonts/Tektur/static/Tektur-Regular.ttf.meta    |    21 +
+ .../Fonts/Tektur/static/Tektur-SemiBold.ttf        |   Bin 0 -> 76076 bytes
+ .../Fonts/Tektur/static/Tektur-SemiBold.ttf.meta   |    21 +
+ .../Fonts/Tektur/static/Tektur_Condensed-Black.ttf |   Bin 0 -> 74720 bytes
+ .../Tektur/static/Tektur_Condensed-Black.ttf.meta  |    21 +
+ .../Fonts/Tektur/static/Tektur_Condensed-Bold.ttf  |   Bin 0 -> 75280 bytes
+ .../Tektur/static/Tektur_Condensed-Bold.ttf.meta   |    21 +
+ .../Tektur/static/Tektur_Condensed-ExtraBold.ttf   |   Bin 0 -> 75440 bytes
+ .../static/Tektur_Condensed-ExtraBold.ttf.meta     |    21 +
+ .../Tektur/static/Tektur_Condensed-Medium.ttf      |   Bin 0 -> 75220 bytes
+ .../Tektur/static/Tektur_Condensed-Medium.ttf.meta |    21 +
+ .../Tektur/static/Tektur_Condensed-Regular.ttf     |   Bin 0 -> 74412 bytes
+ .../static/Tektur_Condensed-Regular.ttf.meta       |    21 +
+ .../Tektur/static/Tektur_Condensed-SemiBold.ttf    |   Bin 0 -> 75272 bytes
+ .../static/Tektur_Condensed-SemiBold.ttf.meta      |    21 +
+ .../Tektur/static/Tektur_SemiCondensed-Black.ttf   |   Bin 0 -> 75260 bytes
+ .../static/Tektur_SemiCondensed-Black.ttf.meta     |    21 +
+ .../Tektur/static/Tektur_SemiCondensed-Bold.ttf    |   Bin 0 -> 75820 bytes
+ .../static/Tektur_SemiCondensed-Bold.ttf.meta      |    21 +
+ .../static/Tektur_SemiCondensed-ExtraBold.ttf      |   Bin 0 -> 75760 bytes
+ .../static/Tektur_SemiCondensed-ExtraBold.ttf.meta |    21 +
+ .../Tektur/static/Tektur_SemiCondensed-Medium.ttf  |   Bin 0 -> 75724 bytes
+ .../static/Tektur_SemiCondensed-Medium.ttf.meta    |    21 +
+ .../Tektur/static/Tektur_SemiCondensed-Regular.ttf |   Bin 0 -> 75344 bytes
+ .../static/Tektur_SemiCondensed-Regular.ttf.meta   |    21 +
+ .../static/Tektur_SemiCondensed-SemiBold.ttf       |   Bin 0 -> 75800 bytes
+ .../static/Tektur_SemiCondensed-SemiBold.ttf.meta  |    21 +
+ Assets/_Recovery.meta                              |     8 +
+ Assets/_Recovery/0.unity                           | 31385 +++++++++++++++++++
+ Assets/_Recovery/0.unity.meta                      |     7 +
+ 69 files changed, 39355 insertions(+), 831 deletions(-)
+
+commit 87a17c97807bc30f9cea9757f569b3bc0cbed3aa
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-18T17:44:41-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-18T17:44:41-03:00
+
+    Update Chat
+    
+    Conversations and npc atribution to game objects
+
+ Assets/Scenes/2 Main Scene.unity                   | 272 +++++++++++----------
+ .../Conversations/1 NPC Blakeley Churco.asset      |   2 +-
+ .../Conversations/3 NPC Charlotee Monroe.asset     |   6 +-
+ .../Conversations/4 NPC Miguel Ramos X..asset      |   6 +-
+ .../Conversations/5 NPC Rafael Costa.asset         |   6 +-
+ .../Conversations/6 NPC Lino Jatob\303\241.asset"  |   6 +-
+ .../Conversations/7 NPC K\303\251lvin Clay.asset"  |   8 +-
+ .../8 NPC Jardel Falc\303\243o.asset"              |   6 +-
+ 8 files changed, 168 insertions(+), 144 deletions(-)
+
+commit cdc20c2a9dd03e975325620cd95d21c8c64a48cb
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-18T18:56:41-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-18T18:56:41-03:00
+
+    Updates changing1
+
+ Assets/Scenes/1 Starting Scene.unity               |     2 +-
+ Assets/Scenes/2 Main Scene.unity                   |   190 +-
+ .../Conversations/1 NPC Blakeley Churco.asset      |     2 +-
+ .../Conversations/2 NPC \303\215ris Castelo.asset" |    10 +
+ .../Conversations/3 NPC Charlotee Monroe.asset     |     6 +-
+ .../Conversations/4 NPC Miguel Ramos X..asset      |     6 +-
+ .../Conversations/5 NPC Rafael Costa.asset         |    20 +-
+ .../Conversations/6 NPC Lino Jatob\303\241.asset"  |     4 +-
+ .../Conversations/7 NPC K\303\251lvin Clay.asset"  |     8 +-
+ .../8 NPC Jardel Falc\303\243o.asset"              |     6 +-
+ Assets/prefab/UI/Chat/BublePrefab.prefab           |     2 +
+ Build2/D3D12/D3D12Core.dll                         |   Bin 0 -> 4725304 bytes
+ .../EmbedRuntime/MonoPosixHelper.dll               |   Bin 0 -> 611240 bytes
+ .../EmbedRuntime/mono-2.0-bdwgc.dll                |   Bin 0 -> 7828904 bytes
+ .../etc/mono/2.0/Browsers/Compat.browser           |    42 +
+ .../etc/mono/2.0/DefaultWsdlHelpGenerator.aspx     |  1901 +++
+ .../MonoBleedingEdge/etc/mono/2.0/machine.config   |   280 +
+ Build2/MonoBleedingEdge/etc/mono/2.0/settings.map  |    48 +
+ Build2/MonoBleedingEdge/etc/mono/2.0/web.config    |   153 +
+ .../etc/mono/4.0/Browsers/Compat.browser           |    42 +
+ .../etc/mono/4.0/DefaultWsdlHelpGenerator.aspx     |  1901 +++
+ .../MonoBleedingEdge/etc/mono/4.0/machine.config   |   307 +
+ Build2/MonoBleedingEdge/etc/mono/4.0/settings.map  |    48 +
+ Build2/MonoBleedingEdge/etc/mono/4.0/web.config    |   252 +
+ .../etc/mono/4.5/Browsers/Compat.browser           |    42 +
+ .../etc/mono/4.5/DefaultWsdlHelpGenerator.aspx     |  1901 +++
+ .../MonoBleedingEdge/etc/mono/4.5/machine.config   |   310 +
+ Build2/MonoBleedingEdge/etc/mono/4.5/settings.map  |    48 +
+ Build2/MonoBleedingEdge/etc/mono/4.5/web.config    |   252 +
+ Build2/MonoBleedingEdge/etc/mono/browscap.ini      | 16979 +++++++++++++++++++
+ Build2/MonoBleedingEdge/etc/mono/config            |    53 +
+ .../MonoBleedingEdge/etc/mono/mconfig/config.xml   |   616 +
+ Build2/Serious Game.exe                            |   Bin 0 -> 667648 bytes
+ .../Serious Game_Data/Managed/Assembly-CSharp.dll  |   Bin 0 -> 68096 bytes
+ Build2/Serious Game_Data/Managed/Mono.Security.dll |   Bin 0 -> 241152 bytes
+ .../Managed/System.ComponentModel.Composition.dll  |   Bin 0 -> 257024 bytes
+ .../Managed/System.Configuration.dll               |   Bin 0 -> 124928 bytes
+ Build2/Serious Game_Data/Managed/System.Core.dll   |   Bin 0 -> 1113088 bytes
+ .../Managed/System.Data.DataSetExtensions.dll      |   Bin 0 -> 29696 bytes
+ Build2/Serious Game_Data/Managed/System.Data.dll   |   Bin 0 -> 2125312 bytes
+ .../Serious Game_Data/Managed/System.Drawing.dll   |   Bin 0 -> 489984 bytes
+ .../Managed/System.EnterpriseServices.dll          |   Bin 0 -> 44544 bytes
+ .../Managed/System.IO.Compression.FileSystem.dll   |   Bin 0 -> 18432 bytes
+ .../Managed/System.IO.Compression.dll              |   Bin 0 -> 114688 bytes
+ .../Managed/System.IO.Hashing.dll                  |   Bin 0 -> 50488 bytes
+ Build2/Serious Game_Data/Managed/System.Memory.dll |   Bin 0 -> 4608 bytes
+ .../Serious Game_Data/Managed/System.Net.Http.dll  |   Bin 0 -> 122880 bytes
+ .../Serious Game_Data/Managed/System.Numerics.dll  |   Bin 0 -> 119296 bytes
+ .../System.Runtime.CompilerServices.Unsafe.dll     |   Bin 0 -> 18024 bytes
+ .../Managed/System.Runtime.Serialization.dll       |   Bin 0 -> 934400 bytes
+ .../Serious Game_Data/Managed/System.Runtime.dll   |   Bin 0 -> 12288 bytes
+ .../Serious Game_Data/Managed/System.Security.dll  |   Bin 0 -> 320000 bytes
+ .../Managed/System.ServiceModel.Internals.dll      |   Bin 0 -> 215040 bytes
+ .../Managed/System.Transactions.dll                |   Bin 0 -> 35328 bytes
+ .../Serious Game_Data/Managed/System.Xml.Linq.dll  |   Bin 0 -> 136704 bytes
+ Build2/Serious Game_Data/Managed/System.Xml.dll    |   Bin 0 -> 3160064 bytes
+ Build2/Serious Game_Data/Managed/System.dll        |   Bin 0 -> 2641920 bytes
+ .../Managed/Unity.2D.Animation.Runtime.dll         |   Bin 0 -> 91136 bytes
+ .../Managed/Unity.2D.Common.Runtime.dll            |   Bin 0 -> 58368 bytes
+ .../Managed/Unity.2D.IK.Runtime.dll                |   Bin 0 -> 40960 bytes
+ .../Managed/Unity.2D.SpriteShape.Runtime.dll       |   Bin 0 -> 113152 bytes
+ .../Managed/Unity.2D.Tilemap.Extras.dll            |   Bin 0 -> 40448 bytes
+ .../Managed/Unity.Burst.Unsafe.dll                 |   Bin 0 -> 5632 bytes
+ Build2/Serious Game_Data/Managed/Unity.Burst.dll   |   Bin 0 -> 304640 bytes
+ .../Unity.Collections.LowLevel.ILSupport.dll       |   Bin 0 -> 5120 bytes
+ .../Managed/Unity.Collections.dll                  |   Bin 0 -> 450560 bytes
+ .../Managed/Unity.InputSystem.ForUI.dll            |   Bin 0 -> 16384 bytes
+ .../Managed/Unity.InputSystem.dll                  |   Bin 0 -> 1137152 bytes
+ .../Managed/Unity.InternalAPIEngineBridge.001.dll  |   Bin 0 -> 6656 bytes
+ .../Managed/Unity.InternalAPIEngineBridge.004.dll  |   Bin 0 -> 4608 bytes
+ .../Managed/Unity.Mathematics.dll                  |   Bin 0 -> 752640 bytes
+ .../Managed/Unity.Multiplayer.Center.Common.dll    |   Bin 0 -> 10752 bytes
+ ...nity.RenderPipeline.Universal.ShaderLibrary.dll |   Bin 0 -> 9216 bytes
+ .../Unity.RenderPipelines.Core.Runtime.Shared.dll  |   Bin 0 -> 5632 bytes
+ .../Managed/Unity.RenderPipelines.Core.Runtime.dll |   Bin 0 -> 1200128 bytes
+ .../Unity.RenderPipelines.Core.ShaderLibrary.dll   |   Bin 0 -> 4608 bytes
+ .../Unity.RenderPipelines.GPUDriven.Runtime.dll    |   Bin 0 -> 235008 bytes
+ ...derPipelines.ShaderGraph.ShaderGraphLibrary.dll |   Bin 0 -> 4608 bytes
+ .../Unity.RenderPipelines.Universal.2D.Runtime.dll |   Bin 0 -> 235520 bytes
+ ...ty.RenderPipelines.Universal.Config.Runtime.dll |   Bin 0 -> 5632 bytes
+ .../Unity.RenderPipelines.Universal.Runtime.dll    |   Bin 0 -> 758784 bytes
+ .../Unity.RenderPipelines.Universal.Shaders.dll    |   Bin 0 -> 4608 bytes
+ .../Managed/Unity.TextMeshPro.dll                  |   Bin 0 -> 446464 bytes
+ .../Serious Game_Data/Managed/Unity.Timeline.dll   |   Bin 0 -> 134656 bytes
+ .../Managed/Unity.UnifiedRayTracing.Runtime.dll    |   Bin 0 -> 101376 bytes
+ .../Unity.VisualScripting.Antlr3.Runtime.dll       |   Bin 0 -> 86016 bytes
+ .../Managed/Unity.VisualScripting.Core.dll         |   Bin 0 -> 629760 bytes
+ .../Unity.VisualScripting.DocCodeExamples.dll      |   Bin 0 -> 7168 bytes
+ .../Managed/Unity.VisualScripting.Flow.dll         |   Bin 0 -> 407552 bytes
+ .../Managed/Unity.VisualScripting.State.dll        |   Bin 0 -> 32256 bytes
+ .../Managed/UnityEngine.AIModule.dll               |   Bin 0 -> 77224 bytes
+ .../Managed/UnityEngine.AMDModule.dll              |   Bin 0 -> 21928 bytes
+ .../Managed/UnityEngine.ARModule.dll               |   Bin 0 -> 25520 bytes
+ .../Managed/UnityEngine.AccessibilityModule.dll    |   Bin 0 -> 50088 bytes
+ .../UnityEngine.AdaptivePerformanceModule.dll      |   Bin 0 -> 120232 bytes
+ .../Managed/UnityEngine.AndroidJNIModule.dll       |   Bin 0 -> 121264 bytes
+ .../Managed/UnityEngine.AnimationModule.dll        |   Bin 0 -> 225192 bytes
+ .../Managed/UnityEngine.AssetBundleModule.dll      |   Bin 0 -> 41896 bytes
+ .../Managed/UnityEngine.AudioModule.dll            |   Bin 0 -> 142248 bytes
+ .../Managed/UnityEngine.ClothModule.dll            |   Bin 0 -> 36264 bytes
+ .../Managed/UnityEngine.ClusterInputModule.dll     |   Bin 0 -> 27560 bytes
+ .../Managed/UnityEngine.ClusterRendererModule.dll  |   Bin 0 -> 26536 bytes
+ .../Managed/UnityEngine.ContentLoadModule.dll      |   Bin 0 -> 32176 bytes
+ .../Managed/UnityEngine.CoreModule.dll             |   Bin 0 -> 1981352 bytes
+ .../Managed/UnityEngine.CrashReportingModule.dll   |   Bin 0 -> 26544 bytes
+ .../Managed/UnityEngine.DSPGraphModule.dll         |   Bin 0 -> 31664 bytes
+ .../Managed/UnityEngine.DirectorModule.dll         |   Bin 0 -> 41392 bytes
+ .../Managed/UnityEngine.GIModule.dll               |   Bin 0 -> 24496 bytes
+ .../Managed/UnityEngine.GameCenterModule.dll       |   Bin 0 -> 45488 bytes
+ ...ine.GraphicsStateCollectionSerializerModule.dll |   Bin 0 -> 14256 bytes
+ .../Managed/UnityEngine.GridModule.dll             |   Bin 0 -> 30128 bytes
+ .../Managed/UnityEngine.HierarchyCoreModule.dll    |   Bin 0 -> 109488 bytes
+ .../Managed/UnityEngine.HierarchyModule.dll        |   Bin 0 -> 102320 bytes
+ .../Managed/UnityEngine.HotReloadModule.dll        |   Bin 0 -> 24488 bytes
+ .../Managed/UnityEngine.IMGUIModule.dll            |   Bin 0 -> 192424 bytes
+ .../Managed/UnityEngine.IdentifiersModule.dll      |   Bin 0 -> 14760 bytes
+ .../Managed/UnityEngine.ImageConversionModule.dll  |   Bin 0 -> 31144 bytes
+ .../Managed/UnityEngine.InputForUIModule.dll       |   Bin 0 -> 57776 bytes
+ .../Managed/UnityEngine.InputLegacyModule.dll      |   Bin 0 -> 45480 bytes
+ .../Managed/UnityEngine.InputModule.dll            |   Bin 0 -> 28072 bytes
+ .../Managed/UnityEngine.InsightsModule.dll         |   Bin 0 -> 14256 bytes
+ .../Managed/UnityEngine.JSONSerializeModule.dll    |   Bin 0 -> 27056 bytes
+ .../Managed/UnityEngine.LocalizationModule.dll     |   Bin 0 -> 26544 bytes
+ .../Managed/UnityEngine.MarshallingModule.dll      |   Bin 0 -> 83368 bytes
+ .../Managed/UnityEngine.MultiplayerModule.dll      |   Bin 0 -> 18344 bytes
+ .../Managed/UnityEngine.NVIDIAModule.dll           |   Bin 0 -> 40368 bytes
+ .../Managed/UnityEngine.ParticleSystemModule.dll   |   Bin 0 -> 171432 bytes
+ .../UnityEngine.PerformanceReportingModule.dll     |   Bin 0 -> 25000 bytes
+ .../Managed/UnityEngine.Physics2DModule.dll        |   Bin 0 -> 572840 bytes
+ .../UnityEngine.PhysicsBackendPhysXModule.dll      |   Bin 0 -> 14256 bytes
+ .../Managed/UnityEngine.PhysicsModule.dll          |   Bin 0 -> 181680 bytes
+ .../Managed/UnityEngine.PropertiesModule.dll       |   Bin 0 -> 149416 bytes
+ .../Managed/UnityEngine.RenderAs2DModule.dll       |   Bin 0 -> 25512 bytes
+ ...imeInitializeOnLoadManagerInitializerModule.dll |   Bin 0 -> 24488 bytes
+ .../Managed/UnityEngine.ScreenCaptureModule.dll    |   Bin 0 -> 26032 bytes
+ .../Managed/UnityEngine.ShaderRuntimeModule.dll    |   Bin 0 -> 25512 bytes
+ .../UnityEngine.ShaderVariantAnalyticsModule.dll   |   Bin 0 -> 24488 bytes
+ .../Managed/UnityEngine.SharedInternalsModule.dll  |   Bin 0 -> 37808 bytes
+ .../Managed/UnityEngine.SpriteMaskModule.dll       |   Bin 0 -> 28584 bytes
+ .../Managed/UnityEngine.SpriteShapeModule.dll      |   Bin 0 -> 31656 bytes
+ .../Managed/UnityEngine.StreamingModule.dll        |   Bin 0 -> 25520 bytes
+ .../Managed/UnityEngine.SubstanceModule.dll        |   Bin 0 -> 29104 bytes
+ .../Managed/UnityEngine.SubsystemsModule.dll       |   Bin 0 -> 41896 bytes
+ .../Managed/UnityEngine.TLSModule.dll              |   Bin 0 -> 31152 bytes
+ .../Managed/UnityEngine.TerrainModule.dll          |   Bin 0 -> 133040 bytes
+ .../Managed/UnityEngine.TerrainPhysicsModule.dll   |   Bin 0 -> 25520 bytes
+ .../UnityEngine.TextCoreFontEngineModule.dll       |   Bin 0 -> 81840 bytes
+ .../UnityEngine.TextCoreTextEngineModule.dll       |   Bin 0 -> 343984 bytes
+ .../Managed/UnityEngine.TextRenderingModule.dll    |   Bin 0 -> 39344 bytes
+ .../Managed/UnityEngine.TilemapModule.dll          |   Bin 0 -> 57768 bytes
+ .../Serious Game_Data/Managed/UnityEngine.UI.dll   |   Bin 0 -> 276480 bytes
+ .../Managed/UnityEngine.UIElementsModule.dll       |   Bin 0 -> 2417576 bytes
+ .../Managed/UnityEngine.UIModule.dll               |   Bin 0 -> 49584 bytes
+ .../Managed/UnityEngine.UmbraModule.dll            |   Bin 0 -> 24496 bytes
+ .../UnityEngine.UnityAnalyticsCommonModule.dll     |   Bin 0 -> 35760 bytes
+ .../Managed/UnityEngine.UnityAnalyticsModule.dll   |   Bin 0 -> 60848 bytes
+ .../Managed/UnityEngine.UnityConnectModule.dll     |   Bin 0 -> 27568 bytes
+ .../Managed/UnityEngine.UnityConsentModule.dll     |   Bin 0 -> 16296 bytes
+ .../Managed/UnityEngine.UnityCurlModule.dll        |   Bin 0 -> 26032 bytes
+ ...nityEngine.UnityWebRequestAssetBundleModule.dll |   Bin 0 -> 28592 bytes
+ .../UnityEngine.UnityWebRequestAudioModule.dll     |   Bin 0 -> 28072 bytes
+ .../Managed/UnityEngine.UnityWebRequestModule.dll  |   Bin 0 -> 69040 bytes
+ .../UnityEngine.UnityWebRequestTextureModule.dll   |   Bin 0 -> 27560 bytes
+ .../UnityEngine.UnityWebRequestWWWModule.dll       |   Bin 0 -> 36264 bytes
+ .../Managed/UnityEngine.VFXModule.dll              |   Bin 0 -> 78256 bytes
+ .../Managed/UnityEngine.VRModule.dll               |   Bin 0 -> 31656 bytes
+ .../Managed/UnityEngine.VectorGraphicsModule.dll   |   Bin 0 -> 252328 bytes
+ .../Managed/UnityEngine.VehiclesModule.dll         |   Bin 0 -> 31144 bytes
+ .../Managed/UnityEngine.VideoModule.dll            |   Bin 0 -> 49072 bytes
+ .../Managed/UnityEngine.VirtualTexturingModule.dll |   Bin 0 -> 42928 bytes
+ .../Managed/UnityEngine.WindModule.dll             |   Bin 0 -> 26536 bytes
+ .../Managed/UnityEngine.XRModule.dll               |   Bin 0 -> 87976 bytes
+ Build2/Serious Game_Data/Managed/UnityEngine.dll   |   Bin 0 -> 196520 bytes
+ Build2/Serious Game_Data/Managed/mscorlib.dll      |   Bin 0 -> 4632064 bytes
+ Build2/Serious Game_Data/Managed/netstandard.dll   |   Bin 0 -> 90112 bytes
+ .../Plugins/x86_64/lib_burst_generated.dll         |   Bin 0 -> 636416 bytes
+ .../Plugins/x86_64/libonigwrap.dll                 |   Bin 0 -> 551336 bytes
+ .../Resources/unity default resources              |   Bin 0 -> 5883780 bytes
+ .../Resources/unity_builtin_extra                  |   Bin 0 -> 405084 bytes
+ .../RuntimeInitializeOnLoads.json                  |     1 +
+ Build2/Serious Game_Data/ScriptingAssemblies.json  |     1 +
+ Build2/Serious Game_Data/app.info                  |     2 +
+ Build2/Serious Game_Data/boot.config               |     6 +
+ Build2/Serious Game_Data/globalgamemanagers        |   Bin 0 -> 220660 bytes
+ Build2/Serious Game_Data/globalgamemanagers.assets |   Bin 0 -> 1192576 bytes
+ .../globalgamemanagers.assets.resS                 |   Bin 0 -> 5716192 bytes
+ Build2/Serious Game_Data/level0                    |   Bin 0 -> 22032 bytes
+ Build2/Serious Game_Data/level1                    |   Bin 0 -> 417860 bytes
+ Build2/Serious Game_Data/resources.assets          |   Bin 0 -> 365896 bytes
+ Build2/Serious Game_Data/resources.assets.resS     |   Bin 0 -> 356784 bytes
+ Build2/Serious Game_Data/sharedassets0.assets      |   Bin 0 -> 603696 bytes
+ Build2/Serious Game_Data/sharedassets0.assets.resS |   Bin 0 -> 9598432 bytes
+ Build2/Serious Game_Data/sharedassets1.assets      |   Bin 0 -> 101000 bytes
+ Build2/Serious Game_Data/sharedassets1.assets.resS |   Bin 0 -> 15511200 bytes
+ Build2/UnityCrashHandler64.exe                     |   Bin 0 -> 1609640 bytes
+ Build2/UnityPlayer.dll                             |   Bin 0 -> 35749800 bytes
+ 196 files changed, 25340 insertions(+), 101 deletions(-)
+
+commit 5fa91becbded304ef1e60e590cb27758aabe3dbc
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-19T08:26:07-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-19T08:26:07-03:00
+
+    Fixed Checklist Bugs
+
+ Assets/Scenes/2 Main Scene.unity                   | 802 ++++-----------------
+ Assets/Script/Article/ArticleBlockView.cs          | 288 +++++++-
+ Assets/Script/Article/ArticleFeedbackPanel.cs      |   2 +-
+ Assets/Script/ClickMarker/BlockClickReceiver.cs    |  95 ++-
+ Assets/Script/ClickMarker/ButtonClickMarker.cs     | 120 ++-
+ Assets/Script/Drag and Drop/DraggableObject.cs     | 580 +++++++++------
+ Assets/Script/UIManager.cs                         |   2 +-
+ .../Article/{Blocks.meta => Article Blocks.meta}   |   0
+ .../{Blocks => Article Blocks}/Article_Date.prefab |   0
+ .../Article_Date.prefab.meta                       |   0
+ .../Article_ImageBlock.prefab}                     | 271 ++++++-
+ .../Article_ImageBlock.prefab.meta}                |   0
+ .../Article Blocks/Article_SubtitleBlock.prefab    | 528 ++++++++++++++
+ .../Article_SubtitleBlock.prefab.meta}             |   0
+ .../Article_TextBlock.prefab}                      |  12 +-
+ .../Article_TextBlock.prefab.meta}                 |   0
+ .../Article_TitleBlock.prefab}                     |  17 +-
+ .../Article_TitleBlock.prefab.meta}                |   0
+ .../Article_Writer_NameBlock.prefab}               |   2 +-
+ .../Article_Writer_NameBlock.prefab.meta}          |   0
+ .../prefab/UI/Article/Blocks/SubtitleBlock.prefab  | 262 -------
+ 21 files changed, 1741 insertions(+), 1240 deletions(-)
+
+commit d3c3629bce76ce1fb5d733742b817595d86efd09
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-19T12:39:20-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-19T12:39:20-03:00
+
+    Tooltip System
+    
+    Completed
+
+ Assets/Scenes/2 Main Scene.unity                   | 368 +++++++++++++++--
+ Assets/Script/Tooltip.meta                         |   8 +
+ Assets/Script/Tooltip/ButtonMethod.meta            |   8 +
+ .../Script/Tooltip/ButtonMethod/ButtonTooltip.cs   | 251 ++++++++++++
+ .../Tooltip/ButtonMethod/ButtonTooltip.cs.meta     |   2 +
+ Assets/Script/Tooltip/MouseMethod.meta             |   8 +
+ Assets/Script/Tooltip/MouseMethod/Tooltip.cs       | 109 +++++
+ Assets/Script/Tooltip/MouseMethod/Tooltip.cs.meta  |   2 +
+ Assets/Script/Tooltip/MouseMethod/TooltipSystem.cs |  40 ++
+ .../Tooltip/MouseMethod/TooltipSystem.cs.meta      |   2 +
+ .../Script/Tooltip/MouseMethod/TooltipTrigger.cs   |  43 ++
+ .../Tooltip/MouseMethod/TooltipTrigger.cs.meta     |   2 +
+ Assets/prefab/UI/Article/ActionButton.prefab       |  20 +-
+ Assets/prefab/UI/Tooltip.meta                      |   8 +
+ Assets/prefab/UI/Tooltip/Tooltip.prefab            | 438 +++++++++++++++++++++
+ Assets/prefab/UI/Tooltip/Tooltip.prefab.meta       |   7 +
+ 16 files changed, 1280 insertions(+), 36 deletions(-)
+
+commit 25a52a2455b3fc407b5c81b36c4a2f5c58e66f64
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T11:25:24-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T11:25:24-03:00
+
+    Audio Manager
+    
+    System ready
+    Missing the audio effects
+    Missing improving the UI
+
+ Assets/MainMixer.mixer                             |  144 ++
+ Assets/MainMixer.mixer.meta                        |    8 +
+ Assets/Scenes/2 Main Scene.unity                   | 1662 +++++++++++++++++++-
+ Assets/Script/AudioManager.meta                    |    8 +
+ Assets/Script/AudioManager/AudioManager.cs         |   59 +
+ Assets/Script/AudioManager/AudioManager.cs.meta    |    2 +
+ Assets/Script/AudioManager/SoundmixerManager.cs    |   25 +
+ .../Script/AudioManager/SoundmixerManager.cs.meta  |    2 +
+ Assets/prefab/Audio.meta                           |    8 +
+ Assets/prefab/Audio/AudioClip.prefab               |  131 ++
+ Assets/prefab/Audio/AudioClip.prefab.meta          |    7 +
+ Assets/prefab/{UI => }/Tooltip.meta                |    0
+ Assets/prefab/{UI => }/Tooltip/Tooltip.prefab      |    0
+ Assets/prefab/{UI => }/Tooltip/Tooltip.prefab.meta |    0
+ 14 files changed, 2003 insertions(+), 53 deletions(-)
+
+commit e43d0d8074c34bdf1e1b78c754d13b6248829620
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T15:52:05-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T15:52:05-03:00
+
+    Tutorial v 1.0
+
+ Assets/Scenes/2 Main Scene.unity                   |    74 +-
+ Assets/Scenes/3 Tutorial (20.09.2026).unity        | 35114 +++++++++++++++++++
+ Assets/Scenes/3 Tutorial (20.09.2026).unity.meta   |     7 +
+ Assets/Script/Tutorial.meta                        |     8 +
+ Assets/Script/Tutorial/HIghlightUI.cs              |    33 +
+ Assets/Script/Tutorial/HIghlightUI.cs.meta         |     2 +
+ Assets/Script/Tutorial/TutorialHighlight.cs        |   340 +
+ Assets/Script/Tutorial/TutorialHighlight.cs.meta   |     2 +
+ Assets/Script/Tutorial/TutorialManager.cs          |    53 +
+ Assets/Script/Tutorial/TutorialManager.cs.meta     |     2 +
+ Assets/Script/Tutorial/TutorialSPotlight.shader    |   167 +
+ .../Script/Tutorial/TutorialSPotlight.shader.meta  |     9 +
+ .../Script/Tutorial/TutorialSpotlightMaterial.mat  |    54 +
+ .../Tutorial/TutorialSpotlightMaterial.mat.meta    |     8 +
+ Assets/Script/Tutorial/TutorialStep.cs             |    22 +
+ Assets/Script/Tutorial/TutorialStep.cs.meta        |     2 +
+ Assets/Sprite/Tutorial.meta                        |     8 +
+ Assets/Sprite/Tutorial/Rectangle 6.png             |   Bin 0 -> 421 bytes
+ Assets/Sprite/Tutorial/Rectangle 6.png.meta        |   143 +
+ 19 files changed, 35982 insertions(+), 66 deletions(-)
+
+commit 488cced953f6a7c4bcae3cc5c77bd858c5ec3c88
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T16:03:17-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T16:03:17-03:00
+
+    WIP changes and fixes
+
+ Assets/Scenes/(old) 2 Main Scene.unity         | 34763 +++++++++++++++++++++++
+ Assets/Scenes/(old) 2 Main Scene.unity.meta    |     7 +
+ Assets/Scenes/2 Main Scene.unity               |   351 +
+ Assets/Scenes/2 Main Scene.unity.meta          |     2 +-
+ Assets/Scenes/3 Tutorial (20.09.2026).unity    |     2 +-
+ Assets/Script/MissingScriptFinder.cs           |    44 +
+ Assets/Script/MissingScriptFinder.cs.meta      |     2 +
+ Assets/prefab/UI/Conversation/NPCButton.prefab |    16 +
+ Assets/prefab/UI/History/Cell Container.prefab |     2 +-
+ ProjectSettings/EditorBuildSettings.asset      |     2 +-
+ 10 files changed, 35187 insertions(+), 4 deletions(-)
+
+commit bebcc8e5700d0968ac8652b937bdaf39ae02a851
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T16:06:38-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T16:06:38-03:00
+
+    Article Viewport Fixed
+
+ Assets/Scenes/2 Main Scene.unity | 286 +++++++++++++++++++++------------------
+ 1 file changed, 151 insertions(+), 135 deletions(-)
+
+commit 7f6e1750a6cdb0e32a34459ce8cd5682e5240cc9
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T16:42:45-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T16:42:45-03:00
+
+    WIP Panel
+
+ Assets/Scenes/2 Main Scene.unity                   | 1912 ++++++++++----------
+ Assets/Script/{Classes.meta => General Class.meta} |    0
+ .../{Classes => General Class}/GeneralClasses.cs   |    0
+ .../GeneralClasses.cs.meta                         |    0
+ .../{ => General Class}/MissingScriptFinder.cs     |    0
+ .../MissingScriptFinder.cs.meta                    |    0
+ Assets/Script/Validation.meta                      |    8 +
+ Assets/Script/Validation/CheckIconPopup.cs         |  322 ++++
+ Assets/Script/Validation/CheckIconPopup.cs.meta    |    2 +
+ Assets/Script/Validation/ChecklistContainer.cs     |   78 +
+ .../Script/Validation/ChecklistContainer.cs.meta   |    2 +
+ Assets/Script/{ => Validation}/Drag and Drop.meta  |    0
+ .../Script/{ => Validation}/Drag and Drop/Block.cs |    0
+ .../{ => Validation}/Drag and Drop/Block.cs.meta   |    0
+ .../Drag and Drop/DraggableObject.cs               |    0
+ .../Drag and Drop/DraggableObject.cs.meta          |    0
+ Assets/prefab/UI/Article/SidePanel.meta            |    8 +
+ 17 files changed, 1360 insertions(+), 972 deletions(-)
+
+commit 79b76a3af09fc3c90abc4a454d59867087cd68e3
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T20:59:20-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T20:59:20-03:00
+
+    index on main: 7f6e175 WIP Panel
+
+ Assets/Script/Validation/ChecklistPopupButton.cs   | 153 ++++++++++++++++++++
+ .../Script/Validation/ChecklistPopupButton.cs.meta |   2 +
+ Assets/prefab/UI/Article/Dropdown.meta             |   8 ++
+ .../Dropdown/AICheck_Button_Dropdown.prefab        | 143 ++++++++++++++++++
+ .../Dropdown/AICheck_Button_Dropdown.prefab.meta   |   7 +
+ .../Dropdown/FactCheck_Button_Dropdown.prefab      | 135 +++++++++++++++++
+ .../Dropdown/FactCheck_Button_Dropdown.prefab.meta |   7 +
+ .../Article/Dropdown/FalacyCheck _Dropdown.prefab  | 151 +++++++++++++++++++
+ .../Dropdown/FalacyCheck _Dropdown.prefab.meta     |   7 +
+ .../Dropdown/LabelCheck_Button_Dropdown.prefab     | 155 ++++++++++++++++++++
+ .../LabelCheck_Button_Dropdown.prefab.meta         |   7 +
+ .../Dropdown/SourceCheck_Button_Dropdown.prefab    | 143 ++++++++++++++++++
+ .../SourceCheck_Button_Dropdown.prefab.meta        |   7 +
+ .../SpecialistCheck_Button_Dropdown.prefab         | 159 +++++++++++++++++++++
+ .../SpecialistCheck_Button_Dropdown.prefab.meta    |   7 +
+ .../SidePanel/AICheck_Button Variant.prefab        | 135 +++++++++++++++++
+ .../SidePanel/AICheck_Button Variant.prefab.meta   |   7 +
+ .../SidePanel/FactCheck_Button Variant.prefab      | 127 ++++++++++++++++
+ .../SidePanel/FactCheck_Button Variant.prefab.meta |   7 +
+ .../Article/SidePanel/FalacyCheck Variant.prefab   | 155 ++++++++++++++++++++
+ .../SidePanel/FalacyCheck Variant.prefab.meta      |   7 +
+ .../SidePanel/LabelCheck_Button Variant.prefab     | 147 +++++++++++++++++++
+ .../LabelCheck_Button Variant.prefab.meta          |   7 +
+ .../SidePanel/SourceCheck_Button Variant.prefab    | 135 +++++++++++++++++
+ .../SourceCheck_Button Variant.prefab.meta         |   7 +
+ .../SpecialistCheck_Button Variant.prefab          | 151 +++++++++++++++++++
+ .../SpecialistCheck_Button Variant.prefab.meta     |   7 +
+ 27 files changed, 1983 insertions(+)
+
+commit 79d187f001f6a967adf58764d6eab870d6d33fef
+Merge: 7f6e175 79b76a3
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T20:59:20-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T20:59:20-03:00
+
+    On main: !!GitHub_Desktop<main>
+
+commit 4aac4b191e2d86cdcdee17e6bee50d66c13d2647
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-20T21:05:28-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-20T21:05:28-03:00
+
+    FeedBack Screen
+    
+    Visual ready
+
+ Assets/Scenes/2 Main Scene.unity                   | 3705 +++++++++++++++-----
+ Assets/Sprite/Figma/UI_SideBar/Vector (13).png     |  Bin 0 -> 711 bytes
+ .../Sprite/Figma/UI_SideBar/Vector (13).png.meta   |  143 +
+ .../Sprite/Figma/Ui_FeedBack/Correct_Section.png   |  Bin 0 -> 7445 bytes
+ .../Figma/Ui_FeedBack/Correct_Section.png.meta     |  143 +
+ Assets/Sprite/Figma/Ui_FeedBack/Ellipse 14.png     |  Bin 0 -> 2183 bytes
+ .../Sprite/Figma/Ui_FeedBack/Ellipse 14.png.meta   |  143 +
+ Assets/Sprite/Figma/Ui_FeedBack/Ellipse 15 (1).png |  Bin 0 -> 2425 bytes
+ .../Figma/Ui_FeedBack/Ellipse 15 (1).png.meta      |  143 +
+ .../Sprite/Figma/Ui_FeedBack/FeedBack_Section.png  |  Bin 0 -> 4564 bytes
+ .../Figma/Ui_FeedBack/FeedBack_Section.png.meta    |  143 +
+ Assets/Sprite/Figma/Ui_FeedBack/Wrong_Section.png  |  Bin 0 -> 7657 bytes
+ .../Figma/Ui_FeedBack/Wrong_Section.png.meta       |  143 +
+ Assets/TextMesh Pro/Fonts/Roboto_Slab.meta         |    8 +
+ .../TextMesh Pro/Fonts/Roboto_Slab/ActualFont.meta |    8 +
+ .../ActualFont/RobotoSlab-Regular SDF.asset        | 2856 +++++++++++++++
+ .../ActualFont/RobotoSlab-Regular SDF.asset.meta   |    8 +
+ Assets/TextMesh Pro/Fonts/Roboto_Slab/LICENSE.txt  |  202 ++
+ .../Fonts/Roboto_Slab/LICENSE.txt.meta             |    7 +
+ Assets/TextMesh Pro/Fonts/Roboto_Slab/README.txt   |   71 +
+ .../TextMesh Pro/Fonts/Roboto_Slab/README.txt.meta |    7 +
+ .../Roboto_Slab/RobotoSlab-VariableFont_wght.ttf   |  Bin 0 -> 247384 bytes
+ .../RobotoSlab-VariableFont_wght.ttf.meta          |   21 +
+ Assets/TextMesh Pro/Fonts/Roboto_Slab/static.meta  |    8 +
+ .../Fonts/Roboto_Slab/static/RobotoSlab-Black.ttf  |  Bin 0 -> 127172 bytes
+ .../Roboto_Slab/static/RobotoSlab-Black.ttf.meta   |   21 +
+ .../Fonts/Roboto_Slab/static/RobotoSlab-Bold.ttf   |  Bin 0 -> 126948 bytes
+ .../Roboto_Slab/static/RobotoSlab-Bold.ttf.meta    |   21 +
+ .../Roboto_Slab/static/RobotoSlab-ExtraBold.ttf    |  Bin 0 -> 127088 bytes
+ .../static/RobotoSlab-ExtraBold.ttf.meta           |   21 +
+ .../Roboto_Slab/static/RobotoSlab-ExtraLight.ttf   |  Bin 0 -> 126684 bytes
+ .../static/RobotoSlab-ExtraLight.ttf.meta          |   21 +
+ .../Fonts/Roboto_Slab/static/RobotoSlab-Light.ttf  |  Bin 0 -> 126680 bytes
+ .../Roboto_Slab/static/RobotoSlab-Light.ttf.meta   |   21 +
+ .../Fonts/Roboto_Slab/static/RobotoSlab-Medium.ttf |  Bin 0 -> 126864 bytes
+ .../Roboto_Slab/static/RobotoSlab-Medium.ttf.meta  |   21 +
+ .../Roboto_Slab/static/RobotoSlab-Regular.ttf      |  Bin 0 -> 126188 bytes
+ .../Roboto_Slab/static/RobotoSlab-Regular.ttf.meta |   21 +
+ .../Roboto_Slab/static/RobotoSlab-SemiBold.ttf     |  Bin 0 -> 127088 bytes
+ .../static/RobotoSlab-SemiBold.ttf.meta            |   21 +
+ .../Fonts/Roboto_Slab/static/RobotoSlab-Thin.ttf   |  Bin 0 -> 125448 bytes
+ .../Roboto_Slab/static/RobotoSlab-Thin.ttf.meta    |   21 +
+ 42 files changed, 7005 insertions(+), 943 deletions(-)
+
+commit 31bdd8f80056295f470b3ea04d107c725fa2a6fb
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-20T21:00:21-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-20T21:00:21-03:00
+
+    fixed the button type mistake
+
+ Assets/Scenes/2 Main Scene.unity | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+commit 99c336a0fec2df24741e13dd36d18397feb4e810
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-20T23:16:33-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-20T23:16:33-03:00
+
+    URL Screens cretaded
+    
+    Going to the Audio panel
+
+ Assets/Scenes/2 Main Scene.unity                   | 8689 +++++++++++++++++---
+ .../Figma/Ui_Chat/ChatButton/Outline_Contacts.png  |  Bin 0 -> 2812 bytes
+ .../Ui_Chat/ChatButton/Outline_Contacts.png.meta   |  143 +
+ Assets/Sprite/Figma/Ui_Chat/URL_Screens.meta       |    8 +
+ .../Figma/Ui_Chat/URL_Screens/Ellipse 10 (1).png   |  Bin 0 -> 8334 bytes
+ .../Ui_Chat/URL_Screens/Ellipse 10 (1).png.meta    |  143 +
+ .../Figma/Ui_Chat/URL_Screens/Ellipse 10 (2).png   |  Bin 0 -> 8585 bytes
+ .../Ui_Chat/URL_Screens/Ellipse 10 (2).png.meta    |  143 +
+ .../Figma/Ui_Chat/URL_Screens/Ellipse 10 (3).png   |  Bin 0 -> 8351 bytes
+ .../Ui_Chat/URL_Screens/Ellipse 10 (3).png.meta    |  143 +
+ .../Figma/Ui_Chat/URL_Screens/N\303\203O.png"      |  Bin 0 -> 22225 bytes
+ .../Figma/Ui_Chat/URL_Screens/N\303\203O.png.meta" |  143 +
+ .../Figma/Ui_Chat/URL_Screens/Rectangle 290.png    |  Bin 0 -> 7786 bytes
+ .../Ui_Chat/URL_Screens/Rectangle 290.png.meta     |  143 +
+ .../Figma/Ui_Chat/URL_Screens/Rectangle 292.png    |  Bin 0 -> 8256 bytes
+ .../Ui_Chat/URL_Screens/Rectangle 292.png.meta     |  143 +
+ .../Figma/Ui_Chat/URL_Screens/Redirector.png       |  Bin 0 -> 10100 bytes
+ .../Figma/Ui_Chat/URL_Screens/Redirector.png.meta  |  143 +
+ Assets/Sprite/Figma/Ui_Chat/URL_Screens/SIM.png    |  Bin 0 -> 58427 bytes
+ .../Sprite/Figma/Ui_Chat/URL_Screens/SIM.png.meta  |  143 +
+ .../Figma/Ui_Chat/URL_Screens/URL_LinkBG.png       |  Bin 0 -> 50897 bytes
+ .../Figma/Ui_Chat/URL_Screens/URL_LinkBG.png.meta  |  143 +
+ .../Ui_Chat/URL_Screens/URL_RightDecision.png      |  Bin 0 -> 50634 bytes
+ .../Ui_Chat/URL_Screens/URL_RightDecision.png.meta |  143 +
+ .../Figma/Ui_Chat/URL_Screens/URL_RiskBg.png       |  Bin 0 -> 51064 bytes
+ .../Figma/Ui_Chat/URL_Screens/URL_RiskBg.png.meta  |  143 +
+ .../Figma/Ui_Chat/URL_Screens/URL_Risk_Buton.png   |  Bin 0 -> 4456 bytes
+ .../Ui_Chat/URL_Screens/URL_Risk_Buton.png.meta    |  143 +
+ .../Figma/Ui_Chat/URL_Screens/Vector (14).png      |  Bin 0 -> 5658 bytes
+ .../Figma/Ui_Chat/URL_Screens/Vector (14).png.meta |  195 +
+ .../Figma/Ui_Chat/URL_Screens/Vector (15).png      |  Bin 0 -> 1280 bytes
+ .../Figma/Ui_Chat/URL_Screens/Vector (15).png.meta |  143 +
+ .../Ui_Chat/URL_Screens/error-outline-rounded.png  |  Bin 0 -> 5112 bytes
+ .../URL_Screens/error-outline-rounded.png.meta     |  143 +
+ .../Sprite/Figma/Ui_Chat/URL_Screens/language.png  |  Bin 0 -> 4544 bytes
+ .../Figma/Ui_Chat/URL_Screens/language.png.meta    |  143 +
+ Assets/Sprite/Figma/Ui_Chat/URL_Screens/search.png |  Bin 0 -> 2541 bytes
+ .../Figma/Ui_Chat/URL_Screens/search.png.meta      |  143 +
+ .../URL_Screens/shield-lock-outline (2).png        |  Bin 0 -> 3742 bytes
+ .../URL_Screens/shield-lock-outline (2).png.meta   |  143 +
+ 40 files changed, 10343 insertions(+), 1123 deletions(-)
+
+commit a74f2aac0c626c7ceafa94b61676c802a62f1c7e
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-21T16:52:07-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-21T16:52:07-03:00
+
+    .
+
+ Assets/Scenes/2 Main Scene.unity          | 16 ++++++++--------
+ ProjectSettings/EditorBuildSettings.asset |  5 ++++-
+ 2 files changed, 12 insertions(+), 9 deletions(-)
+
+commit 14a8f5c1c028da566a6dfc08837838b386ec6258
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-21T18:38:39-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-21T18:38:39-03:00
+
+    Finished all the mains screens
+    
+    Heading to details and polishment
+
+ Assets/Scenes/2 Main Scene.unity                   | 2399 +++++++++++++++++++-
+ .../ChatButton/Elipses_BordasBG/Elipse Matilda.png |  Bin 0 -> 7504 bytes
+ .../Elipses_BordasBG/Elipse Matilda.png.meta       |  182 ++
+ .../ChatButton/Elipses_BordasBG/Elipse May.png     |  Bin 0 -> 7451 bytes
+ .../Elipses_BordasBG/Elipse May.png.meta           |  182 ++
+ .../Figma/Ui_Chat/ChatButton/Matilda Xavier.png    |  Bin 0 -> 109173 bytes
+ .../Ui_Chat/ChatButton/Matilda Xavier.png.meta     |  182 ++
+ .../ChatButton/Matilda_Ramos_Xavier.webp.png       |  Bin 0 -> 90954 bytes
+ .../ChatButton/Matilda_Ramos_Xavier.webp.png.meta  |  182 ++
+ Assets/Sprite/Figma/Ui_Chat/ChatButton/May.png     |  Bin 0 -> 92784 bytes
+ .../Sprite/Figma/Ui_Chat/ChatButton/May.png.meta   |  208 ++
+ Assets/Sprite/Figma/Ui_History/back_Button.png     |  Bin 0 -> 14184 bytes
+ .../Sprite/Figma/Ui_History/back_Button.png.meta   |  182 ++
+ Assets/Sprite/Figma/Ui_SoundConfig.meta            |    8 +
+ .../Sprite/Figma/Ui_SoundConfig/Ellipse 11 (1).png |  Bin 0 -> 85717 bytes
+ .../Figma/Ui_SoundConfig/Ellipse 11 (1).png.meta   |  182 ++
+ .../Sprite/Figma/Ui_SoundConfig/Ellipse 11 (2).png |  Bin 0 -> 1094 bytes
+ .../Figma/Ui_SoundConfig/Ellipse 11 (2).png.meta   |  182 ++
+ Assets/Sprite/Figma/Ui_SoundConfig/Ellipse 11.png  |  Bin 0 -> 85399 bytes
+ .../Figma/Ui_SoundConfig/Ellipse 11.png.meta       |  182 ++
+ .../Sprite/Figma/Ui_SoundConfig/Rectangle 291.png  |  Bin 0 -> 67859 bytes
+ .../Figma/Ui_SoundConfig/Rectangle 291.png.meta    |  182 ++
+ .../Sprite/Figma/Ui_SoundConfig/Rectangle 329.png  |  Bin 0 -> 1643 bytes
+ .../Figma/Ui_SoundConfig/Rectangle 329.png.meta    |  182 ++
+ Assets/Sprite/Figma/Ui_SoundConfig/Vector (1).png  |  Bin 0 -> 1168 bytes
+ .../Figma/Ui_SoundConfig/Vector (1).png.meta       |  208 ++
+ Assets/Sprite/Figma/Ui_SoundConfig/Vector (2).png  |  Bin 0 -> 1092 bytes
+ .../Figma/Ui_SoundConfig/Vector (2).png.meta       |  182 ++
+ Assets/Sprite/Figma/Ui_SoundConfig/Vector.png      |  Bin 0 -> 1384 bytes
+ Assets/Sprite/Figma/Ui_SoundConfig/Vector.png.meta |  208 ++
+ Assets/Sprite/Figma/Ui_SoundConfig/Vector@4x.png   |  Bin 0 -> 684 bytes
+ .../Sprite/Figma/Ui_SoundConfig/Vector@4x.png.meta |  182 ++
+ 32 files changed, 5126 insertions(+), 89 deletions(-)
+
+commit 3b1b3961f98406cd7a4f663f7fa7d527187fd597
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-21T18:39:58-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-21T18:39:58-03:00
+
+    Update 2 Main Scene.unity
+
+ Assets/Scenes/2 Main Scene.unity | 192 +++++++++++++++++++--------------------
+ 1 file changed, 96 insertions(+), 96 deletions(-)
+
+commit a5eaa92ec1b8b0ade1ee177c58687ecdf0a0b8b0
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-21T21:24:08-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-21T21:24:08-03:00
+
+    fake URL working
+
+ ...9.2026).unity => 3 Tutorial (21.09.2026).unity} | 14869 ++++++++++++++++---
+ ...ity.meta => 3 Tutorial (21.09.2026).unity.meta} |     2 +-
+ Assets/Script/Chat/ConversationViewer.cs           |  1369 +-
+ .../Conversations/1 NPC Blakeley Churco.asset      |     6 +-
+ .../Conversations/2 NPC \303\215ris Castelo.asset" |     6 +-
+ .../Conversations/3 NPC Charlotee Monroe.asset     |     2 +-
+ .../Conversations/4 NPC Miguel Ramos X..asset      |     6 +-
+ .../Conversations/5 NPC Rafael Costa.asset         |     4 +-
+ .../Conversations/6 NPC Lino Jatob\303\241.asset"  |     6 +-
+ .../Conversations/7 NPC K\303\251lvin Clay.asset"  |     8 +-
+ 10 files changed, 13174 insertions(+), 3104 deletions(-)
+
+commit 8ef920c112245b8fb60ac216379195bf06385dc9
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-21T21:46:07-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-21T21:46:07-03:00
+
+    WIP Dropdown menu button
+
+ Assets/Scenes/3 Tutorial (21.09.2026).unity        | 1466 +++++-------
+ Assets/Script/Validation/CheckIconPopup.cs         |  255 ++-
+ Assets/Script/Validation/ChecklistContainer.cs     |   60 +-
+ .../Article Blocks/Article_TextBlock.prefab        | 2354 ++++++++++++++++++--
+ Assets/prefab/UI/Article/Article_Prefab.prefab     |   35 +-
+ .../SidePanel/AICheck_Button Variant.prefab        |  139 ++
+ .../SidePanel/AICheck_Button Variant.prefab.meta   |    7 +
+ .../SidePanel/FactCheck_Button Variant.prefab      |  127 ++
+ .../SidePanel/FactCheck_Button Variant.prefab.meta |    7 +
+ .../Article/SidePanel/FalacyCheck Variant.prefab   |  155 ++
+ .../SidePanel/FalacyCheck Variant.prefab.meta      |    7 +
+ .../SidePanel/LabelCheck_Button Variant.prefab     |  151 ++
+ .../LabelCheck_Button Variant.prefab.meta          |    7 +
+ .../SidePanel/SourceCheck_Button Variant.prefab    |  143 ++
+ .../SourceCheck_Button Variant.prefab.meta         |    7 +
+ .../SpecialistCheck_Button Variant.prefab          |  155 ++
+ .../SpecialistCheck_Button Variant.prefab.meta     |    7 +
+ 17 files changed, 3817 insertions(+), 1265 deletions(-)
+
+commit 39bb8254b17561141c8a38c09645d0bf790979e6
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-22T16:51:02-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-22T16:51:02-03:00
+
+    Added DOTWEEN
+    
+    Added DOTween and testing UI animations
+
+ Assets/Plugins.meta                                |    8 +
+ Assets/Plugins/Demigiant.meta                      |    8 +
+ Assets/Plugins/Demigiant/DOTween.meta              |   21 +
+ Assets/Plugins/Demigiant/DOTween/DOTween.XML       | 3107 ++++++++++++++++++++
+ Assets/Plugins/Demigiant/DOTween/DOTween.XML.meta  |    4 +
+ Assets/Plugins/Demigiant/DOTween/DOTween.dll       |  Bin 0 -> 178176 bytes
+ Assets/Plugins/Demigiant/DOTween/DOTween.dll.meta  |   22 +
+ Assets/Plugins/Demigiant/DOTween/Editor.meta       |    5 +
+ .../Demigiant/DOTween/Editor/DOTweenEditor.XML     |  189 ++
+ .../DOTween/Editor/DOTweenEditor.XML.meta          |    4 +
+ .../Demigiant/DOTween/Editor/DOTweenEditor.dll     |  Bin 0 -> 68608 bytes
+ .../DOTween/Editor/DOTweenEditor.dll.meta          |   22 +
+ Assets/Plugins/Demigiant/DOTween/Editor/Imgs.meta  |    5 +
+ .../Demigiant/DOTween/Editor/Imgs/DOTweenIcon.png  |  Bin 0 -> 1565 bytes
+ .../DOTween/Editor/Imgs/DOTweenIcon.png.meta       |   47 +
+ .../DOTween/Editor/Imgs/DOTweenMiniIcon.png        |  Bin 0 -> 319 bytes
+ .../DOTween/Editor/Imgs/DOTweenMiniIcon.png.meta   |   68 +
+ .../Demigiant/DOTween/Editor/Imgs/Footer.png       |  Bin 0 -> 4409 bytes
+ .../Demigiant/DOTween/Editor/Imgs/Footer.png.meta  |   47 +
+ .../Demigiant/DOTween/Editor/Imgs/Footer_dark.png  |  Bin 0 -> 4429 bytes
+ .../DOTween/Editor/Imgs/Footer_dark.png.meta       |   47 +
+ .../Demigiant/DOTween/Editor/Imgs/Header.jpg       |  Bin 0 -> 22787 bytes
+ .../Demigiant/DOTween/Editor/Imgs/Header.jpg.meta  |   47 +
+ Assets/Plugins/Demigiant/DOTween/Modules.meta      |    5 +
+ .../DOTween/Modules/DOTweenModuleAudio.cs          |  198 ++
+ .../DOTween/Modules/DOTweenModuleAudio.cs.meta     |    8 +
+ .../DOTween/Modules/DOTweenModuleEPOOutline.cs     |  146 +
+ .../Modules/DOTweenModuleEPOOutline.cs.meta        |   12 +
+ .../DOTween/Modules/DOTweenModulePhysics.cs        |  216 ++
+ .../DOTween/Modules/DOTweenModulePhysics.cs.meta   |    8 +
+ .../DOTween/Modules/DOTweenModulePhysics2D.cs      |  193 ++
+ .../DOTween/Modules/DOTweenModulePhysics2D.cs.meta |    8 +
+ .../DOTween/Modules/DOTweenModuleSprite.cs         |   93 +
+ .../DOTween/Modules/DOTweenModuleSprite.cs.meta    |    8 +
+ .../Demigiant/DOTween/Modules/DOTweenModuleUI.cs   |  662 +++++
+ .../DOTween/Modules/DOTweenModuleUI.cs.meta        |    8 +
+ .../DOTween/Modules/DOTweenModuleUIToolkit.cs      |  161 +
+ .../DOTween/Modules/DOTweenModuleUIToolkit.cs.meta |   11 +
+ .../DOTween/Modules/DOTweenModuleUnityVersion.cs   |  389 +++
+ .../Modules/DOTweenModuleUnityVersion.cs.meta      |    8 +
+ .../DOTween/Modules/DOTweenModuleUtils.cs          |  174 ++
+ .../DOTween/Modules/DOTweenModuleUtils.cs.meta     |    8 +
+ Assets/Plugins/Demigiant/DOTween/readme.txt        |   31 +
+ Assets/Plugins/Demigiant/DOTween/readme.txt.meta   |    4 +
+ Assets/Resources/DOTweenSettings.asset             |   55 +
+ Assets/Resources/DOTweenSettings.asset.meta        |    8 +
+ Assets/Scenes/2 Main Scene.unity                   |   99 +-
+ Assets/Script/DOTween.meta                         |    8 +
+ Assets/Script/DOTween/TesteDOTween.cs              |   16 +
+ Assets/Script/DOTween/TesteDOTween.cs.meta         |    2 +
+ ProjectSettings/ProjectSettings.asset              |   20 +-
+ 51 files changed, 6204 insertions(+), 6 deletions(-)
+
+commit 890b66a7351c5e3748f2c8196aba87e583381fdf
+Author:     PHNvieira015 <damenesvid580@gmail.com>
+AuthorDate: 2026-09-22T17:22:11-03:00
+Commit:     PHNvieira015 <damenesvid580@gmail.com>
+CommitDate: 2026-09-22T17:22:11-03:00
+
+    Update Kelvin fix
+
+ .../Conversations/7 NPC K\303\251lvin Clay.asset"            | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+commit d88d5a6d458ed0340c23f78932bf3c06c9185449
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-22T20:03:15-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-22T20:03:15-03:00
+
+    StartinScene Ready
+
+ Assets/Scenes/1 Starting Scene.unity               | 1177 ++++++++++----------
+ Assets/Sprite/Figma/Inicial_Screen.meta            |    8 +
+ Assets/Sprite/Figma/Inicial_Screen/BG.mp4          |  Bin 0 -> 15162159 bytes
+ Assets/Sprite/Figma/Inicial_Screen/BG.mp4.meta     |   18 +
+ Assets/Sprite/Figma/Inicial_Screen/Bg(1).mp4       |  Bin 0 -> 3611142 bytes
+ Assets/Sprite/Figma/Inicial_Screen/Bg(1).mp4.meta  |   18 +
+ Assets/Sprite/Figma/Inicial_Screen/Logo 1.mp4      |  Bin 0 -> 309916 bytes
+ Assets/Sprite/Figma/Inicial_Screen/Logo 1.mp4.meta |   18 +
+ Assets/Sprite/Figma/Inicial_Screen/Logo-01.png     |  Bin 0 -> 77919 bytes
+ .../Sprite/Figma/Inicial_Screen/Logo-01.png.meta   |  559 ++++++++++
+ Assets/Sprite/Figma/Inicial_Screen/Logo-02.png     |  Bin 0 -> 99561 bytes
+ .../Sprite/Figma/Inicial_Screen/Logo-02.png.meta   |  221 ++++
+ Assets/Sprite/Figma/Inicial_Screen/Logo.mp4        |  Bin 0 -> 224153 bytes
+ Assets/Sprite/Figma/Inicial_Screen/Logo.mp4.meta   |   18 +
+ .../Sprite/Figma/Inicial_Screen/Rectangle 330.png  |  Bin 0 -> 55014 bytes
+ .../Figma/Inicial_Screen/Rectangle 330.png.meta    |  143 +++
+ .../Sprite/Figma/Inicial_Screen/Rectangle 85.png   |  Bin 0 -> 149299 bytes
+ .../Figma/Inicial_Screen/Rectangle 85.png.meta     |  143 +++
+ .../Figma/Inicial_Screen/VideoBG.renderTexture     |   39 +
+ .../Inicial_Screen/VideoBG.renderTexture.meta      |    8 +
+ .../Figma/Inicial_Screen/VideoLogo.renderTexture   |   39 +
+ .../Inicial_Screen/VideoLogo.renderTexture.meta    |    8 +
+ .../Figma/Inicial_Screen/exit-to-app (1).png       |  Bin 0 -> 1999 bytes
+ .../Figma/Inicial_Screen/exit-to-app (1).png.meta  |  143 +++
+ .../Figma/Inicial_Screen/exit-to-app (2).png       |  Bin 0 -> 2052 bytes
+ .../Figma/Inicial_Screen/exit-to-app (2).png.meta  |  143 +++
+ .../Figma/Inicial_Screen/outline-settings (1).png  |  Bin 0 -> 6615 bytes
+ .../Inicial_Screen/outline-settings (1).png.meta   |  143 +++
+ .../Figma/Inicial_Screen/outline-settings.png      |  Bin 0 -> 7300 bytes
+ .../Figma/Inicial_Screen/outline-settings.png.meta |  143 +++
+ 30 files changed, 2396 insertions(+), 593 deletions(-)
+
+commit cd10d6f8f3b913a32c09a4cd972c430aea2f4ae2
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-22T20:03:26-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-22T20:03:26-03:00
+
+    .
+
+ Assets/Sprite/Figma/Inicial_Screen/BG.mp4        | Bin 15162159 -> 0 bytes
+ Assets/Sprite/Figma/Inicial_Screen/BG.mp4.meta   |  18 ------------------
+ Assets/Sprite/Figma/Inicial_Screen/Logo.mp4      | Bin 224153 -> 0 bytes
+ Assets/Sprite/Figma/Inicial_Screen/Logo.mp4.meta |  18 ------------------
+ 4 files changed, 36 deletions(-)
+
+commit 994fdebfc0e849fb3f9643d6162d685348b232f0
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-22T20:04:30-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-22T20:04:30-03:00
+
+    .
+
+ Assets/Scenes/1 Starting Scene.unity | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f998ee508fd4a47a4bf7eb74ffd94a7785c598c1
+Author:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+AuthorDate: 2026-09-22T20:57:21-03:00
+Commit:     hugoVHalves <129858165+hugoVHalves@users.noreply.github.com>
+CommitDate: 2026-09-22T20:57:21-03:00
+
+    First Animation UI
+    
+    Button animation, On click button the scale changes
+
+ Assets/Scenes/1 Starting Scene.unity               |  48 +-
+ Assets/Scenes/2 Main Scene.unity                   | 522 +++++++++++----------
+ Assets/Script/{DOTween.meta => UI_DOTween.meta}    |   0
+ .../Script/{DOTween => UI_DOTween}/TesteDOTween.cs |   0
+ .../{DOTween => UI_DOTween}/TesteDOTween.cs.meta   |   0
+ Assets/Script/UI_DOTween/UI_ClickAnimation.cs      |  31 ++
+ Assets/Script/UI_DOTween/UI_ClickAnimation.cs.meta |   2 +
+ 7 files changed, 362 insertions(+), 241 deletions(-)
+
+commit 3d038599970c51e41ddd40314d68ea881cc14a4d
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-22T22:16:20-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-22T22:16:20-03:00
+
+    Testing Article_Text Dropdown (ugly but works)
+
+ Assets/Scenes/3 Tutorial (21.09.2026).unity        | 1996 ++++++++++++++++++--
+ Assets/Script/Validation/BlockTypeDropdown.cs      |  252 +++
+ Assets/Script/Validation/BlockTypeDropdown.cs.meta |    2 +
+ Assets/Script/Validation/Drag and Drop/Block.cs    |   80 +-
+ Assets/Script/Validation/Dropdown.cs               |   33 +
+ Assets/Script/Validation/Dropdown.cs.meta          |    2 +
+ Assets/Script/Validation/SpawnIconButton.cs        |  143 ++
+ Assets/Script/Validation/SpawnIconButton.cs.meta   |    2 +
+ .../Article Blocks/Article_TextBlock.prefab        | 1970 +++++++------------
+ 9 files changed, 2985 insertions(+), 1495 deletions(-)
+
+commit ca34f82227de4dad327c0cf656c9c91f1b001f0b
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-23T21:38:42-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-23T21:38:42-03:00
+
+    Audio in game
+
+ Assets/Audio.meta                                  |   8 +
+ Assets/Audio/Derrota.meta                          |   8 +
+ Assets/Audio/Derrota/Derrota 1.mp3                 | Bin 0 -> 91115 bytes
+ Assets/Audio/Derrota/Derrota 1.mp3.meta            |  23 +
+ Assets/Audio/Derrota/Derrota 2.wav                 | Bin 0 -> 344000 bytes
+ Assets/Audio/Derrota/Derrota 2.wav.meta            |  23 +
+ Assets/Audio/Derrota/Derrota 3.wav                 | Bin 0 -> 706330 bytes
+ Assets/Audio/Derrota/Derrota 3.wav.meta            |  23 +
+ Assets/Audio/Derrota/Derrota 4.wav                 | Bin 0 -> 833972 bytes
+ Assets/Audio/Derrota/Derrota 4.wav.meta            |  23 +
+ Assets/Audio/Logo.mov                              | Bin 0 -> 68448480 bytes
+ Assets/Audio/Logo.mov.meta                         |  18 +
+ Assets/{ => Audio}/MainMixer.mixer                 |   0
+ Assets/{ => Audio}/MainMixer.mixer.meta            |   0
+ Assets/Audio/UI.meta                               |   8 +
+ Assets/Audio/UI/Click.meta                         |   8 +
+ Assets/Audio/UI/Click/Click 1.mp3                  | Bin 0 -> 9216 bytes
+ Assets/Audio/UI/Click/Click 1.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 10.mp3                 | Bin 0 -> 13056 bytes
+ Assets/Audio/UI/Click/Click 10.mp3.meta            |  23 +
+ Assets/Audio/UI/Click/Click 11.mp3                 | Bin 0 -> 54334 bytes
+ Assets/Audio/UI/Click/Click 11.mp3.meta            |  23 +
+ Assets/Audio/UI/Click/Click 12.mp3                 | Bin 0 -> 44303 bytes
+ Assets/Audio/UI/Click/Click 12.mp3.meta            |  23 +
+ Assets/Audio/UI/Click/Click 2.mp3                  | Bin 0 -> 9216 bytes
+ Assets/Audio/UI/Click/Click 2.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 3.mp3                  | Bin 0 -> 11520 bytes
+ Assets/Audio/UI/Click/Click 3.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 4.mp3                  | Bin 0 -> 11520 bytes
+ Assets/Audio/UI/Click/Click 4.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 5.mp3                  | Bin 0 -> 11520 bytes
+ Assets/Audio/UI/Click/Click 5.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 6.mp3                  | Bin 0 -> 11520 bytes
+ Assets/Audio/UI/Click/Click 6.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 7.mp3                  | Bin 0 -> 11520 bytes
+ Assets/Audio/UI/Click/Click 7.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 8.mp3                  | Bin 0 -> 11520 bytes
+ Assets/Audio/UI/Click/Click 8.mp3.meta             |  23 +
+ Assets/Audio/UI/Click/Click 9.mp3                  | Bin 0 -> 13056 bytes
+ Assets/Audio/UI/Click/Click 9.mp3.meta             |  23 +
+ Assets/Audio/UI/Notification.mp3                   | Bin 0 -> 49319 bytes
+ Assets/Audio/UI/Notification.mp3.meta              |  23 +
+ Assets/Audio/UI/Soft UI whoosh.mp3                 | Bin 0 -> 33024 bytes
+ Assets/Audio/UI/Soft UI whoosh.mp3.meta            |  23 +
+ Assets/Audio/UI/UI menu out.mp3                    | Bin 0 -> 63529 bytes
+ Assets/Audio/UI/UI menu out.mp3.meta               |  23 +
+ Assets/Audio/UI/UI transition 1.mp3                | Bin 0 -> 33024 bytes
+ Assets/Audio/UI/UI transition 1.mp3.meta           |  23 +
+ Assets/Audio/UI/UI transition 2.mp3                | Bin 0 -> 23808 bytes
+ Assets/Audio/UI/UI transition 2.mp3.meta           |  23 +
+ Assets/Audio/Vitoria.meta                          |   8 +
+ Assets/Audio/Vitoria/Vitoria 1.mp3                 | Bin 0 -> 62693 bytes
+ Assets/Audio/Vitoria/Vitoria 1.mp3.meta            |  23 +
+ ...toria 2 (Provavelmente n ser\303\241 essa).mp3" | Bin 0 -> 2169208 bytes
+ ... 2 (Provavelmente n ser\303\241 essa).mp3.meta" |  23 +
+ Assets/Audio/Vitoria/Vitoria 3.mp3                 | Bin 0 -> 215040 bytes
+ Assets/Audio/Vitoria/Vitoria 3.mp3.meta            |  23 +
+ Assets/Audio/Vitoria/Vitoria 4.mp3                 | Bin 0 -> 143616 bytes
+ Assets/Audio/Vitoria/Vitoria 4.mp3.meta            |  23 +
+ Assets/Sprite/Logo.meta                            |   8 +
+ Assets/Sprite/Logo/Logo-01.png                     | Bin 0 -> 77919 bytes
+ Assets/Sprite/Logo/Logo-01.png.meta                | 559 +++++++++++++++++++++
+ Assets/Sprite/Logo/Logo-02.png                     | Bin 0 -> 99561 bytes
+ Assets/Sprite/Logo/Logo-02.png.meta                | 221 ++++++++
+ Assets/Video.meta                                  |   8 +
+ Assets/Video/BG.mp4                                | Bin 0 -> 15162159 bytes
+ Assets/Video/BG.mp4.meta                           |  18 +
+ 67 files changed, 1447 insertions(+)
+
+commit edcb8cad945fabf5fdd90e10365e3836b1314953
+Author:     Peter <pedro.hvieira@al.infnet.edu.br>
+AuthorDate: 2026-09-23T22:05:17-03:00
+Commit:     Peter <pedro.hvieira@al.infnet.edu.br>
+CommitDate: 2026-09-23T22:05:17-03:00
+
+    Updated Audio Trigger
+
+ Assets/Scenes/3 Tutorial (21.09.2026).unity     |  75 +++++++++++++-
+ Assets/Script/AudioManager/AudioTrigger.cs      |  46 +++++++++
+ Assets/Script/AudioManager/AudioTrigger.cs.meta |   2 +
+ Assets/prefab/Audio/Music Prefab.prefab         | 131 ++++++++++++++++++++++++
+ Assets/prefab/Audio/Music Prefab.prefab.meta    |   7 ++
+ Assets/prefab/UI/Article/ActionButton.prefab    |  18 ++++
+ Assets/prefab/UI/Close_Button.prefab            |  22 +++-
+ Assets/prefab/UI/Conversation/NPCButton.prefab  |  30 +++++-
+ 8 files changed, 325 insertions(+), 6 deletions(-)
