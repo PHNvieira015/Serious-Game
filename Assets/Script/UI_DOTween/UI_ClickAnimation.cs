@@ -15,8 +15,8 @@ public class UI_ClickAnimation : MonoBehaviour
         transform.DOKill();
 
         transform.DOScale(
-            originalScale * 0.80f,
-            0.01f
+            originalScale * 0.90f,
+            0.02f
         )
         .SetEase(Ease.OutQuad)
         .OnComplete(() =>
