@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 0
+    m_Left: -10
     m_Right: 0
-    m_Top: 0
+    m_Top: 10
     m_Bottom: 0
   m_ChildAlignment: 1
   m_Spacing: 0
@@ -120,8 +120,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 670, y: 0}
-  m_SizeDelta: {x: 1340, y: 0}
+  m_AnchoredPosition: {x: 665, y: -10}
+  m_SizeDelta: {x: 1270.5, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3779692751307846111
 CanvasRenderer:
@@ -153,8 +153,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Block Text 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fbd388573161e254e903ef130141ede8, type: 2}
+  m_sharedMaterial: {fileID: 2676218323649558107, guid: fbd388573161e254e903ef130141ede8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -178,8 +178,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: 100
-  m_PreferredWidth: 1340
+  m_PreferredWidth: 1270.5
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 505294196016107778}
   - component: {fileID: 5684447142831884184}
   m_Layer: 6
-  m_Name: BublePrefab
+  m_Name: BubblePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,7 +326,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
+  m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
   layoutElement: {fileID: 6880629171490255164}
   bubbleButton: {fileID: 0}
   npcBubbleColor: {r: 1, g: 1, b: 1, a: 1}
-  playerBubbleColor: {r: 0.85, g: 0.97, b: 0.79, a: 1}
+  playerBubbleColor: {r: 1, g: 1, b: 1, a: 1}
   npcTextColor: {r: 0, g: 0, b: 0, a: 1}
   playerTextColor: {r: 0, g: 0, b: 0, a: 1}
   linkTextColor: {r: 0.15, g: 0.5, b: 0.94, a: 1}
@@ -425,15 +425,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.312, g: 0.312, b: 0.312, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: a287bdcd0bce5d54cbcee635b5fcd811, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

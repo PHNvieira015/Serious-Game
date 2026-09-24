@@ -49,7 +49,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: g1.globo.com/2026/09/13/artigo
     DisplayType: 5
     Image: {fileID: 0}
