@@ -15,7 +15,7 @@ MonoBehaviour:
   ConversationTitle: Blakeley Churco_1
   NPCSpeakerName: Blakeley Churco
   NPCSpeakerAvatar: {fileID: 21300000, guid: ae97b3365a493454ba71d9ca39dabf1d, type: 3}
-  NPCSpeakerBackground: {fileID: 0}
+  NPCSpeakerBackground: {fileID: 21300000, guid: 23d8c80e30370c848b01b025f682b0b0, type: 3}
   Nodes:
   - IsNPC: 1
     Message: "Buenas tchum, t\xE1 vivo ? "

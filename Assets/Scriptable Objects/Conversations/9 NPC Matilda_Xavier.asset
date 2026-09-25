@@ -39,7 +39,7 @@ MonoBehaviour:
     IsEndNode: 0
     AutoAdvance: 0
     AutoAdvanceDelay: 0
-  - IsNPC: 0
+  - IsNPC: 1
     Message: "Um conselho de algu\xE9m que j\xE1 viveu bastante: n\xE3o tenha tanta
       pressa para provar que est\xE1 certo. Observe primeiro. Voc\xEA aprende mais
       assim."

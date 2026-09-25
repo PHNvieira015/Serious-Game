@@ -11,6 +11,7 @@ public class ArticleData : ScriptableObject
     public string Title;
 
     public string Subtitle;
+    public string Date;
 
     [Header("Article")]
     public string URL_site;
