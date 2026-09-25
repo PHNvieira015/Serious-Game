@@ -16,7 +16,8 @@ MonoBehaviour:
     pulm\xF5es"
   Subtitle: "Ferramenta analisa tomografias e tamb\xE9m \xE9 utilizada em pesquisas
     sobre Covid longa."
-  URL_site: 
+  Date: 
+  URL_site: 'https://noticiascampinas.example/saude/inteligencia-artificial-unicamp-danos-covid-pulmoes '
   Writer:
     WriterName: "Gabriella Ramos, g1 Campinas e Regi\xE3o"
     WriterPhoto: {fileID: 375808283027584635, guid: a28486b3beb8b95469532ba85d53891b, type: 3}

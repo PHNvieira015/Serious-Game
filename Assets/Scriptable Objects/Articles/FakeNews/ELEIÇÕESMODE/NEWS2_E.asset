@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
   Title: "Helena Duarte ou Marcos Valen\xE7a"
   Subtitle: "Nova pesquisa mostra quem tem a maior rejei\xE7\xE3o na largada da campanha "
-  URL_site: 
+  Date: 
+  URL_site: https://politicaemfoco.example/eleicoes/pesquisa-rejeicao-helena-duarte-marcos-valenca
   Writer:
     WriterName: "Reda\xE7\xE3o Pol\xEDtica"
     WriterPhoto: {fileID: 0}
