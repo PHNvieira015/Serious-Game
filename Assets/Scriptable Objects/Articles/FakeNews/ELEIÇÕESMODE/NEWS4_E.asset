@@ -16,7 +16,8 @@ MonoBehaviour:
     aponta alerta nas redes"
   Subtitle: "Mensagem questiona se os mecanismos de seguran\xE7a das urnas acompanham
     o avan\xE7o das novas tecnologias."
-  URL_site: https://observadordigital.example/eleicoes/inteligencia-artificial-urnas
+  Date: 
+  URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
     WriterName: "Reda\xE7\xE3o Observador Digital"
     WriterPhoto: {fileID: 0}

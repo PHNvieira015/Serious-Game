@@ -20,7 +20,7 @@ MonoBehaviour:
   URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
     WriterName: "Reda\xE7\xE3o Panorama Eleitoral"
-    WriterPhoto: {fileID: 0}
+    WriterPhoto: {fileID: 21300000, guid: c9ef7815a362d0744920f7686dcc47d7, type: 3}
     WriterDescription: 'Publicado em: 18 de setembro de 2026'
   Blocks:
   - Type: 1

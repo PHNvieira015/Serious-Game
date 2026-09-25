@@ -49,11 +49,11 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: (LINK)
+    Message: 'https://noticiascampinas.example/saude/inteligencia-artificial-unicamp-danos-covid-pulmoes '
     DisplayType: 5
     Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 545bdbb8fbe13f04f890e634c331a303, type: 2}
-    LinkURL: (LINK)
+    LinkURL: 'https://noticiascampinas.example/saude/inteligencia-artificial-unicamp-danos-covid-pulmoes '
     PlayerOptions: []
     IsEndNode: 1
     AutoAdvance: 0

@@ -48,11 +48,11 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: (LINK)
+    Message: http://www.eleicoeslimpas2026-verdade.com.br/urgente-fraude-urnas-bundowisk-revelada
     DisplayType: 5
     Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 4a09ef614594dd7429076fa5378d6d3f, type: 2}
-    LinkURL: (LINK)
+    LinkURL: http://www.eleicoeslimpas2026-verdade.com.br/urgente-fraude-urnas-bundowisk-revelada
     PlayerOptions: []
     IsEndNode: 1
     AutoAdvance: 0
