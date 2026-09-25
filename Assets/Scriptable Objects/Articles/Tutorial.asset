@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: Tutorial
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: "Metade do Senado apoia PEC alternativa \xE0 da C\xE2mara da escala 6 x
+    1"
+  Subtitle: "Texto constitucionaliza negocia\xE7\xE3o entre empregador e empregado
+    e vincula hora trabalhada ao sal\xE1rio m\xEDnimo proporcional"
+  Date: "28/05/26 \xE0s 17:01\_|\_Atualizado\_28/05/26 \xE0s 17:01"
+  URL_site: https://www.cnnbrasil.com.br/blogs/caio-junqueira/politica/metade-do-senado-apoia-pec-alternativa-a-da-camara-da-escala-6-x-1/
+  Writer:
+    WriterName: 
+    WriterPhoto: {fileID: 0}
+    WriterDescription: 
+  Blocks:
+  - Type: 1
+    Text: "Praticamente metade do Senado apoia a PEC (Proposta de Emenda \xE0 Constitui\xE7\xE3o)
+      alternativa ao texto aprovado horas antes pela C\xE2mara dos Deputados sobre
+      o fim da\_escala 6x1.\nO texto tem apoio agora de\_40 senadores, 4 a mais do
+      que os\_36 que a protocolaram nesta madrugada, conforme revelado pela\_CNN."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "O Senado Federal tem 81 senadores. Naquela tarde, a CNN informou
+      que a PEC 12/2026 tinha chegado a 40 assinaturas. Isso representa 40 de 81
+      senadores \u2014 aproximadamente 49,4%, portanto praticamente metade."
+  - Type: 1
+    Text: "O texto tem apoio agora de 40 senadores, 4 a mais do que os [36 que a
+      protocolaram nesta madrugada],conforme revelado pela CNN.\nSenadores apresentaram
+      ao longo do dia requerimentos para que eles tamb\xE9m constassem cono subscritores
+      da PEC. "
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "A PEC foi inicialmente protocolada na madrugada de 28 de maio de
+      2026 com 36 senadores. Ao longo daquele mesmo dia, outros quatro senadores
+      apresentaram requerimentos para tamb\xE9m constarem como subscritores.\n\nResultado
+      informado pela CNN: 40 apoiadores, quatro a mais que os 36 iniciais."
+  - Type: 1
+    Text: "O texto tem apoio agora de 40 senadores, 4 a mais do que os [36 que a
+      protocolaram nesta madrugada],conforme revelado pela CNN.\nSenadores apresentaram
+      ao longo do dia requerimentos para que eles tamb\xE9m constassem cono subscritores
+      da PEC. "
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "A PEC foi inicialmente protocolada na madrugada de 28 de maio de
+      2026 com 36 senadores. Ao longo daquele mesmo dia, outros quatro senadores
+      apresentaram requerimentos para tamb\xE9m constarem como subscritores.\n\nResultado
+      informado pela CNN: 40 apoiadores, quatro a mais que os 36 iniciais."
+  - Type: 1
+    Text: "A PEC 12/2026 conta com apoio de 40 senadores, quase metade do Senado,
+      e recebeu respaldo de entidades empresariais. A proposta busca permitir maior
+      flexibilidade na defini\xE7\xE3o das jornadas de trabalho, dando mais liberdade
+      para empregados e empregadores negociarem as condi\xE7\xF5es de trabalho. A
+      iniciativa tamb\xE9m recebeu apoio de senadores como Carlos Machado e foi encaminhada
+      rapidamente \xE0 CCJ pelo presidente do Senado."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "Aqui o vi\xE9s aparece principalmente por sele\xE7\xE3o e enquadramento:
+      destaca \u201Cliberdade\u201D, \u201Cflexibilidade\u201D, \u201Capoio\u201D
+      e \u201Crapidamente\u201D, enquanto n\xE3o explica as poss\xEDveis diferen\xE7as
+      em rela\xE7\xE3o \xE0 proposta da C\xE2mara."
+  - Type: 1
+    Text: "A chamada PEC alternativa \xE0 redu\xE7\xE3o da escala 6x1 j\xE1 re\xFAne
+      40 senadores e tem apoio de entidades empresariais e de Carlos Machado. Em
+      vez de estabelecer uma redu\xE7\xE3o da jornada constitucionalmente, a proposta
+      transfere parte importante dessa defini\xE7\xE3o para negocia\xE7\xF5es entre
+      empregadores e trabalhadores, inclusive individuais. Na pr\xE1tica, seus cr\xEDticos
+      podem interpretar isso como uma forma de deixar a dura\xE7\xE3o e a escala
+      de trabalho mais dependentes da negocia\xE7\xE3o entre as partes, em vez de
+      garantir uma redu\xE7\xE3o uniforme da jornada para todos os trabalhadores."
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "Esse segundo texto tamb\xE9m n\xE3o \xE9 uma descri\xE7\xE3o neutra:
+      ele enfatiza a aus\xEAncia de uma garantia uniforme e a possibilidade de assimetria
+      nas negocia\xE7\xF5es.  A diferen\xE7a importante \xE9 que ambos podem partir
+      dos mesmos fatos e produzir impress\xF5es pol\xEDticas diferentes apenas escolhendo
+      quais aspectos destacar e quais deixar em segundo plano."

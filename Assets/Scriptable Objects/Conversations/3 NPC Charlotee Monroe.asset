@@ -18,7 +18,7 @@ MonoBehaviour:
   NPCSpeakerBackground: {fileID: 21300000, guid: 32a112d5b8c03f24bb29078d78e64cb7, type: 3}
   Nodes:
   - IsNPC: 1
-    Message: "Oieee divaa\u2764\u2764"
+    Message: Oieee divaaa!
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -28,8 +28,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 0
-    Message: "Trouxe trabalho pra voc\xEA de novo\U0001F48B, tem uma not\xEDcia rodando
-      por ai e preciso da sua opni\xE3o neh"
+    Message: "Trouxe trabalho pra voc\xEA de novo, tem uma not\xEDcia rodando por
+      ai e preciso da sua opni\xE3o neh"
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -49,11 +49,11 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: (LINK)
+    Message: https://arquivoatual.example/cultura/livro-dean-koontz-coronavirus
     DisplayType: 5
     Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 03b9619b6748db94fa2def92c5abb291, type: 2}
-    LinkURL: (LINK)
+    LinkURL: https://arquivoatual.example/cultura/livro-dean-koontz-coronavirus
     PlayerOptions: []
     IsEndNode: 1
     AutoAdvance: 0

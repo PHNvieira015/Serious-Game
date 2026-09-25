@@ -49,11 +49,11 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: (LINK)
+    Message: https://boletimprevidenciario.example/beneficios/novas-regras-isolamento
     DisplayType: 5
     Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 16c4d1276ac9055419253681070caf44, type: 2}
-    LinkURL: (LINK)
+    LinkURL: https://boletimprevidenciario.example/beneficios/novas-regras-isolamento
     PlayerOptions: []
     IsEndNode: 0
     AutoAdvance: 0
