@@ -16,12 +16,12 @@ MonoBehaviour:
     pol\xEDtica "
   Subtitle: "Levantamento digital aponta mudan\xE7a no perfil desejado pelos eleitores
     para as pr\xF3ximas elei\xE7\xF5es. "
-  Date: 
+  Date: 'Publicado em: 18 de setembro de 2026'
   URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
     WriterName: "Reda\xE7\xE3o Panorama Eleitoral"
     WriterPhoto: {fileID: 21300000, guid: c9ef7815a362d0744920f7686dcc47d7, type: 3}
-    WriterDescription: 'Publicado em: 18 de setembro de 2026'
+    WriterDescription: 
   Blocks:
   - Type: 1
     Text: "\tOs participantes responderam \xE0 pergunta: \u201CVoc\xEA apoia a renova\xE7\xE3o

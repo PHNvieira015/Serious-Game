@@ -16,12 +16,12 @@ MonoBehaviour:
     do conte\xFAdo"
   Subtitle: "Decis\xE3o diferencia manipula\xE7\xF5es capazes de enganar o eleitor
     de outros usos de intelig\xEAncia artificial"
-  Date: 
+  Date: "1\xBA de setembro de 2026"
   URL_site: 'https://politicaemfoco.example/eleicoes/tse-proibicao-deepfakes-campanha-2026 '
   Writer:
     WriterName: "M\xE1rcio Falc\xE3o e Luiz Felipe Barbi\xE9ri, TV Globo/g1"
     WriterPhoto: {fileID: 0}
-    WriterDescription: "1\xBA de setembro de 2026"
+    WriterDescription: 
   Blocks:
   - Type: 1
     Text: "\tO Tribunal Superior Eleitoral (TSE) manteve a proibi\xE7\xE3o de deepfakes

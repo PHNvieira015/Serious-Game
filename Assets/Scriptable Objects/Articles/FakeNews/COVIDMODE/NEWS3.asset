@@ -16,11 +16,12 @@ MonoBehaviour:
     em 2020"
   Subtitle: "Romance de Dean Koontz voltou a chamar aten\xE7\xE3o ap\xF3s leitores
     encontrarem passagens que coincidem com a emerg\xEAncia sanit\xE1ria atual."
+  Date: 'Publicado em: 26 de fevereiro de 2020'
   URL_site: https://arquivoatual.example/cultura/livro-dean-koontz-coronavirus
   Writer:
     WriterName: "Reda\xE7\xE3o Arquivo Atual"
     WriterPhoto: {fileID: 0}
-    WriterDescription: 'Publicado em: 26 de fevereiro de 2020'
+    WriterDescription: 
   Blocks:
   - Type: 1
     Text: "\tUm suspense publicado em 1981 voltou a circular entre leitores por um

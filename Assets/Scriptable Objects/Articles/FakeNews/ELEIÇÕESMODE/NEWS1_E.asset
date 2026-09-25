@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
   Title: "URGENTE: Pol\xEDcia apreende caminh\xE3o clandestino com 500 urnas pr\xE9-votadas
     a favor do candidato Bundowisk! "
-  Subtitle: 
-  Date: 
+  Subtitle: "Suposta opera\xE7\xE3o afirma ter encontrado urnas adulteradas e acusa
+    autoridades eleitorais de tentar esconder o caso."
+  Date: 'Publicado em: 02 de Outubro de 2026'
   URL_site: http://www.eleicoeslimpas2026-verdade.com.br/urgente-fraude-urnas-bundowisk-revelada
   Writer:
     WriterName: Portal Verdade na Urna
     WriterPhoto: {fileID: 0}
-    WriterDescription: 'Publicado em: 02 de Outubro de 2026'
+    WriterDescription: 
   Blocks:
   - Type: 1
     Text: "\tUma opera\xE7\xE3o sigilosa realizada na madrugada deste domingo revelou

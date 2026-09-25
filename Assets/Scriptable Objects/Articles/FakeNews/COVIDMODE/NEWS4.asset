@@ -16,11 +16,12 @@ MonoBehaviour:
     isolamento"
   Subtitle: "Medida tamb\xE9m prev\xEA multa para familiares e busca reduzir a circula\xE7\xE3o
     de idosos durante a emerg\xEAncia sanit\xE1ria."
+  Date: "Publicado em: 20 de mar\xE7o de 2020"
   URL_site: https://boletimprevidenciario.example/beneficios/novas-regras-isolamento
   Writer:
     WriterName: "Reda\xE7\xE3o Boletim Previdenci\xE1rio"
     WriterPhoto: {fileID: 0}
-    WriterDescription: "Publicado em: 20 de mar\xE7o de 2020"
+    WriterDescription: 
   Blocks:
   - Type: 1
     Text: "\tA Medida Provis\xF3ria n\xBA 922, de 18 de mar\xE7o de 2020, estabelece

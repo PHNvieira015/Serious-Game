@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
   Title: "Logo ap\xF3s aprova\xE7\xE3o da Anvisa, governo de SP aplica em enfermeira
     a 1\xAA dose de vacina contra Covid-19 no Brasil "
-  Subtitle: 
-  Date: 
+  Subtitle: "Imuniza\xE7\xE3o come\xE7ou em S\xE3o Paulo logo ap\xF3s a Anvisa autorizar
+    o uso emergencial da CoronaVac no pa\xEDs.  "
+  Date: 'Publicado em: 17 de Janeiro de 2021'
   URL_site: https://g1.globo.com/sp/sao-paulo/noticia/2021/01/17/apos-aprovacao-da-anvisa-governo-de-sp-aplica-1a-dose-da-coronavac.ghtml](https://g1.globo.com/sp/sao-paulo/noticia/2021/01/17/apos-aprovacao-da-anvisa-governo-de-sp-aplica-1a-dose-da-coronavac.ghtml
   Writer:
     WriterName: "G1 SP \u2014 S\xE3o Paulo"
     WriterPhoto: {fileID: 0}
-    WriterDescription: 'Publicado em: 17 de Janeiro de 2021'
+    WriterDescription: 
   Blocks:
   - Type: 1
     Text: "\tO governo de S\xE3o Paulo aplicou a primeira dose da vacina CoronaVac
