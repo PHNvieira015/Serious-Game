@@ -15,6 +15,8 @@ MonoBehaviour:
   Title: "URGENTE: Pol\xEDcia apreende caminh\xE3o clandestino com 500 urnas pr\xE9-votadas
     a favor do candidato Bundowisk! "
   Subtitle: 
+  Date: 
+  URL_site: 
   Writer:
     WriterName: Portal Verdade na Urna
     WriterPhoto: {fileID: 0}
@@ -42,7 +44,7 @@ MonoBehaviour:
       grande m\xEDdia j\xE1 recebeu as imagens chocantes, mas foi proibida de divulgar
       pela censura do sistema que quer impor a vit\xF3ria da chapa a qualquer custo."
     Image: {fileID: 0}
-    CheckType: 2
+    CheckType: 3
     Hint: 
     Explanation: "\tAo dizer que \"a m\xEDdia foi proibida de mostrar\" e que o \"v\xEDdeo
       \xE9 secreto\", o criador da fake news cria um escudo para que o leitor n\xE3o
@@ -54,7 +56,7 @@ MonoBehaviour:
       3 votos do candidato advers\xE1rio direto para a conta de Popoviski no momento
       em que a urna \xE9 encerrada, \xE0s 17h."
     Image: {fileID: 0}
-    CheckType: 3
+    CheckType: 4
     Hint: 
     Explanation: "\tFabrica\xE7\xE3o de Autoridade Externa. Usar nomes estrangeiros
       gen\xE9ricos e termos como \"Pent\xE1gono\" busca intimidar o leitor pelo excesso

@@ -16,6 +16,7 @@ MonoBehaviour:
     do conte\xFAdo"
   Subtitle: "Decis\xE3o diferencia manipula\xE7\xF5es capazes de enganar o eleitor
     de outros usos de intelig\xEAncia artificial"
+  Date: 
   URL_site: 
   Writer:
     WriterName: "M\xE1rcio Falc\xE3o e Luiz Felipe Barbi\xE9ri, TV Globo/g1"
@@ -28,7 +29,7 @@ MonoBehaviour:
       suficiente para parecer verdadeiro e estar inserido em uma campanha eleitoral
       para se enquadrar nessa proibi\xE7\xE3o."
     Image: {fileID: 0}
-    CheckType: 2
+    CheckType: 1
     Hint: 
     Explanation: "\tO texto informa que a proibi\xE7\xE3o considera o realismo e
       o uso em campanha eleitoral. N\xE3o transforma a decis\xE3o em uma proibi\xE7\xE3o
@@ -39,7 +40,7 @@ MonoBehaviour:
       artificial que imitam imagens, vozes ou falas de maneira realista. A decis\xE3o
       abrange representa\xE7\xF5es de pessoas vivas, falecidas ou fict\xEDcias."
     Image: {fileID: 0}
-    CheckType: 2
+    CheckType: 1
     Hint: 
     Explanation: "\tA descri\xE7\xE3o mostra como a tecnologia pode simular imagens
       e falas. Tamb\xE9m mant\xE9m o alcance informado na decis\xE3o: pessoas vivas,
@@ -51,7 +52,7 @@ MonoBehaviour:
       A autoriza\xE7\xE3o da pessoa retratada, por si s\xF3, n\xE3o libera o uso
       de um deepfake proibido."
     Image: {fileID: 0}
-    CheckType: 2
+    CheckType: 1
     Hint: 
     Explanation: "\tNem todo v\xEDdeo com IA se enquadra nessa proibi\xE7\xE3o. Isso
       n\xE3o significa que qualquer montagem seja permitida. O texto explica os crit\xE9rios
@@ -62,7 +63,7 @@ MonoBehaviour:
       eleitoral antecipada. \xC9 necess\xE1rio avaliar o conte\xFAdo, a linguagem,
       o p\xFAblico e o contexto da manifesta\xE7\xE3o."
     Image: {fileID: 0}
-    CheckType: 2
+    CheckType: 1
     Hint: 
     Explanation: "\tA decis\xE3o exige analisar o contexto da conven\xE7\xE3o. O
       trecho n\xE3o afirma que tudo pode ser exibido nesse evento: explica apenas

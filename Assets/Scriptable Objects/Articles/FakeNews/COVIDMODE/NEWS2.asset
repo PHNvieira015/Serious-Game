@@ -15,6 +15,8 @@ MonoBehaviour:
   Title: "Logo ap\xF3s aprova\xE7\xE3o da Anvisa, governo de SP aplica em enfermeira
     a 1\xAA dose de vacina contra Covid-19 no Brasil "
   Subtitle: 
+  Date: 
+  URL_site: 
   Writer:
     WriterName: "G1 SP \u2014 S\xE3o Paulo"
     WriterPhoto: {fileID: 0}
@@ -55,7 +57,7 @@ MonoBehaviour:
       m\xEDnimo recomendado pela Organiza\xE7\xE3o Mundial da Sa\xFAde (OMS), e tamb\xE9m
       exigido pela Anvisa, \xE9 de 50%."
     Image: {fileID: 0}
-    CheckType: 0
+    CheckType: 1
     Hint: 
     Explanation: " Embasamento Factual sem Sensacionalismo. O texto n\xE3o promete
       uma \"cura milagrosa de 100%\" (t\xEDpico de mentiras). Ele apresenta o n\xFAmero

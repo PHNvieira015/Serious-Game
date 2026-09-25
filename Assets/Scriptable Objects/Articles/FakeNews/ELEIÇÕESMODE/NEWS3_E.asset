@@ -16,6 +16,7 @@ MonoBehaviour:
     pol\xEDtica "
   Subtitle: "Levantamento digital aponta mudan\xE7a no perfil desejado pelos eleitores
     para as pr\xF3ximas elei\xE7\xF5es. "
+  Date: 
   URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
     WriterName: "Reda\xE7\xE3o Panorama Eleitoral"
@@ -29,7 +30,7 @@ MonoBehaviour:
       refor\xE7am um cen\xE1rio de transforma\xE7\xE3o e uma nova perspectiva para
       a representa\xE7\xE3o pol\xEDtica."
     Image: {fileID: 0}
-    CheckType: 4
+    CheckType: 2
     Hint: 
     Explanation: "\tA pergunta fala em \u201Crenova\xE7\xE3o\u201D, mas a manchete
       afirma prefer\xEAncia por candidatos sem experi\xEAncia. Uma coisa n\xE3o significa
@@ -41,7 +42,7 @@ MonoBehaviour:
       reuniu 2.400 respostas em um formul\xE1rio aberto nas redes sociais, com participa\xE7\xE3o
       de pessoas das cinco regi\xF5es do pa\xEDs."
     Image: {fileID: 0}
-    CheckType: 4
+    CheckType: 2
     Hint: 
     Explanation: "\t2.400 respostas em um formul\xE1rio aberto n\xE3o demonstram
       o que todos os brasileiros pensam. Quem decidiu participar pode ter opini\xF5es
@@ -53,7 +54,7 @@ MonoBehaviour:
       com margem de erro de dois pontos percentuais. A diversidade de regi\xF5es
       refor\xE7a a confiabilidade dos n\xFAmeros apresentados."
     Image: {fileID: 0}
-    CheckType: 4
+    CheckType: 2
     Hint: 
     Explanation: "\tPermitir que qualquer pessoa responda n\xE3o torna a enquete
       representativa. A margem de erro de dois pontos \xE9 apresentada sem explicar
