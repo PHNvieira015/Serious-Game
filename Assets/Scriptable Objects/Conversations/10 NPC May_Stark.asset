@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConversationData
   ConversationTitle: May Stark
   NPCSpeakerName: May Stark
-  NPCSpeakerAvatar: {fileID: 0}
-  NPCSpeakerBackground: {fileID: 0}
+  NPCSpeakerAvatar: {fileID: 21300000, guid: 5e5638c6d2c46864782b3ca57b071f41, type: 3}
+  NPCSpeakerBackground: {fileID: 21300000, guid: aad09a94d10922e4a92155d9377f05ef, type: 3}
   Nodes:
   - IsNPC: 1
     Message: "Oi\u2026 desculpa, tava viajando um pouco. Fa\xE7o isso mais do que

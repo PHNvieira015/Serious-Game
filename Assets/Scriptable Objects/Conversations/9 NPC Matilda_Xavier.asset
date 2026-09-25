@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConversationData
   ConversationTitle: Matilda Xavier
   NPCSpeakerName: Matilda Xavier
-  NPCSpeakerAvatar: {fileID: 0}
-  NPCSpeakerBackground: {fileID: 0}
+  NPCSpeakerAvatar: {fileID: 21300000, guid: a0289f97e92e87c49aa4a25a88dd47c2, type: 3}
+  NPCSpeakerBackground: {fileID: 21300000, guid: 4e21eba47bd37504a8cb094c0ada4ab7, type: 3}
   Nodes:
   - IsNPC: 0
     Message: "Ah, voc\xEA chegou. Venha, sente-se um pouco. Prometo n\xE3o tomar
