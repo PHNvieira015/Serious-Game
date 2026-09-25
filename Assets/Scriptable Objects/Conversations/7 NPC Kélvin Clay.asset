@@ -41,7 +41,7 @@ MonoBehaviour:
     AutoAdvanceDelay: 0
   - IsNPC: 1
     Message: "Agora \xE9 contigo. Eu tenho um skate pra quebrar ao som de Chop Suey!"
-    DisplayType: 5
+    DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
     LinkURL: 
