@@ -26,8 +26,8 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public TMP_Text explanationText;
 
     [Header("Type Labels")]
-    public TMP_Text blockTypeText;
     public TMP_Text markedTypeText;
+    public TMP_Text blockTypeText;
 
     [Header("Type Icons")]
     public Image blockTypeIcon;
@@ -257,14 +257,18 @@ public class ArticleFeedbackPanel : MonoBehaviour
                 GetCheckTypeDisplayName(selectedType);
         }
 
+        // SWITCHED:
+        // blockTypeText now displays the player's marked type.
         if (blockTypeText != null)
         {
-            blockTypeText.text = GetTypeLabel(expectedType);
+            blockTypeText.text = GetTypeLabel(selectedType);
         }
 
+        // SWITCHED:
+        // markedTypeText now displays the expected/correct type.
         if (markedTypeText != null)
         {
-            markedTypeText.text = GetTypeLabel(selectedType);
+            markedTypeText.text = GetTypeLabel(expectedType);
         }
 
         SetTypeIcon(blockTypeIcon, expectedType);
@@ -367,8 +371,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
                 ? selectedBlockButtonColor
                 : normalBlockButtonColor;
 
-            // Use one tint for every state so the current
-            // feedback block remains clearly highlighted.
             button.transition = Selectable.Transition.ColorTint;
 
             ColorBlock colors = button.colors;
