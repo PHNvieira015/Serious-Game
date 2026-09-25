@@ -3190,6 +3190,15 @@ MonoBehaviour:
   explanationText: {fileID: 1554137938}
   blockTypeText: {fileID: 716310651}
   markedTypeText: {fileID: 714857211}
+  blockTypeIcon: {fileID: 0}
+  markedTypeIcon: {fileID: 0}
+  typeIcons: []
+  progressBar: {fileID: 0}
+  progressText: {fileID: 0}
+  blockButtonsContainer: {fileID: 0}
+  blockButtonPrefab: {fileID: 0}
+  normalBlockButtonColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedBlockButtonColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   backButton: {fileID: 305775459}
   nextButton: {fileID: 1376395990}
   closeButton: {fileID: 560331960}
@@ -9643,6 +9652,73 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6575756917282067587, guid: 3a69106f9dfd8a546af2f82e3551ce04, type: 3}
   m_PrefabInstance: {fileID: 1098773052}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1113601019 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7441775491494579484, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+  m_PrefabInstance: {fileID: 2050898932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1113601021 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1873474331542940134, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+  m_PrefabInstance: {fileID: 2050898932}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113601019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &1113601023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113601019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1113601021}
+  m_FillRect: {fileID: 0}
+  m_HandleRect: {fileID: 0}
+  m_Direction: 0
+  m_MinValue: 0
+  m_MaxValue: 1
+  m_WholeNumbers: 0
+  m_Value: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1115792503
 GameObject:
   m_ObjectHideFlags: 0
@@ -18421,10 +18497,29 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8564016222987174412, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8564016222987174412, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8564016222987174412, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8564016222987174412, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7441775491494579484, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1113601023}
   m_SourcePrefab: {fileID: 100100000, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
 --- !u!1 &2062756176
 GameObject:

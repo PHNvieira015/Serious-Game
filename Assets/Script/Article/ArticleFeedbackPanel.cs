@@ -1,11 +1,19 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ArticleFeedbackPanel : MonoBehaviour
 {
+    [Serializable]
+    public class TypeIcon
+    {
+        public CheckType type;
+        public Sprite icon;
+    }
+
     [Header("Feedback Panel")]
     public GameObject feedbackPanel;
 
@@ -18,227 +26,210 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public TMP_Text explanationText;
 
     [Header("Type Labels")]
-    [Tooltip("Displays the expected block type using its display label.")]
     public TMP_Text blockTypeText;
-
-    [Tooltip("Displays the player's marked type using its display label.")]
     public TMP_Text markedTypeText;
+
+    [Header("Type Icons")]
+    public Image blockTypeIcon;
+    public Image markedTypeIcon;
+
+    [Tooltip("Assign one sprite for each CheckType.")]
+    public List<TypeIcon> typeIcons = new List<TypeIcon>();
+
+    [Header("Progress")]
+    [Tooltip("Displays current position in the feedback list.")]
+    public Slider progressBar;
+
+    [Tooltip("Optional text showing the current position.")]
+    public TMP_Text progressText;
+
+    [Header("Block Navigation Buttons")]
+    public RectTransform blockButtonsContainer;
+
+    [Tooltip("Button prefab with a TMP_Text child.")]
+    public Button blockButtonPrefab;
+
+    public Color normalBlockButtonColor = Color.white;
+    public Color selectedBlockButtonColor =
+        new Color(0.3f, 0.7f, 1f, 1f);
 
     [Header("Navigation")]
     public Button backButton;
     public Button nextButton;
     public Button closeButton;
 
-    [Header("Colors")]
+    [Header("Result Colors")]
     public Color correctColor = Color.green;
     public Color wrongColor = Color.red;
     public Color missedColor = Color.yellow;
 
     [Header("Settings")]
+    [Min(0f)]
     public float displayDelay = 1.5f;
 
-    private List<BlockResult> results = new List<BlockResult>();
+    private readonly List<BlockResult> results =
+        new List<BlockResult>();
+
+    private readonly List<Button> spawnedBlockButtons =
+        new List<Button>();
 
     private int currentIndex;
-    private System.Action onFeedbackComplete;
+    private Action onFeedbackComplete;
     private bool isBlockDisplayed;
-    private bool isTransitioning;
+    private bool canGoNext;
+    private bool initialized;
     private Coroutine enableNextCoroutine;
 
-    private int lastNextFrame = -1;
-    private int lastPrevFrame = -1;
+    private int lastNavigationFrame = -1;
 
-    private void Start()
+    private void Awake()
     {
-        if (feedbackPanel != null)
+        InitializeControls();
+    }
+
+    private void InitializeControls()
+    {
+        if (initialized)
         {
-            feedbackPanel.SetActive(false);
+            return;
         }
+
+        initialized = true;
 
         if (backButton != null)
         {
-            backButton.onClick.RemoveAllListeners();
             backButton.onClick.AddListener(ShowPreviousBlock);
             backButton.interactable = false;
         }
 
         if (nextButton != null)
         {
-            nextButton.onClick.RemoveAllListeners();
             nextButton.onClick.AddListener(ShowNextBlock);
+            nextButton.interactable = false;
         }
 
         if (closeButton != null)
         {
-            closeButton.onClick.RemoveAllListeners();
             closeButton.onClick.AddListener(CloseFeedback);
+        }
+
+        if (progressBar != null)
+        {
+            progressBar.minValue = 0f;
+            progressBar.maxValue = 1f;
+            progressBar.wholeNumbers = false;
+            progressBar.interactable = false;
+            progressBar.SetValueWithoutNotify(0f);
         }
     }
 
     public void StartFeedback(
         ValidationResult result,
-        System.Action onComplete = null)
+        Action onComplete = null)
     {
-        if (result == null ||
-            result.BlockResults == null ||
-            result.BlockResults.Count == 0)
+        InitializeControls();
+        StopNextDelay();
+        ClearBlockButtons();
+
+        results.Clear();
+
+        if (result != null && result.BlockResults != null)
         {
-            Debug.LogWarning("[FEEDBACK] No results to show");
+            foreach (BlockResult item in result.BlockResults)
+            {
+                if (item != null)
+                {
+                    results.Add(item);
+                }
+            }
+        }
+
+        onFeedbackComplete = onComplete;
+        currentIndex = 0;
+        isBlockDisplayed = false;
+        canGoNext = false;
+        lastNavigationFrame = -1;
+
+        if (results.Count == 0)
+        {
+            Debug.LogWarning("[FEEDBACK] No results to show.");
             CloseFeedback();
             return;
         }
-
-        results = result.BlockResults;
-        currentIndex = 0;
-        onFeedbackComplete = onComplete;
-        isBlockDisplayed = false;
-        isTransitioning = false;
-        lastNextFrame = -1;
-        lastPrevFrame = -1;
 
         if (feedbackPanel != null)
         {
             feedbackPanel.SetActive(true);
         }
 
-        ShowBlock(currentIndex);
+        CreateBlockButtons();
+        ShowBlock(0);
     }
 
     private void ShowBlock(int index)
     {
         if (index < 0 || index >= results.Count)
         {
-            Debug.LogWarning(
-                "[FEEDBACK] ShowBlock out of range: " + index
-            );
-
-            CloseFeedback();
             return;
         }
 
-        BlockResult result = results[index];
-
-        if (result == null)
-        {
-            Debug.LogWarning(
-                "[FEEDBACK] Result " + index + " is null."
-            );
-
-            if (index < results.Count - 1)
-            {
-                ShowBlock(index + 1);
-            }
-            else
-            {
-                CloseFeedback();
-            }
-
-            return;
-        }
+        StopNextDelay();
 
         currentIndex = index;
         isBlockDisplayed = true;
+        canGoNext = false;
 
-        if (backButton != null)
+        BlockResult result = results[index];
+
+        if (blockText != null)
         {
-            backButton.interactable = true;
-
-            TMP_Text backButtonText =
-                backButton.GetComponentInChildren<TMP_Text>();
-
-            if (backButtonText != null)
-            {
-                backButtonText.text =
-                    index == 0 ? "Return" : "Back";
-            }
+            blockText.text = result.BlockText;
         }
 
         if (blockIndexText != null)
         {
             blockIndexText.text =
                 "Checagem " + (index + 1) + " de " + results.Count;
-
-            blockIndexText.ForceMeshUpdate();
-        }
-
-        if (blockText != null)
-        {
-            blockText.text = result.BlockText;
-            blockText.ForceMeshUpdate();
         }
 
         if (resultText != null)
         {
-            Color color = correctColor;
-
-            switch (result.ResultType)
-            {
-                case BlockResultType.Correct:
-                    color = correctColor;
-                    break;
-
-                case BlockResultType.Wrong:
-                    color = wrongColor;
-                    break;
-
-                case BlockResultType.Missed:
-                    color = missedColor;
-                    break;
-            }
-
             resultText.text = result.GetResultText();
-            resultText.color = color;
-            resultText.ForceMeshUpdate();
+            resultText.color = GetResultColor(result.ResultType);
         }
 
         DisplayTypes(result);
+        DisplayExplanation(result);
+        UpdateProgress();
+        UpdateBlockButtons();
 
-        if (explanationText != null)
+        if (backButton != null)
         {
-            if (result.Block != null &&
-                result.Block.ArticleBlock != null)
-            {
-                string explanation =
-                    result.Block.ArticleBlock.Explanation;
-
-                explanationText.text =
-                    string.IsNullOrEmpty(explanation)
-                        ? "No explanation provided."
-                        : explanation;
-            }
-            else
-            {
-                explanationText.text =
-                    "No explanation available.";
-            }
-
-            explanationText.ForceMeshUpdate();
+            backButton.interactable = true;
+            SetButtonText(
+                backButton,
+                index == 0 ? "Return" : "Back"
+            );
         }
 
         if (nextButton != null)
         {
             nextButton.interactable = false;
-
-            TMP_Text buttonText =
-                nextButton.GetComponentInChildren<TMP_Text>();
-
-            if (buttonText != null)
-            {
-                buttonText.text =
-                    index == results.Count - 1
-                        ? "Finish"
-                        : "Next";
-            }
+            SetButtonText(
+                nextButton,
+                index == results.Count - 1 ? "Finish" : "Next"
+            );
         }
 
-        if (enableNextCoroutine != null)
+        if (displayDelay <= 0f)
         {
-            StopCoroutine(enableNextCoroutine);
-            enableNextCoroutine = null;
+            EnableNextButton();
         }
-
-        enableNextCoroutine =
-            StartCoroutine(EnableNextButtonAfterDelay());
+        else if (isActiveAndEnabled)
+        {
+            enableNextCoroutine =
+                StartCoroutine(EnableNextButtonAfterDelay());
+        }
     }
 
     private void DisplayTypes(BlockResult result)
@@ -275,6 +266,304 @@ public class ArticleFeedbackPanel : MonoBehaviour
         {
             markedTypeText.text = GetTypeLabel(selectedType);
         }
+
+        SetTypeIcon(blockTypeIcon, expectedType);
+        SetTypeIcon(markedTypeIcon, selectedType);
+    }
+
+    private void SetTypeIcon(Image image, CheckType type)
+    {
+        if (image == null)
+        {
+            return;
+        }
+
+        Sprite sprite = GetTypeIcon(type);
+
+        image.sprite = sprite;
+        image.preserveAspect = true;
+        image.enabled = sprite != null;
+    }
+
+    private Sprite GetTypeIcon(CheckType type)
+    {
+        foreach (TypeIcon entry in typeIcons)
+        {
+            if (entry != null && entry.type == type)
+            {
+                return entry.icon;
+            }
+        }
+
+        return null;
+    }
+
+    private void DisplayExplanation(BlockResult result)
+    {
+        if (explanationText == null)
+        {
+            return;
+        }
+
+        if (result.Block != null &&
+            result.Block.ArticleBlock != null)
+        {
+            string explanation =
+                result.Block.ArticleBlock.Explanation;
+
+            explanationText.text =
+                string.IsNullOrEmpty(explanation)
+                    ? "No explanation provided."
+                    : explanation;
+        }
+        else
+        {
+            explanationText.text = "No explanation available.";
+        }
+    }
+
+    private void CreateBlockButtons()
+    {
+        if (blockButtonsContainer == null ||
+            blockButtonPrefab == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < results.Count; i++)
+        {
+            int targetIndex = i;
+
+            Button newButton = Instantiate(
+                blockButtonPrefab,
+                blockButtonsContainer
+            );
+
+            newButton.name = "FeedbackBlock_" + (i + 1);
+            newButton.gameObject.SetActive(true);
+
+            SetButtonText(newButton, (i + 1).ToString());
+
+            newButton.onClick.AddListener(
+                () => ShowFeedbackBlock(targetIndex)
+            );
+
+            spawnedBlockButtons.Add(newButton);
+        }
+    }
+
+    private void UpdateBlockButtons()
+    {
+        for (int i = 0; i < spawnedBlockButtons.Count; i++)
+        {
+            Button button = spawnedBlockButtons[i];
+
+            if (button == null)
+            {
+                continue;
+            }
+
+            Color color = i == currentIndex
+                ? selectedBlockButtonColor
+                : normalBlockButtonColor;
+
+            // Use one tint for every state so the current
+            // feedback block remains clearly highlighted.
+            button.transition = Selectable.Transition.ColorTint;
+
+            ColorBlock colors = button.colors;
+            colors.normalColor = color;
+            colors.highlightedColor = color;
+            colors.pressedColor = color;
+            colors.selectedColor = color;
+            colors.disabledColor = color;
+            colors.colorMultiplier = 1f;
+            colors.fadeDuration = 0f;
+
+            button.colors = colors;
+        }
+    }
+
+    private void ClearBlockButtons()
+    {
+        foreach (Button button in spawnedBlockButtons)
+        {
+            if (button != null)
+            {
+                button.gameObject.SetActive(false);
+                Destroy(button.gameObject);
+            }
+        }
+
+        spawnedBlockButtons.Clear();
+    }
+
+    private void UpdateProgress()
+    {
+        int position = results.Count > 0
+            ? currentIndex + 1
+            : 0;
+
+        if (progressBar != null)
+        {
+            float progress = results.Count > 0
+                ? (float)position / results.Count
+                : 0f;
+
+            progressBar.SetValueWithoutNotify(progress);
+        }
+
+        if (progressText != null)
+        {
+            progressText.text =
+                position + " / " + results.Count;
+        }
+    }
+
+    // Uses zero-based indices: 0 is the first feedback block.
+    public void ShowFeedbackBlock(int index)
+    {
+        if (!isBlockDisplayed ||
+            index < 0 ||
+            index >= results.Count ||
+            index == currentIndex ||
+            lastNavigationFrame == Time.frameCount)
+        {
+            return;
+        }
+
+        lastNavigationFrame = Time.frameCount;
+        ShowBlock(index);
+    }
+
+    public void ShowPreviousBlock()
+    {
+        if (!isBlockDisplayed ||
+            lastNavigationFrame == Time.frameCount)
+        {
+            return;
+        }
+
+        lastNavigationFrame = Time.frameCount;
+
+        if (currentIndex <= 0)
+        {
+            FinishFeedback();
+            return;
+        }
+
+        ShowBlock(currentIndex - 1);
+    }
+
+    public void ShowNextBlock()
+    {
+        if (!isBlockDisplayed ||
+            !canGoNext ||
+            lastNavigationFrame == Time.frameCount)
+        {
+            return;
+        }
+
+        lastNavigationFrame = Time.frameCount;
+
+        if (currentIndex >= results.Count - 1)
+        {
+            FinishFeedback();
+            return;
+        }
+
+        ShowBlock(currentIndex + 1);
+    }
+
+    private IEnumerator EnableNextButtonAfterDelay()
+    {
+        yield return new WaitForSeconds(displayDelay);
+
+        enableNextCoroutine = null;
+        EnableNextButton();
+    }
+
+    private void EnableNextButton()
+    {
+        canGoNext = true;
+
+        if (nextButton != null)
+        {
+            nextButton.interactable = true;
+        }
+    }
+
+    private void StopNextDelay()
+    {
+        if (enableNextCoroutine != null)
+        {
+            StopCoroutine(enableNextCoroutine);
+            enableNextCoroutine = null;
+        }
+    }
+
+    private void FinishFeedback()
+    {
+        EndFeedback(true);
+    }
+
+    public void CloseFeedback()
+    {
+        EndFeedback(false);
+    }
+
+    private void EndFeedback(bool returnToChat)
+    {
+        StopNextDelay();
+
+        Action callback = onFeedbackComplete;
+        onFeedbackComplete = null;
+
+        isBlockDisplayed = false;
+        canGoNext = false;
+        currentIndex = 0;
+        lastNavigationFrame = -1;
+
+        ClearBlockButtons();
+        results.Clear();
+        UpdateProgress();
+
+        if (backButton != null)
+        {
+            backButton.interactable = false;
+        }
+
+        if (nextButton != null)
+        {
+            nextButton.interactable = false;
+        }
+
+        if (feedbackPanel != null)
+        {
+            feedbackPanel.SetActive(false);
+        }
+
+        if (returnToChat && UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowScreen(UIManager.Screens.Chat);
+        }
+
+        callback?.Invoke();
+    }
+
+    private Color GetResultColor(BlockResultType type)
+    {
+        switch (type)
+        {
+            case BlockResultType.Wrong:
+                return wrongColor;
+
+            case BlockResultType.Missed:
+                return missedColor;
+
+            default:
+                return correctColor;
+        }
     }
 
     private string GetTypeLabel(CheckType type)
@@ -295,107 +584,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
             default:
                 return type.ToString();
-        }
-    }
-
-    private IEnumerator EnableNextButtonAfterDelay()
-    {
-        yield return new WaitForSeconds(displayDelay);
-
-        if (nextButton != null)
-        {
-            nextButton.interactable = true;
-        }
-
-        enableNextCoroutine = null;
-    }
-
-    public void ShowPreviousBlock()
-    {
-        if (lastPrevFrame == Time.frameCount)
-        {
-            return;
-        }
-
-        if (isTransitioning || !isBlockDisplayed)
-        {
-            return;
-        }
-
-        if (currentIndex <= 0)
-        {
-            FinishFeedback();
-            return;
-        }
-
-        lastPrevFrame = Time.frameCount;
-        isTransitioning = true;
-
-        currentIndex--;
-        ShowBlock(currentIndex);
-
-        isTransitioning = false;
-    }
-
-    public void ShowNextBlock()
-    {
-        if (lastNextFrame == Time.frameCount)
-        {
-            return;
-        }
-
-        if (!isBlockDisplayed || isTransitioning)
-        {
-            return;
-        }
-
-        if (currentIndex >= results.Count - 1)
-        {
-            FinishFeedback();
-            return;
-        }
-
-        lastNextFrame = Time.frameCount;
-        isTransitioning = true;
-
-        currentIndex++;
-        ShowBlock(currentIndex);
-
-        isTransitioning = false;
-    }
-
-    private void FinishFeedback()
-    {
-        StopAllCoroutines();
-        enableNextCoroutine = null;
-
-        if (feedbackPanel != null)
-        {
-            feedbackPanel.SetActive(false);
-        }
-
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ShowScreen(
-                UIManager.Screens.Chat
-            );
-        }
-
-        if (onFeedbackComplete != null)
-        {
-            onFeedbackComplete.Invoke();
-        }
-
-        results.Clear();
-        currentIndex = 0;
-        isBlockDisplayed = false;
-        isTransitioning = false;
-        lastNextFrame = -1;
-        lastPrevFrame = -1;
-
-        if (backButton != null)
-        {
-            backButton.interactable = false;
         }
     }
 
@@ -421,38 +609,33 @@ public class ArticleFeedbackPanel : MonoBehaviour
             case CheckType.Falacy:
                 return "Falacia";
 
-            case CheckType.None:
             default:
                 return "Nenhum";
         }
     }
 
-    public void CloseFeedback()
+    private void SetButtonText(Button button, string value)
     {
-        StopAllCoroutines();
-        enableNextCoroutine = null;
+        TMP_Text label =
+            button.GetComponentInChildren<TMP_Text>(true);
 
-        if (feedbackPanel != null)
+        if (label != null)
         {
-            feedbackPanel.SetActive(false);
+            label.text = value;
         }
+    }
 
-        if (onFeedbackComplete != null)
+    private void OnEnable()
+    {
+        if (isBlockDisplayed && results.Count > 0)
         {
-            onFeedbackComplete.Invoke();
+            ShowBlock(currentIndex);
         }
+    }
 
-        results.Clear();
-        currentIndex = 0;
-        isBlockDisplayed = false;
-        isTransitioning = false;
-        lastNextFrame = -1;
-        lastPrevFrame = -1;
-
-        if (backButton != null)
-        {
-            backButton.interactable = false;
-        }
+    private void OnDisable()
+    {
+        StopNextDelay();
     }
 
     private void OnDestroy()
@@ -471,5 +654,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
         {
             closeButton.onClick.RemoveListener(CloseFeedback);
         }
+
+        ClearBlockButtons();
     }
 }
