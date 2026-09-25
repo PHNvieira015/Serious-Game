@@ -17,6 +17,13 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public TMP_Text playerMarkText;
     public TMP_Text explanationText;
 
+    [Header("Enum Names")]
+    [Tooltip("Displays only the expected enum name, such as Source.")]
+    public TMP_Text blockTypeText;
+
+    [Tooltip("Displays only the selected enum name, such as AI.")]
+    public TMP_Text markedTypeText;
+
     [Header("Navigation")]
     public Button backButton;
     public Button nextButton;
@@ -31,10 +38,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public float displayDelay = 1.5f;
 
     private List<BlockResult> results = new List<BlockResult>();
-    private int currentIndex = 0;
+
+    private int currentIndex;
     private System.Action onFeedbackComplete;
-    private bool isBlockDisplayed = false;
-    private bool isTransitioning = false;
+    private bool isBlockDisplayed;
+    private bool isTransitioning;
     private Coroutine enableNextCoroutine;
 
     private int lastNextFrame = -1;
@@ -67,9 +75,13 @@ public class ArticleFeedbackPanel : MonoBehaviour
         }
     }
 
-    public void StartFeedback(ValidationResult result, System.Action onComplete = null)
+    public void StartFeedback(
+        ValidationResult result,
+        System.Action onComplete = null)
     {
-        if (result == null || result.BlockResults == null || result.BlockResults.Count == 0)
+        if (result == null ||
+            result.BlockResults == null ||
+            result.BlockResults.Count == 0)
         {
             Debug.LogWarning("[FEEDBACK] No results to show");
             CloseFeedback();
@@ -96,17 +108,21 @@ public class ArticleFeedbackPanel : MonoBehaviour
     {
         if (index < 0 || index >= results.Count)
         {
-            Debug.LogWarning($"[FEEDBACK] ShowBlock out of range: {index}");
+            Debug.LogWarning(
+                "[FEEDBACK] ShowBlock out of range: " + index
+            );
+
             CloseFeedback();
             return;
         }
 
         BlockResult result = results[index];
 
-        // Skip nulls with ShowBlock (not ShowNextBlock) so we don't double-increment the index.
         if (result == null)
         {
-            Debug.LogWarning($"[FEEDBACK] result[{index}] is NULL - skipping.");
+            Debug.LogWarning(
+                "[FEEDBACK] Result " + index + " is null."
+            );
 
             if (index < results.Count - 1)
             {
@@ -116,9 +132,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
             {
                 CloseFeedback();
             }
+
             return;
         }
 
+        currentIndex = index;
         isBlockDisplayed = true;
 
         if (backButton != null)
@@ -130,13 +148,16 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
             if (backButtonText != null)
             {
-                backButtonText.text = (index == 0) ? "Return" : "Back";
+                backButtonText.text =
+                    index == 0 ? "Return" : "Back";
             }
         }
 
         if (blockIndexText != null)
         {
-            blockIndexText.text = "Block " + (index + 1) + " of " + results.Count;
+            blockIndexText.text =
+                "Block " + (index + 1) + " of " + results.Count;
+
             blockIndexText.ForceMeshUpdate();
         }
 
@@ -170,36 +191,15 @@ public class ArticleFeedbackPanel : MonoBehaviour
             resultText.ForceMeshUpdate();
         }
 
-        if (expectedAnswerText != null)
-        {
-            expectedAnswerText.text =
-                "Checagem Correta: " +
-                GetCheckTypeDisplayName(result.ExpectedCheck);
-
-            expectedAnswerText.ForceMeshUpdate();
-        }
-
-        if (playerMarkText != null)
-        {
-            if (result.HasDraggable)
-            {
-                playerMarkText.text =
-                    "Sua Marcação: " +
-                    GetCheckTypeDisplayName(result.PlayerCheck);
-            }
-            else
-            {
-                playerMarkText.text = "Sua Marcação: Nenhuma";
-            }
-
-            playerMarkText.ForceMeshUpdate();
-        }
+        DisplayTypes(result);
 
         if (explanationText != null)
         {
-            if (result.Block != null && result.Block.ArticleBlock != null)
+            if (result.Block != null &&
+                result.Block.ArticleBlock != null)
             {
-                string explanation = result.Block.ArticleBlock.Explanation;
+                string explanation =
+                    result.Block.ArticleBlock.Explanation;
 
                 explanationText.text =
                     string.IsNullOrEmpty(explanation)
@@ -208,7 +208,8 @@ public class ArticleFeedbackPanel : MonoBehaviour
             }
             else
             {
-                explanationText.text = "No explanation available.";
+                explanationText.text =
+                    "No explanation available.";
             }
 
             explanationText.ForceMeshUpdate();
@@ -223,14 +224,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
             if (buttonText != null)
             {
-                if (index == results.Count - 1)
-                {
-                    buttonText.text = "Finish";
-                }
-                else
-                {
-                    buttonText.text = "Next";
-                }
+                buttonText.text =
+                    index == results.Count - 1
+                        ? "Finish"
+                        : "Next";
             }
         }
 
@@ -240,7 +237,46 @@ public class ArticleFeedbackPanel : MonoBehaviour
             enableNextCoroutine = null;
         }
 
-        enableNextCoroutine = StartCoroutine(EnableNextButtonAfterDelay());
+        enableNextCoroutine =
+            StartCoroutine(EnableNextButtonAfterDelay());
+    }
+
+    private void DisplayTypes(BlockResult result)
+    {
+        CheckType expectedType = result.ExpectedCheck;
+        CheckType selectedType = result.PlayerCheck;
+
+        if (result.Block != null)
+        {
+            expectedType = result.Block.BlockType;
+            selectedType = result.Block.MarkType;
+        }
+
+        // Existing descriptive labels.
+        if (expectedAnswerText != null)
+        {
+            expectedAnswerText.text =
+                "Checagem Correta: " +
+                GetCheckTypeDisplayName(expectedType);
+        }
+
+        if (playerMarkText != null)
+        {
+            playerMarkText.text =
+                "Sua marcacao: " +
+                GetCheckTypeDisplayName(selectedType);
+        }
+
+        // Exact enum names only. No prefix or article text.
+        if (blockTypeText != null)
+        {
+            blockTypeText.text = expectedType.ToString();
+        }
+
+        if (markedTypeText != null)
+        {
+            markedTypeText.text = selectedType.ToString();
+        }
     }
 
     private IEnumerator EnableNextButtonAfterDelay()
@@ -257,7 +293,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     public void ShowPreviousBlock()
     {
-        // Frame lock: prevents duplicate button events from double-advancing.
         if (lastPrevFrame == Time.frameCount)
         {
             return;
@@ -276,14 +311,15 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         lastPrevFrame = Time.frameCount;
         isTransitioning = true;
+
         currentIndex--;
         ShowBlock(currentIndex);
+
         isTransitioning = false;
     }
 
     public void ShowNextBlock()
     {
-        // Frame lock: prevents duplicate button events from double-advancing.
         if (lastNextFrame == Time.frameCount)
         {
             return;
@@ -302,8 +338,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         lastNextFrame = Time.frameCount;
         isTransitioning = true;
+
         currentIndex++;
         ShowBlock(currentIndex);
+
         isTransitioning = false;
     }
 
@@ -319,7 +357,9 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowScreen(UIManager.Screens.Chat);
+            UIManager.Instance.ShowScreen(
+                UIManager.Screens.Chat
+            );
         }
 
         if (onFeedbackComplete != null)

@@ -911,8 +911,8 @@ MonoBehaviour:
   trueColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
   labelColor: {r: 1, g: 0.8, b: 0.2, a: 1}
   sourceColor: {r: 0.2, g: 0.5, b: 1, a: 1}
-  aiColor: {r: 0.2, g: 0.9, b: 0.9, a: 1}
-  specialistColor: {r: 0.8, g: 0.2, b: 0.8, a: 1}
+  aiColor: {r: 0.8000001, g: 0.20000002, b: 0.8000001, a: 1}
+  specialistColor: {r: 0.2, g: 0.9019608, b: 0.9019608, a: 1}
   falacyColor: {r: 1, g: 0.2, b: 0.2, a: 1}
 --- !u!114 &7741069306780156810
 MonoBehaviour:
@@ -1573,7 +1573,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3553406376222150003}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9333331
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
