@@ -12726,7 +12726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1458220015
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15867,8 +15867,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
   highlight: {fileID: 1115792505}
+  tutorialText: {fileID: 1458220016}
   steps:
   - target: {fileID: 1667163295}
+    tutorialText: asdasd
     button: {fileID: 1883983031}
     duration: 2
     waitForClick: 1
@@ -20796,7 +20798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2461604790265807037, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.014923096
+      value: 0.014892578
       objectReference: {fileID: 0}
     - target: {fileID: 2466126762187741623, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.x
@@ -21008,7 +21010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4024135755138391388, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.5899048
+      value: -0.58984375
       objectReference: {fileID: 0}
     - target: {fileID: 4024135755138391388, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
