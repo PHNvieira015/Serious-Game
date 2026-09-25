@@ -3283,8 +3283,8 @@ MonoBehaviour:
   expectedAnswerText: {fileID: 714857211}
   playerMarkText: {fileID: 716310651}
   explanationText: {fileID: 1554137938}
-  blockTypeText: {fileID: 716310651}
   markedTypeText: {fileID: 714857211}
+  blockTypeText: {fileID: 716310651}
   blockTypeIcon: {fileID: 0}
   markedTypeIcon: {fileID: 0}
   typeIcons: []
