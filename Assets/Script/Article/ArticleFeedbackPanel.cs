@@ -17,11 +17,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public TMP_Text playerMarkText;
     public TMP_Text explanationText;
 
-    [Header("Enum Names")]
-    [Tooltip("Displays only the expected enum name, such as Source.")]
+    [Header("Type Labels")]
+    [Tooltip("Displays the expected block type using its display label.")]
     public TMP_Text blockTypeText;
 
-    [Tooltip("Displays only the selected enum name, such as AI.")]
+    [Tooltip("Displays the player's marked type using its display label.")]
     public TMP_Text markedTypeText;
 
     [Header("Navigation")]
@@ -156,7 +156,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
         if (blockIndexText != null)
         {
             blockIndexText.text =
-                "Block " + (index + 1) + " of " + results.Count;
+                "Checagem " + (index + 1) + " de " + results.Count;
 
             blockIndexText.ForceMeshUpdate();
         }
@@ -252,7 +252,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
             selectedType = result.Block.MarkType;
         }
 
-        // Existing descriptive labels.
         if (expectedAnswerText != null)
         {
             expectedAnswerText.text =
@@ -267,15 +266,35 @@ public class ArticleFeedbackPanel : MonoBehaviour
                 GetCheckTypeDisplayName(selectedType);
         }
 
-        // Exact enum names only. No prefix or article text.
         if (blockTypeText != null)
         {
-            blockTypeText.text = expectedType.ToString();
+            blockTypeText.text = GetTypeLabel(expectedType);
         }
 
         if (markedTypeText != null)
         {
-            markedTypeText.text = selectedType.ToString();
+            markedTypeText.text = GetTypeLabel(selectedType);
+        }
+    }
+
+    private string GetTypeLabel(CheckType type)
+    {
+        switch (type)
+        {
+            case CheckType.None:
+                return "Fato";
+
+            case CheckType.Label:
+                return "Fraude";
+
+            case CheckType.Source:
+                return "Fonte";
+
+            case CheckType.Specialist:
+                return "Consulta";
+
+            default:
+                return type.ToString();
         }
     }
 
