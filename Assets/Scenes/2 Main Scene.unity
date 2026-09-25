@@ -5739,7 +5739,7 @@ MonoBehaviour:
   currentScreen: 1
   chatFrame: {fileID: 7686385710015408510}
   articleFrame: {fileID: 409013850644272025}
-  feedbackFrame: {fileID: 0}
+  feedbackFrame: {fileID: 1749639924}
   historyFrame: {fileID: 179890450}
   scoreFrame: {fileID: 1883235217}
 --- !u!1 &648513002
