@@ -9,6 +9,7 @@ public class Block : MonoBehaviour,
     private bool isSolved;
     private bool isHovered;
 
+    // Compatibility with existing scripts still in the project.
     private DraggableObject currentDraggable;
 
     [Header("Validation Information")]
@@ -17,6 +18,14 @@ public class Block : MonoBehaviour,
 
     [SerializeField]
     private CheckType markType = CheckType.None;
+
+    [Header("Article View")]
+    public ArticleBlockView articleBlockView;
+
+    [Header("Visual Feedback")]
+    public GameObject solvedVisual;
+    public GameObject selectedVisual;
+    public GameObject hoverVisual;
 
     public ArticleBlock ArticleBlock => articleBlock;
     public bool IsSolved => isSolved;
@@ -27,10 +36,26 @@ public class Block : MonoBehaviour,
 
     public System.Action<Block> OnBlockSolved;
 
-    [Header("Visual Feedback")]
-    public GameObject solvedVisual;
-    public GameObject selectedVisual;
-    public GameObject hoverVisual;
+    private void Awake()
+    {
+        CacheView();
+    }
+
+    private void CacheView()
+    {
+        if (articleBlockView != null)
+        {
+            return;
+        }
+
+        articleBlockView = GetComponent<ArticleBlockView>();
+
+        if (articleBlockView == null)
+        {
+            articleBlockView =
+                GetComponentInParent<ArticleBlockView>();
+        }
+    }
 
     public void Initialize(ArticleBlock data)
     {
@@ -39,10 +64,14 @@ public class Block : MonoBehaviour,
         isHovered = false;
         currentDraggable = null;
 
-        markType = CheckType.None;
-        blockType = CheckType.None;
+        blockType = articleBlock != null
+            ? articleBlock.CheckType
+            : CheckType.None;
 
         UpdateVisuals();
+
+        // Reset the answer, text color and selection label.
+        SetMarkType(CheckType.None);
 
         if (articleBlock == null)
         {
@@ -50,16 +79,26 @@ public class Block : MonoBehaviour,
                 "Block " + name + ": ArticleBlock is null.",
                 this
             );
-
-            return;
         }
-
-        blockType = articleBlock.CheckType;
     }
 
     public void SetMarkType(CheckType type)
     {
         markType = type;
+
+        CacheView();
+
+        if (articleBlockView != null)
+        {
+            articleBlockView.SetPlayerCheckType(markType);
+        }
+        else
+        {
+            Debug.LogWarning(
+                "[BLOCK] Assign Article Block View on " + name,
+                this
+            );
+        }
     }
 
     // Connect this to TMP_Dropdown's Dynamic int event.
@@ -75,29 +114,13 @@ public class Block : MonoBehaviour,
             return;
         }
 
-        markType = (CheckType)value;
+        // Update both the answer and its visual appearance.
+        SetMarkType((CheckType)value);
 
         Debug.Log(
             "[BLOCK] " + name + " Mark Type: " + markType,
             this
         );
-    }
-
-    public bool ValidateCheck(DraggableObject action)
-    {
-        if (articleBlock == null ||
-            action == null ||
-            isSolved)
-        {
-            return false;
-        }
-
-        return action.CheckType == blockType;
-    }
-
-    public bool ValidateCurrentDraggable()
-    {
-        return ValidateMark();
     }
 
     public bool ValidateMark()
@@ -110,24 +133,6 @@ public class Block : MonoBehaviour,
         }
 
         return markType == blockType;
-    }
-
-    public void SetDraggable(DraggableObject draggable)
-    {
-        currentDraggable = draggable;
-
-        markType = draggable != null
-            ? draggable.CheckType
-            : CheckType.None;
-    }
-
-    public void RemoveDraggable(DraggableObject draggable)
-    {
-        if (currentDraggable == draggable)
-        {
-            currentDraggable = null;
-            markType = CheckType.None;
-        }
     }
 
     public void MarkAsSolved()
@@ -196,6 +201,46 @@ public class Block : MonoBehaviour,
         if (hoverVisual != null)
         {
             hoverVisual.SetActive(false);
+        }
+    }
+
+    // Compatibility methods for existing callers.
+    // Dropdown marking does not use these methods.
+
+    public bool ValidateCheck(DraggableObject action)
+    {
+        if (articleBlock == null ||
+            action == null ||
+            isSolved)
+        {
+            return false;
+        }
+
+        return action.CheckType == blockType;
+    }
+
+    public bool ValidateCurrentDraggable()
+    {
+        return ValidateMark();
+    }
+
+    public void SetDraggable(DraggableObject draggable)
+    {
+        currentDraggable = draggable;
+
+        SetMarkType(
+            draggable != null
+                ? draggable.CheckType
+                : CheckType.None
+        );
+    }
+
+    public void RemoveDraggable(DraggableObject draggable)
+    {
+        if (currentDraggable == draggable)
+        {
+            currentDraggable = null;
+            SetMarkType(CheckType.None);
         }
     }
 }

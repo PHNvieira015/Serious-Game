@@ -383,6 +383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Block
   blockType: 0
   markType: 0
+  articleBlockView: {fileID: 0}
   solvedVisual: {fileID: 0}
   selectedVisual: {fileID: 0}
   hoverVisual: {fileID: 0}

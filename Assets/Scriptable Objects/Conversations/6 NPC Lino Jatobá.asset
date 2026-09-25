@@ -51,7 +51,7 @@ MonoBehaviour:
     Message: (LINK)
     DisplayType: 5
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 11400000, guid: 6ffe7392c734fb849b71e4807d29cb77, type: 2}
+    LinkedArticle: {fileID: 11400000, guid: 4a09ef614594dd7429076fa5378d6d3f, type: 2}
     LinkURL: (LINK)
     PlayerOptions: []
     IsEndNode: 1

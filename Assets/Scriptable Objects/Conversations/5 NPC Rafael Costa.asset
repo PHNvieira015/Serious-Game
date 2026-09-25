@@ -52,17 +52,7 @@ MonoBehaviour:
     Message: (LINK)
     DisplayType: 5
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 11400000, guid: a7f70d8d655624340babdcab13bb027d, type: 2}
-    LinkURL: (LINK)
-    PlayerOptions: []
-    IsEndNode: 1
-    AutoAdvance: 0
-    AutoAdvanceDelay: 0
-  - IsNPC: 1
-    Message: (LINK)
-    DisplayType: 5
-    Image: {fileID: 0}
-    LinkedArticle: {fileID: 11400000, guid: a7f70d8d655624340babdcab13bb027d, type: 2}
+    LinkedArticle: {fileID: 11400000, guid: 545bdbb8fbe13f04f890e634c331a303, type: 2}
     LinkURL: (LINK)
     PlayerOptions: []
     IsEndNode: 1

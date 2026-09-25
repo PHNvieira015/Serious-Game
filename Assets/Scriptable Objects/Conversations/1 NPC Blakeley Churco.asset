@@ -53,16 +53,6 @@ MonoBehaviour:
     Message: g1.globo.com/2026/09/13/artigo
     DisplayType: 5
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-    LinkURL: g1.globo.com/2026/09/13/artigo
-    PlayerOptions: []
-    IsEndNode: 1
-    AutoAdvance: 0
-    AutoAdvanceDelay: 0
-  - IsNPC: 1
-    Message: g1.globo.com/2026/09/13/artigo
-    DisplayType: 5
-    Image: {fileID: 0}
     LinkedArticle: {fileID: 11400000, guid: 8f36976437d643044b2b5c1a776590f0, type: 2}
     LinkURL: g1.globo.com/2026/09/13/artigo
     PlayerOptions: []

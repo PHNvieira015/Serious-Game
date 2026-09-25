@@ -33,10 +33,10 @@ public class ConversationViewer : MonoBehaviour
 
     [Header("Article")]
     public ArticleViewer articleViewer;
-    public string openArticleLabel = "Open Article";
+    public string openArticleLabel = "Verificar Artigo";
 
     [Header("Continue Button")]
-    public string continueLabel = "Continue";
+    public string continueLabel = "Continuar";
     public bool requireContinueButton = true;
 
     [Header("Settings")]
