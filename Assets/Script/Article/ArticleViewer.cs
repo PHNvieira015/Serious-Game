@@ -15,6 +15,9 @@ public class ArticleViewer : MonoBehaviour
     public TMP_Text authorDescText;
     public UnityEngine.UI.Image authorPhotoImage;
 
+    [Header("Article URL")]
+    public TMP_Text articleURLText;
+
     [Header("Article Scroll")]
     public UnityEngine.UI.ScrollRect articleScrollRect;
     public RectTransform articleContent;
@@ -146,6 +149,12 @@ public class ArticleViewer : MonoBehaviour
 
         if (subtitleText != null)
             subtitleText.text = currentArticle.Subtitle;
+
+        if (articleURLText != null)
+        {
+            articleURLText.text =
+                currentArticle.URL_site ?? string.Empty;
+        }
 
         if (authorNameText != null)
         {
