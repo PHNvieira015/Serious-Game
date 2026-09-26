@@ -9,11 +9,13 @@ public class ArticleData : ScriptableObject
 {
     [Header("Article")]
     public string Title;
-
     public string Subtitle;
     public string Date;
 
-    [Header("Article")]
+    [Header("Article Image")]
+    public Sprite ArticleImage;
+
+    [Header("Article URL")]
     public string URL_site;
 
     [Header("Author")]

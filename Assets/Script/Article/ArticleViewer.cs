@@ -11,9 +11,13 @@ public class ArticleViewer : MonoBehaviour
     [Header("Article Header")]
     public TMP_Text titleText;
     public TMP_Text subtitleText;
+    public TMP_Text articleDateText;
     public TMP_Text authorNameText;
     public TMP_Text authorDescText;
     public UnityEngine.UI.Image authorPhotoImage;
+
+    [Header("Article Image")]
+    public UnityEngine.UI.Image articleImage;
 
     [Header("Article URL")]
     public TMP_Text articleURLText;
@@ -62,6 +66,7 @@ public class ArticleViewer : MonoBehaviour
             verifyArticleButton.onClick.RemoveListener(
                 OnVerifyButtonPressed
             );
+
             verifyArticleButton.onClick.AddListener(
                 OnVerifyButtonPressed
             );
@@ -105,7 +110,6 @@ public class ArticleViewer : MonoBehaviour
 
         if (articleValidator != null)
         {
-            // Discover dropdowns and reset them to option zero.
             articleValidator.OnArticleLoaded(this);
         }
         else
@@ -145,15 +149,31 @@ public class ArticleViewer : MonoBehaviour
     private void DisplayArticleInfo()
     {
         if (titleText != null)
-            titleText.text = currentArticle.Title;
+            titleText.text = currentArticle.Title ?? string.Empty;
 
-        if (subtitleText != null)
-            subtitleText.text = currentArticle.Subtitle;
+        SetHeaderText(
+            subtitleText,
+            currentArticle.Subtitle,
+            "Subtitle"
+        );
+
+        SetHeaderText(
+            articleDateText,
+            currentArticle.Date,
+            "Date"
+        );
 
         if (articleURLText != null)
         {
             articleURLText.text =
                 currentArticle.URL_site ?? string.Empty;
+        }
+
+        if (articleImage != null)
+        {
+            articleImage.sprite = currentArticle.ArticleImage;
+            articleImage.preserveAspect = true;
+            articleImage.enabled = currentArticle.ArticleImage != null;
         }
 
         if (authorNameText != null)
@@ -177,6 +197,82 @@ public class ArticleViewer : MonoBehaviour
                 : null;
 
             authorPhotoImage.enabled = authorPhotoImage.sprite != null;
+        }
+    }
+
+    private void SetHeaderText(
+        TMP_Text target,
+        string value,
+        string fieldName)
+    {
+        if (target == null)
+        {
+            Debug.LogWarning(
+                "[ARTICLE HEADER] " + fieldName +
+                ": TMP text reference is not assigned.",
+                this
+            );
+
+            return;
+        }
+
+        target.text = value ?? string.Empty;
+
+        if (!showDebugMessages)
+            return;
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            Debug.LogWarning(
+                "[ARTICLE HEADER] " + fieldName +
+                " is empty in ArticleData: " + currentArticle.name,
+                currentArticle
+            );
+        }
+        else
+        {
+            Debug.Log(
+                "[ARTICLE HEADER] " + fieldName +
+                " assigned to " + target.name +
+                ": " + value,
+                target
+            );
+        }
+
+        if (!target.enabled)
+        {
+            Debug.LogWarning(
+                "[ARTICLE HEADER] " + fieldName +
+                ": TMP component is disabled.",
+                target
+            );
+        }
+
+        if (!target.gameObject.activeSelf)
+        {
+            Debug.LogWarning(
+                "[ARTICLE HEADER] " + fieldName +
+                ": text GameObject is inactive.",
+                target
+            );
+        }
+        else if (!target.gameObject.activeInHierarchy)
+        {
+            Debug.Log(
+                "[ARTICLE HEADER] " + fieldName +
+                ": a parent is inactive. This is expected if " +
+                "the article screen has not opened yet.",
+                target
+            );
+        }
+
+        if (target.color.a <= 0f)
+        {
+            Debug.LogWarning(
+                "[ARTICLE HEADER] " + fieldName +
+                ": text color alpha is zero.",
+                target
+            );
         }
     }
 
@@ -247,7 +343,6 @@ public class ArticleViewer : MonoBehaviour
     private void OnAllBlocksSolved()
     {
         // ArticleValidator awards the completion score.
-        // Avoid awarding the same completion bonus here too.
         if (showDebugMessages)
             Debug.Log("All blocks solved!", this);
     }
