@@ -25,6 +25,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject historyFrame;
     [SerializeField] private GameObject scoreFrame;
 
+
+
     private void Awake()
     {
         Instance = this;
