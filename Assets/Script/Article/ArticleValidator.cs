@@ -36,6 +36,9 @@ public class ArticleValidator : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private ArticleFeedbackPanel feedbackPanel;
 
+    [Header("History")]
+    [SerializeField] private ArticleHistoryManager historyManager;
+
     [Header("Score")]
     [SerializeField] private ArticleScoreManager scoreManager;
     [SerializeField] private bool openScoreAfterFeedback = true;
@@ -91,16 +94,6 @@ public class ArticleValidator : MonoBehaviour
                     AddBlock(block);
             }
         }
-        else
-        {
-            Block[] found =
-                UnityEngine.Object.FindObjectsByType<Block>(
-                    FindObjectsSortMode.None
-                );
-
-            foreach (Block block in found)
-                AddBlock(block);
-        }
 
         DiscoverDropdowns();
     }
@@ -128,11 +121,11 @@ public class ArticleValidator : MonoBehaviour
             if (GetDropdown(block) != null)
                 continue;
 
-            Transform searchRoot = block.transform;
             ArticleBlockView view = FindView(block);
 
-            if (view != null)
-                searchRoot = view.transform;
+            Transform searchRoot = view != null
+                ? view.transform
+                : block.transform;
 
             TMP_Dropdown[] found =
                 searchRoot.GetComponentsInChildren<TMP_Dropdown>(true);
@@ -148,8 +141,7 @@ public class ArticleValidator : MonoBehaviour
             else
             {
                 Debug.LogWarning(
-                    "[VALIDATION] Assign the dropdown for " +
-                    block.name + " in Block Dropdowns.",
+                    "[VALIDATION] Assign the dropdown for " + block.name,
                     block
                 );
             }
@@ -202,36 +194,41 @@ public class ArticleValidator : MonoBehaviour
         if (feedbackInProgress)
             return;
 
+        if (articleViewer == null ||
+            articleViewer.currentArticle == null ||
+            historyManager == null)
+        {
+            Debug.LogError(
+                "[VALIDATION] Assign Article Viewer and History Manager.",
+                this
+            );
+            return;
+        }
+
+        ArticleData article = articleViewer.currentArticle;
+
+        // Check before replacing or adding the history entry.
+        bool alreadyInHistory = historyManager.ContainsArticle(article);
+
         ValidationResult result = ValidateArticle();
 
         if (result.TotalCount == 0)
         {
-            Debug.LogWarning(
-                "[VALIDATION] No article blocks.",
-                this
-            );
-
+            Debug.LogWarning("[VALIDATION] No article blocks.", this);
             return;
         }
 
-        // Record the submitted result before feedback can reset marks.
-        if (scoreManager != null &&
-            articleViewer != null &&
-            articleViewer.currentArticle != null)
+        if (scoreManager != null)
         {
             scoreManager.RecordArticle(
-                articleViewer.currentArticle,
-                result
+                article,
+                result,
+                !alreadyInHistory
             );
         }
-        else
-        {
-            Debug.LogWarning(
-                "[VALIDATION] Assign Score Manager and Article Viewer " +
-                "to record article points.",
-                this
-            );
-        }
+
+        // Stores snapshots, not references to mutable marks.
+        historyManager.SaveAttempt(article, result);
 
         feedbackInProgress = true;
 
@@ -261,7 +258,6 @@ public class ArticleValidator : MonoBehaviour
             CheckType selected = block.MarkType;
             bool isTrue = expected == CheckType.True;
 
-            // Preserve the existing True-block rule.
             bool correct = isTrue
                 ? selected == CheckType.None ||
                   selected == CheckType.True
@@ -283,7 +279,6 @@ public class ArticleValidator : MonoBehaviour
                         : BlockResultType.Wrong
             };
 
-            // Every block is included in scoring and feedback.
             result.AllBlockResults.Add(item);
             result.BlockResults.Add(item);
 
@@ -320,16 +315,17 @@ public class ArticleValidator : MonoBehaviour
 
         feedbackInProgress = false;
 
-        Debug.Log(
-            articleSolved ? "ARTICLE SOLVED" : "ARTICLE NOT SOLVED"
-        );
-
-        foreach (ValidatedBlock entry in validatedBlocks)
+        // OnArticleLoaded runs after the viewer replaces block data.
+        // Do not reset those newly loaded blocks through old feedback.
+        if (!changingArticle)
         {
-            if (entry.block != null &&
-                entry.block.ArticleBlock == entry.data)
+            foreach (ValidatedBlock entry in validatedBlocks)
             {
-                ResetBlock(entry.block);
+                if (entry.block != null &&
+                    entry.block.ArticleBlock == entry.data)
+                {
+                    ResetBlock(entry.block);
+                }
             }
         }
 
@@ -469,7 +465,6 @@ public class ValidationResult
 {
     public List<BlockResult> BlockResults = new List<BlockResult>();
     public List<BlockResult> AllBlockResults = new List<BlockResult>();
-
     public bool IsArticleSolved;
 
     private List<BlockResult> CountingResults =>

@@ -3313,7 +3313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArticleFeedbackPanel
   feedbackPanel: {fileID: 1749639924}
-  scoreManager: {fileID: 0}
+  scoreManager: {fileID: 1590695593}
   blockText: {fileID: 374552144}
   blockIndexText: {fileID: 1028657347}
   resultText: {fileID: 909339295}
@@ -8127,7 +8127,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852526936}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a7e2a3f8d8b61a44bf068ad07a5604e, type: 3}
   m_Name: 
@@ -14566,6 +14566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1587788686}
+  - component: {fileID: 1587788687}
   m_Layer: 0
   m_Name: HistoryManager
   m_TagString: Untagged
@@ -14588,6 +14589,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 368689843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1587788687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587788685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7567044eb72e6914abdc954c6b7d7ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleHistoryManager
+  articleViewer: {fileID: 1541900323}
+  history: []
 --- !u!114 &1588976275 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5594935463965267883, guid: 5023e81444d40ba46859f267fcd89a40, type: 3}
@@ -14646,7 +14661,7 @@ MonoBehaviour:
   articleTitleText: {fileID: 7683541071695126360}
   correctBlocksText: {fileID: 213689626}
   totalPointsText: {fileID: 539143104}
-  feedbackScoreFill: {fileID: 1019191007}
+  credibilitySlider: {fileID: 852526939}
   feedbackScoreText: {fileID: 685366141}
   feedbackPointsChangeText: {fileID: 2037766171}
   feedbackMultiplierText: {fileID: 1999429424}
@@ -15499,11 +15514,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4614e667039220941ad7fbc25cdc3ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArticleValidator
-  articleViewer: {fileID: 0}
+  articleViewer: {fileID: 1541900323}
   blocks: []
   blockDropdowns: []
   articleSolved: 0
   feedbackPanel: {fileID: 369358085}
+  historyManager: {fileID: 1587788687}
   scoreManager: {fileID: 1590695593}
   openScoreAfterFeedback: 1
   showDebugMessages: 1
@@ -21374,6 +21390,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 898809329038945113, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 908815730639272235, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -21793,6 +21813,10 @@ PrefabInstance:
     - target: {fileID: 4089830156730135457, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -371.8144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4145426878636238679, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4377941041226551742, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -22253,6 +22277,10 @@ PrefabInstance:
     - target: {fileID: 8070521078636862345, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8138864215420164065, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8472454176584224241, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.y

@@ -17,7 +17,6 @@ public class ArticleScoreManager : MonoBehaviour
     public TMP_Text feedbackPointsChangeText;
     public TMP_Text feedbackMultiplierText;
 
-    [Tooltip("The number of points represented by a full bar.")]
     [Min(1)]
     public int pointsForFullBar = 500;
 
@@ -35,17 +34,13 @@ public class ArticleScoreManager : MonoBehaviour
     public int pointsPerMissedBlock = -5;
 
     [Header("Consecutive Correct Blocks")]
-    [Tooltip("Multiplier increase for each correct block after the first.")]
     [Min(0f)]
     public float multiplierIncrease = 0.5f;
 
     [Min(1f)]
     public float maximumMultiplier = 3f;
 
-    [Tooltip(
-        "Article-end bonus per step beyond the first in the " +
-        "consecutive correct-block streak remaining at article end."
-    )]
+    [Tooltip("Article-end bonus based on the remaining block streak.")]
     [Min(0)]
     public int bonusPerStreakStep = 25;
 
@@ -57,24 +52,19 @@ public class ArticleScoreManager : MonoBehaviour
         public string title;
         public int totalBlocks;
         public int correctBlocks;
-
         public int startingPoints;
         public int endingPoints;
         public int streakBonus;
-
         public float startingMultiplier;
-        public float endingMultiplier;
-
         public int[] blockPoints;
         public float[] blockMultipliers;
         public bool[] viewed;
-
         public int viewedCount;
         public bool visualCompleted;
     }
 
-    private readonly Dictionary<ArticleData, ArticleScore> scoredArticles =
-        new Dictionary<ArticleData, ArticleScore>();
+    private readonly HashSet<ArticleData> scoredArticles =
+        new HashSet<ArticleData>();
 
     private readonly Dictionary<BlockResult, int> resultIndices =
         new Dictionary<BlockResult, int>();
@@ -86,14 +76,11 @@ public class ArticleScoreManager : MonoBehaviour
     private int totalCorrectBlocks;
     private int completedArticles;
     private int correctArticles;
-
-    // These now count consecutive correct blocks.
     private int currentStreak;
     private int bestStreak;
 
     private int revealedBlockPoints;
     private bool replayingArticle;
-
     private float displayedPoints;
     private float displayedMultiplier = 1f;
     private int visualTarget;
@@ -115,27 +102,31 @@ public class ArticleScoreManager : MonoBehaviour
 
     private float GetMultiplier(int streak)
     {
-        int steps = Mathf.Max(0, streak - 1);
-
         return Mathf.Min(
             Mathf.Max(1f, maximumMultiplier),
-            1f + steps * Mathf.Max(0f, multiplierIncrease)
+            1f + Mathf.Max(0, streak - 1) *
+            Mathf.Max(0f, multiplierIncrease)
         );
+    }
+
+    // Preserved for existing callers.
+    public bool RecordArticle(
+        ArticleData article,
+        ValidationResult result)
+    {
+        return RecordArticle(article, result, true);
     }
 
     public bool RecordArticle(
         ArticleData article,
-        ValidationResult result)
+        ValidationResult result,
+        bool allowPoints)
     {
         if (article == null ||
             result == null ||
             result.TotalCount == 0)
         {
-            Debug.LogWarning(
-                "[SCORE] Article or validation results are missing.",
-                this
-            );
-
+            Debug.LogWarning("[SCORE] Missing article results.", this);
             return false;
         }
 
@@ -145,28 +136,40 @@ public class ArticleScoreManager : MonoBehaviour
         currentValidation = result;
         revealedBlockPoints = 0;
 
-        // Revalidating an article cannot change score or streak.
-        if (scoredArticles.TryGetValue(
-            article,
-            out ArticleScore existing))
-        {
-            lastArticle = existing;
-            replayingArticle = true;
+        replayingArticle =
+            !allowPoints || scoredArticles.Contains(article);
 
+        if (replayingArticle)
+        {
+            // Display the new attempt, not the old saved count.
+            lastArticle = new ArticleScore
+            {
+                title = article.Title,
+                totalBlocks = result.TotalCount,
+                correctBlocks = result.CorrectCount,
+                startingPoints = totalPoints,
+                endingPoints = totalPoints,
+                startingMultiplier = GetMultiplier(currentStreak),
+                blockPoints = new int[0],
+                blockMultipliers = new float[0],
+                viewed = new bool[0],
+                visualCompleted = true
+            };
+
+            scoredArticles.Add(article);
             RefreshUI();
 
             if (showDebugMessages)
             {
                 Debug.Log(
-                    "[SCORE] Article already scored: " + article.Title,
+                    "[SCORE] Retry: results updated, no points or " +
+                    "streak changes for " + article.Title,
                     this
                 );
             }
 
             return false;
         }
-
-        replayingArticle = false;
 
         List<BlockResult> source = result.AllBlockResults.Count > 0
             ? result.AllBlockResults
@@ -182,17 +185,13 @@ public class ArticleScoreManager : MonoBehaviour
 
         int startingPoints = totalPoints;
         float startingMultiplier = GetMultiplier(currentStreak);
-
         int[] blockPoints = new int[validResults.Count];
-        float[] blockMultipliers = new float[validResults.Count];
-
+        float[] multipliers = new float[validResults.Count];
         int earnedBlockPoints = 0;
 
-        // Calculate in article order, independent of feedback navigation.
         for (int i = 0; i < validResults.Count; i++)
         {
             BlockResult item = validResults[i];
-
             int points;
             float multiplier;
 
@@ -200,9 +199,7 @@ public class ArticleScoreManager : MonoBehaviour
             {
                 currentStreak++;
                 bestStreak = Mathf.Max(bestStreak, currentStreak);
-
                 multiplier = GetMultiplier(currentStreak);
-
                 points = Mathf.RoundToInt(
                     pointsPerCorrectBlock * multiplier
                 );
@@ -211,39 +208,25 @@ public class ArticleScoreManager : MonoBehaviour
             {
                 currentStreak = 0;
                 multiplier = 1f;
-
                 points = item.ResultType == BlockResultType.Missed
                     ? pointsPerMissedBlock
                     : pointsPerWrongBlock;
             }
 
             blockPoints[i] = points;
-            blockMultipliers[i] = multiplier;
-
-            earnedBlockPoints += points;
+            multipliers[i] = multiplier;
             resultIndices[item] = i;
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[SCORE BLOCK] " + (i + 1) +
-                    " | Result: " + item.ResultType +
-                    " | Streak: " + currentStreak +
-                    " | Multiplier: x" + multiplier.ToString("0.##") +
-                    " | Points: " + points,
-                    this
-                );
-            }
+            earnedBlockPoints += points;
         }
 
-        // Award the article-end bonus from the remaining block streak.
-        int streakBonus =
+        int bonus =
             Mathf.Max(0, currentStreak - 1) *
             Mathf.Max(0, bonusPerStreakStep);
 
-        int earnedPoints = earnedBlockPoints + streakBonus;
-
-        totalPoints = Mathf.Max(0, totalPoints + earnedPoints);
+        totalPoints = Mathf.Max(
+            0,
+            totalPoints + earnedBlockPoints + bonus
+        );
 
         lastArticle = new ArticleScore
         {
@@ -252,18 +235,14 @@ public class ArticleScoreManager : MonoBehaviour
             correctBlocks = result.CorrectCount,
             startingPoints = startingPoints,
             endingPoints = totalPoints,
-            streakBonus = streakBonus,
+            streakBonus = bonus,
             startingMultiplier = startingMultiplier,
-            endingMultiplier = GetMultiplier(currentStreak),
             blockPoints = blockPoints,
-            blockMultipliers = blockMultipliers,
-            viewed = new bool[validResults.Count],
-            viewedCount = 0,
-            visualCompleted = false
+            blockMultipliers = multipliers,
+            viewed = new bool[validResults.Count]
         };
 
-        scoredArticles.Add(article, lastArticle);
-
+        scoredArticles.Add(article);
         totalCorrectBlocks += result.CorrectCount;
         completedArticles++;
 
@@ -279,9 +258,8 @@ public class ArticleScoreManager : MonoBehaviour
         {
             Debug.Log(
                 "[SCORE] " + article.Title +
-                " | Block points: " + earnedBlockPoints +
-                " | Streak bonus: " + streakBonus +
-                " | Ending block streak: " + currentStreak +
+                " | Points: " + earnedBlockPoints +
+                " | Bonus: " + bonus +
                 " | Total: " + totalPoints,
                 this
             );
@@ -311,13 +289,9 @@ public class ArticleScoreManager : MonoBehaviour
         displayedPoints = visualTarget;
 
         if (canReveal && lastArticle.viewedCount == 0)
-        {
             displayedMultiplier = lastArticle.startingMultiplier;
-        }
         else if (!canReveal)
-        {
             displayedMultiplier = GetMultiplier(currentStreak);
-        }
 
         UpdateFeedbackBar();
         UpdateMultiplierText();
@@ -336,7 +310,6 @@ public class ArticleScoreManager : MonoBehaviour
 
         if (lastArticle.visualCompleted || lastArticle.viewed[index])
         {
-            // Do not roll the displayed streak back or replay the gain.
             ClearPointsChange();
             return;
         }
@@ -344,10 +317,9 @@ public class ArticleScoreManager : MonoBehaviour
         lastArticle.viewed[index] = true;
         lastArticle.viewedCount++;
 
-        int blockPoints = lastArticle.blockPoints[index];
-        revealedBlockPoints += blockPoints;
+        int points = lastArticle.blockPoints[index];
+        revealedBlockPoints += points;
 
-        // Display the multiplier calculated for this block.
         displayedMultiplier = lastArticle.blockMultipliers[index];
         UpdateMultiplierText();
 
@@ -356,19 +328,19 @@ public class ArticleScoreManager : MonoBehaviour
 
         int bonus = allViewed ? lastArticle.streakBonus : 0;
 
-        int newTarget = Mathf.Max(
+        int target = Mathf.Max(
             0,
             lastArticle.startingPoints + revealedBlockPoints + bonus
         );
 
         if (allViewed)
         {
-            newTarget = lastArticle.endingPoints;
+            target = lastArticle.endingPoints;
             lastArticle.visualCompleted = true;
         }
 
-        ShowPointsChange(blockPoints, bonus);
-        AnimateTo(newTarget);
+        ShowPointsChange(points, bonus);
+        AnimateTo(target);
     }
 
     private void UpdateMultiplierText()
@@ -384,24 +356,20 @@ public class ArticleScoreManager : MonoBehaviour
             : normalMultiplierColor;
     }
 
-    private void ShowPointsChange(int blockPoints, int bonus)
+    private void ShowPointsChange(int points, int bonus)
     {
         if (feedbackPointsChangeText == null)
             return;
 
-        string text = blockPoints > 0
-            ? "+" + blockPoints
-            : blockPoints.ToString();
+        string text = points > 0 ? "+" + points : points.ToString();
 
         if (bonus > 0)
             text += " + " + bonus + " bonus";
 
         feedbackPointsChangeText.text = text;
-
-        feedbackPointsChangeText.color =
-            blockPoints + bonus >= 0
-                ? pointsGainedColor
-                : pointsLostColor;
+        feedbackPointsChangeText.color = points + bonus >= 0
+            ? pointsGainedColor
+            : pointsLostColor;
     }
 
     private void ClearPointsChange()
@@ -413,7 +381,6 @@ public class ArticleScoreManager : MonoBehaviour
     private void AnimateTo(int target)
     {
         StopScoreAnimation();
-
         visualTarget = target;
 
         if (!isActiveAndEnabled ||
@@ -438,16 +405,15 @@ public class ArticleScoreManager : MonoBehaviour
         {
             elapsed += Time.unscaledDeltaTime;
 
-            float progress = Mathf.Clamp01(elapsed / duration);
-            float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
-
-            displayedPoints = Mathf.Lerp(
-                start,
-                visualTarget,
-                smoothProgress
+            float progress = Mathf.SmoothStep(
+                0f,
+                1f,
+                Mathf.Clamp01(elapsed / duration)
             );
 
+            displayedPoints = Mathf.Lerp(start, visualTarget, progress);
             UpdateFeedbackBar();
+
             yield return null;
         }
 
@@ -468,7 +434,6 @@ public class ArticleScoreManager : MonoBehaviour
             credibilitySlider.maxValue = 1f;
             credibilitySlider.wholeNumbers = false;
             credibilitySlider.interactable = false;
-
             credibilitySlider.SetValueWithoutNotify(progress);
         }
 
@@ -504,11 +469,11 @@ public class ArticleScoreManager : MonoBehaviour
 
     private void StopScoreAnimation()
     {
-        if (scoreAnimation != null)
-        {
-            StopCoroutine(scoreAnimation);
-            scoreAnimation = null;
-        }
+        if (scoreAnimation == null)
+            return;
+
+        StopCoroutine(scoreAnimation);
+        scoreAnimation = null;
     }
 
     public void RefreshUI()
@@ -542,13 +507,11 @@ public class ArticleScoreManager : MonoBehaviour
     public void ResetScore()
     {
         StopScoreAnimation();
-
         scoredArticles.Clear();
         resultIndices.Clear();
 
         lastArticle = null;
         currentValidation = null;
-
         replayingArticle = false;
         revealedBlockPoints = 0;
 
@@ -572,7 +535,6 @@ public class ArticleScoreManager : MonoBehaviour
     private void OnDisable()
     {
         StopScoreAnimation();
-
         displayedPoints = visualTarget;
         UpdateFeedbackBar();
     }
