@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -16,7 +17,10 @@ public class UIManager : MonoBehaviour
     }
 
     [Header("Current Screen")]
-    public Screens currentScreen= Screens.Chat;
+    public Screens currentScreen = Screens.Chat;
+
+    [Header("Transition")]
+    [SerializeField] private float transitionTimer = 0.5f;
 
     [Header("Screens")]
     [SerializeField] private GameObject chatFrame;
@@ -24,6 +28,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject feedbackFrame;
     [SerializeField] private GameObject historyFrame;
     [SerializeField] private GameObject scoreFrame;
+
+    private Coroutine transitionCoroutine;
 
     private void Awake()
     {
@@ -36,33 +42,31 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("Showing screen: " + screen);
 
+        // Cancel any existing transition
+        if (transitionCoroutine != null)
+        {
+            StopCoroutine(transitionCoroutine);
+        }
+
+        transitionCoroutine = StartCoroutine(TransitionToScreen(screen));
+    }
+
+    private IEnumerator TransitionToScreen(Screens screen)
+    {
+        // Keep the current screen visible during the transition
+        if (transitionTimer > 0f)
+        {
+            yield return new WaitForSeconds(transitionTimer);
+        }
+
+        // Transition is finished.
+        // Now hide the old screen.
+        HideAllScreens();
+
+        // Update current screen
         currentScreen = screen;
 
-        if (chatFrame != null)
-        {
-            chatFrame.SetActive(false);
-        }
-
-        if (articleFrame != null)
-        {
-            articleFrame.SetActive(false);
-        }
-
-        if (feedbackFrame != null)
-        {
-            feedbackFrame.SetActive(false);
-        }
-
-        if (historyFrame != null)
-        {
-            historyFrame.SetActive(false);
-        }
-
-        if (scoreFrame != null)
-        {
-            scoreFrame.SetActive(false);
-        }
-
+        // Show the new screen
         switch (currentScreen)
         {
             case Screens.None:
@@ -103,11 +107,36 @@ public class UIManager : MonoBehaviour
                 }
                 break;
         }
+
+        transitionCoroutine = null;
     }
 
-    public void ShowScreen(int screen)
+    private void HideAllScreens()
     {
-        ShowScreen((Screens)screen);
+        if (chatFrame != null)
+        {
+            chatFrame.SetActive(false);
+        }
+
+        if (articleFrame != null)
+        {
+            articleFrame.SetActive(false);
+        }
+
+        if (feedbackFrame != null)
+        {
+            feedbackFrame.SetActive(false);
+        }
+
+        if (historyFrame != null)
+        {
+            historyFrame.SetActive(false);
+        }
+
+        if (scoreFrame != null)
+        {
+            scoreFrame.SetActive(false);
+        }
     }
 
     private void DetectCurrentScreen()
@@ -142,9 +171,11 @@ public class UIManager : MonoBehaviour
 
     public void OpenChat()
     {
-        Debug.LogWarning($"[UIMANAGER] OpenChat called from:\n{System.Environment.StackTrace}");
+        Debug.LogWarning(
+            $"[UIMANAGER] OpenChat called from:\n{System.Environment.StackTrace}"
+        );
+
         ShowScreen(Screens.Chat);
-        
     }
 
     public void OpenArticle()
