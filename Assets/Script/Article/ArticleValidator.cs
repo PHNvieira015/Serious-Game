@@ -1,198 +1,348 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 public class ArticleValidator : MonoBehaviour
 {
+    [Serializable]
+    public class BlockDropdownReference
+    {
+        public Block block;
+        public TMP_Dropdown dropdown;
+    }
+
+    private class ValidatedBlock
+    {
+        public Block block;
+        public ArticleBlock data;
+    }
+
+    [Header("Article Viewer")]
+    [SerializeField] private ArticleViewer articleViewer;
+
     [Header("Article Blocks")]
+    [SerializeField] private List<Block> blocks = new List<Block>();
+
+    [Header("Block Dropdowns")]
     [SerializeField]
-    private List<Block> blocks = new List<Block>();
+    private List<BlockDropdownReference> blockDropdowns =
+        new List<BlockDropdownReference>();
 
     [Header("Validation Result")]
-    [SerializeField]
-    private bool articleSolved;
+    [SerializeField] private bool articleSolved;
 
     [Header("Feedback")]
-    [SerializeField]
-    private ArticleFeedbackPanel feedbackPanel;
+    [SerializeField] private ArticleFeedbackPanel feedbackPanel;
+
+    [Header("Debug")]
+    [SerializeField] private bool showDebugMessages = true;
+
+    private readonly List<ValidatedBlock> validatedBlocks =
+        new List<ValidatedBlock>();
+
+    private bool feedbackInProgress;
 
     public bool ArticleSolved => articleSolved;
     public List<Block> Blocks => blocks;
 
     private void Awake()
     {
-        FindBlocks();
+        if (articleViewer == null)
+            articleViewer = GetComponent<ArticleViewer>();
+    }
+
+    // Called by ArticleViewer after loading the article.
+    public void OnArticleLoaded(ArticleViewer viewer)
+    {
+        // Finish the old feedback before replacing its block list.
+        if (feedbackInProgress && feedbackPanel != null)
+            feedbackPanel.CloseFeedback();
+
+        feedbackInProgress = false;
+        articleViewer = viewer;
+        ResetValidation();
     }
 
     public void FindBlocks()
     {
         blocks.Clear();
 
-        Block[] foundBlocks = Object.FindObjectsByType<Block>(FindObjectsSortMode.None);
+        if (articleViewer == null)
+            articleViewer = GetComponent<ArticleViewer>();
 
-        foreach (Block block in foundBlocks)
+        if (articleViewer != null)
         {
-            if (block != null && block.ArticleBlock != null)
+            List<Block> currentBlocks = articleViewer.GetBlockComponents();
+
+            if (currentBlocks != null)
             {
-                blocks.Add(block);
+                foreach (Block block in currentBlocks)
+                    AddBlock(block);
+            }
+        }
+        else
+        {
+            Block[] found = UnityEngine.Object.FindObjectsByType<Block>(
+                FindObjectsSortMode.None
+            );
+
+            foreach (Block block in found)
+                AddBlock(block);
+        }
+
+        DiscoverDropdowns();
+    }
+
+    private void AddBlock(Block block)
+    {
+        if (block != null &&
+            block.ArticleBlock != null &&
+            !blocks.Contains(block))
+        {
+            blocks.Add(block);
+        }
+    }
+
+    private void DiscoverDropdowns()
+    {
+        blockDropdowns.RemoveAll(
+            entry => entry == null ||
+                     entry.block == null ||
+                     entry.dropdown == null
+        );
+
+        foreach (Block block in blocks)
+        {
+            if (GetDropdown(block) != null)
+                continue;
+
+            Transform searchRoot = block.transform;
+
+            ArticleBlockView view = FindView(block);
+            if (view != null)
+                searchRoot = view.transform;
+
+            TMP_Dropdown[] found =
+                searchRoot.GetComponentsInChildren<TMP_Dropdown>(true);
+
+            if (found.Length == 1)
+            {
+                blockDropdowns.Add(new BlockDropdownReference
+                {
+                    block = block,
+                    dropdown = found[0]
+                });
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "[VALIDATION] Block " + block.name +
+                    " has " + found.Length +
+                    " dropdowns under its view. Assign its dropdown " +
+                    "manually in Block Dropdowns.",
+                    block
+                );
+            }
+        }
+    }
+
+    private ArticleBlockView FindView(Block block)
+    {
+        if (articleViewer != null && articleViewer.blockViews != null)
+        {
+            foreach (ArticleBlockView view in articleViewer.blockViews)
+            {
+                if (view == null)
+                    continue;
+
+                if (view.blockComponent == block ||
+                    view.GetComponent<Block>() == block ||
+                    view.GetComponentInChildren<Block>(true) == block)
+                {
+                    return view;
+                }
             }
         }
 
-        Debug.Log("ArticleValidator: Found " + blocks.Count + " blocks with ArticleBlock.");
+        ArticleBlockView ownView = block.GetComponent<ArticleBlockView>();
+
+        return ownView != null
+            ? ownView
+            : block.GetComponentInParent<ArticleBlockView>();
+    }
+
+    private TMP_Dropdown GetDropdown(Block block)
+    {
+        foreach (BlockDropdownReference entry in blockDropdowns)
+        {
+            if (entry != null &&
+                entry.block == block &&
+                entry.dropdown != null)
+            {
+                return entry.dropdown;
+            }
+        }
+
+        return null;
     }
 
     public void OnValidateButtonPressed()
     {
+        if (feedbackInProgress)
+            return;
+
         ValidationResult result = ValidateArticle();
 
+        if (validatedBlocks.Count == 0)
+        {
+            Debug.LogWarning("[VALIDATION] No article blocks.", this);
+            return;
+        }
+
+        feedbackInProgress = true;
+
         if (feedbackPanel != null)
-        {
             feedbackPanel.StartFeedback(result, OnFeedbackComplete);
-        }
         else
-        {
-            Debug.LogWarning("Feedback Panel not assigned");
-            if (articleSolved)
-            {
-                OnArticleSolved();
-            }
-            else
-            {
-                OnArticleIncorrect();
-            }
-        }
+            OnFeedbackComplete();
     }
 
     public ValidationResult ValidateArticle()
     {
-        if (blocks == null || blocks.Count == 0)
-        {
-            FindBlocks();
-        }
+        FindBlocks();
+        validatedBlocks.Clear();
 
-        articleSolved = true;
         ValidationResult result = new ValidationResult();
-
-        int totalBlocks = 0;
-        int correctBlocks = 0;
-        int wrongBlocks = 0;
-        int missedBlocks = 0;
+        articleSolved = blocks.Count > 0;
 
         foreach (Block block in blocks)
         {
-            if (block == null || block.ArticleBlock == null)
+            validatedBlocks.Add(new ValidatedBlock
             {
-                continue;
-            }
+                block = block,
+                data = block.ArticleBlock
+            });
 
-            totalBlocks++;
+            CheckType expected = block.BlockType;
+            CheckType selected = block.MarkType;
+            bool isTrue = expected == CheckType.True;
 
-            BlockResult blockResult = new BlockResult();
-            blockResult.Block = block;
-            blockResult.BlockText = block.ArticleBlock.Text;
-            blockResult.ExpectedCheck = block.ArticleBlock.CheckType;
-            blockResult.IsTrueCheck = (block.ArticleBlock.CheckType == CheckType.True);
-            blockResult.HasDraggable = (block.CurrentDraggable != null);
+            // Preserve the existing True-block rule.
+            bool correct = isTrue
+                ? selected == CheckType.None || selected == CheckType.True
+                : selected == expected;
 
-            if (blockResult.HasDraggable)
+            BlockResult item = new BlockResult
             {
-                blockResult.PlayerCheck = block.CurrentDraggable.CheckType;
-            }
-            else
+                Block = block,
+                BlockText = block.ArticleBlock.Text,
+                ExpectedCheck = expected,
+                PlayerCheck = selected,
+                IsTrueCheck = isTrue,
+                HasDraggable = block.CurrentDraggable != null,
+                IsCorrect = correct,
+                ResultType = correct
+                    ? BlockResultType.Correct
+                    : selected == CheckType.None
+                        ? BlockResultType.Missed
+                        : BlockResultType.Wrong
+            };
+
+            if (correct)
             {
-                blockResult.PlayerCheck = CheckType.None;
-            }
-
-            bool shouldShowInFeedback = false;
-            bool isCorrect = false;
-
-            // Case 1: True block
-            if (blockResult.IsTrueCheck)
-            {
-                // True block is correct if it's empty OR marked with True
-                if (!blockResult.HasDraggable || blockResult.PlayerCheck == CheckType.True)
-                {
-                    isCorrect = true;
-                    correctBlocks++;
-
-                    if (blockResult.HasDraggable && blockResult.PlayerCheck == CheckType.True)
-                    {
-                        block.MarkAsSolved();
-                    }
-                    else if (!blockResult.HasDraggable)
-                    {
-                        block.MarkAsSolved();
-                    }
-
-                    // True block correct - skip feedback
-                    shouldShowInFeedback = false;
-                }
-                else
-                {
-                    // True block marked with wrong type
-                    isCorrect = false;
-                    shouldShowInFeedback = true;
-                    blockResult.ResultType = BlockResultType.Wrong;
-                    articleSolved = false;
-                    wrongBlocks++;
-                    Debug.Log("True block marked wrong: " + block.name + " | Player: " + blockResult.PlayerCheck);
-                }
-            }
-            // Case 2: Non-True block - always show in feedback
-            else
-            {
-                shouldShowInFeedback = true;
-
-                if (blockResult.HasDraggable && blockResult.PlayerCheck == blockResult.ExpectedCheck)
-                {
-                    isCorrect = true;
-                    correctBlocks++;
+                if (!block.IsSolved)
                     block.MarkAsSolved();
-                    blockResult.ResultType = BlockResultType.Correct;
-                    Debug.Log("Correct mark: " + block.name + " | Expected: " + blockResult.ExpectedCheck + " | Player: " + blockResult.PlayerCheck);
-                }
-                else if (blockResult.HasDraggable && blockResult.PlayerCheck != blockResult.ExpectedCheck)
-                {
-                    isCorrect = false;
-                    blockResult.ResultType = BlockResultType.Wrong;
-                    articleSolved = false;
-                    wrongBlocks++;
-                    Debug.Log("Wrong mark: " + block.name + " | Expected: " + blockResult.ExpectedCheck + " | Player: " + blockResult.PlayerCheck);
-                }
-                else if (!blockResult.HasDraggable)
-                {
-                    isCorrect = false;
-                    blockResult.ResultType = BlockResultType.Missed;
-                    articleSolved = false;
-                    missedBlocks++;
-                    Debug.Log("Missed block: " + block.name + " | Expected: " + blockResult.ExpectedCheck);
-                }
+            }
+            else
+            {
+                articleSolved = false;
             }
 
-            blockResult.IsCorrect = isCorrect;
+            if (!isTrue || !correct)
+                result.BlockResults.Add(item);
 
-            if (shouldShowInFeedback)
+            if (showDebugMessages)
             {
-                result.BlockResults.Add(blockResult);
+                Debug.Log(
+                    "[VALIDATION] " + block.name +
+                    " | Expected: " + expected +
+                    " | Marked: " + selected +
+                    " | Result: " + item.ResultType,
+                    block
+                );
             }
         }
 
         result.IsArticleSolved = articleSolved;
-
-        Debug.Log("Validation Complete. Total: " + totalBlocks + " | Correct: " + correctBlocks + " | Wrong: " + wrongBlocks + " | Missed: " + missedBlocks + " | Feedback items: " + result.BlockResults.Count);
-
         return result;
     }
 
     private void OnFeedbackComplete()
     {
+        if (!feedbackInProgress)
+            return;
+
+        feedbackInProgress = false;
+
         if (articleSolved)
-        {
             OnArticleSolved();
-        }
         else
-        {
             OnArticleIncorrect();
+
+        foreach (ValidatedBlock entry in validatedBlocks)
+        {
+            if (entry.block != null &&
+                entry.block.ArticleBlock == entry.data)
+            {
+                ResetBlock(entry.block);
+            }
         }
+
+        validatedBlocks.Clear();
+    }
+
+    private void ResetBlock(Block block)
+    {
+        if (block == null)
+            return;
+
+        ArticleBlock data = block.ArticleBlock;
+
+        if (block.CurrentDraggable != null)
+            block.CurrentDraggable.ResetDraggable();
+
+        if (data != null)
+            block.Initialize(data);
+
+        block.SetMarkType(CheckType.None);
+
+        ArticleBlockView view = FindView(block);
+        if (view != null)
+            view.ClearPlayerSelection();
+
+        TMP_Dropdown dropdown = GetDropdown(block);
+
+        if (dropdown != null)
+        {
+            dropdown.Hide();
+            dropdown.SetValueWithoutNotify(0);
+            dropdown.RefreshShownValue();
+        }
+    }
+
+    public void ResetValidation()
+    {
+        if (feedbackInProgress)
+            return;
+
+        FindBlocks();
+
+        foreach (Block block in blocks)
+            ResetBlock(block);
+
+        validatedBlocks.Clear();
+        articleSolved = false;
     }
 
     private void OnArticleSolved()
@@ -200,9 +350,7 @@ public class ArticleValidator : MonoBehaviour
         Debug.Log("ARTICLE SOLVED");
 
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.AddScore(50);
-        }
     }
 
     private void OnArticleIncorrect()
@@ -222,40 +370,15 @@ public class ArticleValidator : MonoBehaviour
 
     public int GetCorrectBlockCount()
     {
-        int correctCount = 0;
+        int count = 0;
 
         foreach (Block block in blocks)
         {
-            if (block == null)
-            {
-                continue;
-            }
-
-            if (block.IsSolved)
-            {
-                correctCount++;
-            }
+            if (block != null && block.IsSolved)
+                count++;
         }
 
-        return correctCount;
-    }
-
-    public void ResetValidation()
-    {
-        articleSolved = false;
-
-        foreach (Block block in blocks)
-        {
-            if (block == null)
-            {
-                continue;
-            }
-
-            if (block.CurrentDraggable != null)
-            {
-                block.CurrentDraggable.ResetDraggable();
-            }
-        }
+        return count;
     }
 }
 
@@ -281,14 +404,10 @@ public class BlockResult
     {
         switch (ResultType)
         {
-            case BlockResultType.Correct:
-                return "Correct";
-            case BlockResultType.Wrong:
-                return "Wrong";
-            case BlockResultType.Missed:
-                return "Missed";
-            default:
-                return "Unknown";
+            case BlockResultType.Correct: return "Correct";
+            case BlockResultType.Wrong: return "Wrong";
+            case BlockResultType.Missed: return "Missed";
+            default: return "Unknown";
         }
     }
 
@@ -306,21 +425,13 @@ public class BlockResult
     {
         switch (type)
         {
-            case CheckType.True:
-                return "Verdadeiro";
-            case CheckType.Label:
-                return "Tendencioso";
-            case CheckType.Source:
-                return "Fonte";
-            case CheckType.AI:
-                return "IA";
-            case CheckType.Specialist:
-                return "Especialista";
-            case CheckType.Falacy:
-                return "Falacia";
-            case CheckType.None:
-            default:
-                return "Nenhum";
+            case CheckType.True: return "Verdadeiro";
+            case CheckType.Label: return "Tendencioso";
+            case CheckType.Source: return "Fonte";
+            case CheckType.AI: return "IA";
+            case CheckType.Specialist: return "Especialista";
+            case CheckType.Falacy: return "Falacia";
+            default: return "Nenhum";
         }
     }
 }
@@ -330,51 +441,20 @@ public class ValidationResult
     public List<BlockResult> BlockResults = new List<BlockResult>();
     public bool IsArticleSolved;
 
-    public int CorrectCount
-    {
-        get
-        {
-            int count = 0;
-            foreach (var result in BlockResults)
-            {
-                if (result.ResultType == BlockResultType.Correct)
-                {
-                    count++;
-                }
-            }
-            return count;
-        }
-    }
+    public int CorrectCount => CountResults(BlockResultType.Correct);
+    public int WrongCount => CountResults(BlockResultType.Wrong);
+    public int MissedCount => CountResults(BlockResultType.Missed);
 
-    public int WrongCount
+    private int CountResults(BlockResultType type)
     {
-        get
-        {
-            int count = 0;
-            foreach (var result in BlockResults)
-            {
-                if (result.ResultType == BlockResultType.Wrong)
-                {
-                    count++;
-                }
-            }
-            return count;
-        }
-    }
+        int count = 0;
 
-    public int MissedCount
-    {
-        get
+        foreach (BlockResult result in BlockResults)
         {
-            int count = 0;
-            foreach (var result in BlockResults)
-            {
-                if (result.ResultType == BlockResultType.Missed)
-                {
-                    count++;
-                }
-            }
-            return count;
+            if (result != null && result.ResultType == type)
+                count++;
         }
+
+        return count;
     }
 }

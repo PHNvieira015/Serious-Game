@@ -36,488 +36,279 @@ public class ArticleViewer : MonoBehaviour
     [Header("Debug")]
     public bool showDebugMessages = true;
 
-    private List<Block> blockComponents =
-        new List<Block>();
-
+    private readonly List<Block> blockComponents = new List<Block>();
     private Coroutine scrollToTopRoutine;
-    private bool scrollToTopWhenEnabled;
+    private bool hasLoadedArticle;
 
     private void Awake()
     {
-        CacheScrollReferences();
+        CacheReferences();
     }
 
     private void OnEnable()
     {
-        CacheScrollReferences();
-
-        scrollToTopWhenEnabled = false;
-
         ScrollToTop();
     }
 
     private void Start()
     {
+        CacheReferences();
+
         if (verifyArticleButton != null)
         {
             verifyArticleButton.onClick.RemoveListener(
                 OnVerifyButtonPressed
             );
-
             verifyArticleButton.onClick.AddListener(
                 OnVerifyButtonPressed
             );
         }
 
-        if (articleValidator == null)
-        {
-            articleValidator =
-                GetComponent<ArticleValidator>();
-        }
-
-        if (currentArticle != null)
-        {
+        if (!hasLoadedArticle && currentArticle != null)
             LoadArticle(currentArticle);
-        }
-        else
-        {
-            ScrollToTop();
-        }
     }
 
-    public void LoadArticle(
-        ArticleData article)
+    private void CacheReferences()
+    {
+        if (articleValidator == null)
+            articleValidator = GetComponent<ArticleValidator>();
+
+        if (articleScrollRect == null)
+        {
+            articleScrollRect =
+                GetComponentInChildren<UnityEngine.UI.ScrollRect>(true);
+        }
+
+        if (articleContent == null && articleScrollRect != null)
+            articleContent = articleScrollRect.content;
+    }
+
+    public void LoadArticle(ArticleData article)
     {
         if (article == null)
         {
-            Debug.LogError(
-                "ArticleViewer: Article is null."
-            );
-
+            Debug.LogError("ArticleViewer: Article is null.", this);
             return;
         }
 
+        CacheReferences();
         ClearCurrentArticle();
 
         currentArticle = article;
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "ArticleViewer: Loading article: " +
-                currentArticle.Title
-            );
-        }
+        hasLoadedArticle = true;
 
         DisplayArticleInfo();
         DisplayBlocks();
 
-        if (articleValidator == null)
+        if (articleValidator != null)
         {
-            articleValidator =
-                GetComponent<ArticleValidator>();
+            // Discover dropdowns and reset them to option zero.
+            articleValidator.OnArticleLoaded(this);
+        }
+        else
+        {
+            Debug.LogWarning(
+                "ArticleViewer: Assign Article Validator.",
+                this
+            );
         }
 
         ScrollToTop();
-    }
 
-    public void ScrollToTop()
-    {
-        CacheScrollReferences();
-
-        if (!isActiveAndEnabled)
-        {
-            scrollToTopWhenEnabled = true;
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "ArticleViewer: Article screen is inactive. " +
-                    "Scroll reset will run when it becomes active."
-                );
-            }
-
-            return;
-        }
-
-        if (articleScrollRect == null)
-        {
-            Debug.LogWarning(
-                "ArticleViewer: Article ScrollRect is not assigned."
-            );
-
-            return;
-        }
-
-        if (scrollToTopRoutine != null)
-        {
-            StopCoroutine(scrollToTopRoutine);
-        }
-
-        scrollToTopRoutine =
-            StartCoroutine(
-                ScrollToTopRoutine()
-            );
-    }
-
-    private IEnumerator ScrollToTopRoutine()
-    {
-        /*
-         * Wait for the Article screen to become visible
-         * and for its layout components to update.
-         */
-        yield return null;
-
-        Canvas.ForceUpdateCanvases();
-
-        if (articleContent != null)
-        {
-            UnityEngine.UI.LayoutRebuilder
-                .ForceRebuildLayoutImmediate(
-                    articleContent
-                );
-        }
-
-        Canvas.ForceUpdateCanvases();
-
-        yield return new WaitForEndOfFrame();
-
-        if (articleScrollRect != null)
-        {
-            articleScrollRect.StopMovement();
-            articleScrollRect.velocity =
-                Vector2.zero;
-
-            articleScrollRect.verticalNormalizedPosition =
-                1f;
-
-            Canvas.ForceUpdateCanvases();
-
-            articleScrollRect.verticalNormalizedPosition =
-                1f;
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "ArticleViewer: Article was moved to the top. " +
-                    "Scroll position: " +
-                    articleScrollRect.verticalNormalizedPosition
-                );
-            }
-        }
-
-        scrollToTopRoutine = null;
-        scrollToTopWhenEnabled = false;
-    }
-
-    private void CacheScrollReferences()
-    {
-        if (articleScrollRect == null)
-        {
-            articleScrollRect =
-                GetComponentInChildren<
-                    UnityEngine.UI.ScrollRect
-                >(true);
-        }
-
-        if (articleContent == null &&
-            articleScrollRect != null)
-        {
-            articleContent =
-                articleScrollRect.content;
-        }
+        if (showDebugMessages)
+            Debug.Log("ArticleViewer: Loaded " + article.Title, this);
     }
 
     private void ClearCurrentArticle()
     {
-        for (
-            int i = 0;
-            i < blockComponents.Count;
-            i++
-        )
+        foreach (Block block in blockComponents)
         {
-            Block blockComponent =
-                blockComponents[i];
-
-            if (blockComponent != null)
-            {
-                blockComponent.OnBlockSolved -=
-                    OnBlockSolved;
-            }
+            if (block != null)
+                block.OnBlockSolved -= OnBlockSolved;
         }
 
         blockComponents.Clear();
 
         if (blockViews == null)
-        {
             return;
-        }
 
-        for (
-            int i = 0;
-            i < blockViews.Length;
-            i++
-        )
+        foreach (ArticleBlockView view in blockViews)
         {
-            if (blockViews[i] != null)
-            {
-                blockViews[i].gameObject.SetActive(
-                    false
-                );
-            }
+            if (view != null)
+                view.gameObject.SetActive(false);
         }
     }
 
     private void DisplayArticleInfo()
     {
-        if (currentArticle == null)
-        {
-            return;
-        }
-
         if (titleText != null)
-        {
-            titleText.text =
-                currentArticle.Title;
-        }
+            titleText.text = currentArticle.Title;
 
         if (subtitleText != null)
+            subtitleText.text = currentArticle.Subtitle;
+
+        if (authorNameText != null)
         {
-            subtitleText.text =
-                currentArticle.Subtitle;
+            authorNameText.text = currentArticle.Writer != null
+                ? currentArticle.Writer.WriterName
+                : string.Empty;
         }
 
-        if (currentArticle.Writer != null)
+        if (authorDescText != null)
         {
-            if (authorNameText != null)
-            {
-                authorNameText.text =
-                    currentArticle.Writer.WriterName;
-            }
-
-            if (authorDescText != null)
-            {
-                authorDescText.text =
-                    currentArticle.Writer
-                        .WriterDescription;
-            }
-
-            if (authorPhotoImage != null)
-            {
-                authorPhotoImage.sprite =
-                    currentArticle.Writer.WriterPhoto;
-
-                authorPhotoImage.enabled =
-                    currentArticle.Writer.WriterPhoto !=
-                    null;
-            }
+            authorDescText.text = currentArticle.Writer != null
+                ? currentArticle.Writer.WriterDescription
+                : string.Empty;
         }
-        else
+
+        if (authorPhotoImage != null)
         {
-            if (authorNameText != null)
-            {
-                authorNameText.text =
-                    string.Empty;
-            }
+            authorPhotoImage.sprite = currentArticle.Writer != null
+                ? currentArticle.Writer.WriterPhoto
+                : null;
 
-            if (authorDescText != null)
-            {
-                authorDescText.text =
-                    string.Empty;
-            }
-
-            if (authorPhotoImage != null)
-            {
-                authorPhotoImage.sprite = null;
-                authorPhotoImage.enabled = false;
-            }
+            authorPhotoImage.enabled = authorPhotoImage.sprite != null;
         }
     }
 
     private void DisplayBlocks()
     {
-        if (blockViews == null ||
-            blockViews.Length == 0)
-        {
-            Debug.LogWarning(
-                "ArticleViewer: No block views assigned."
-            );
-
+        if (blockViews == null || currentArticle.Blocks == null)
             return;
-        }
 
-        if (currentArticle == null ||
-            currentArticle.Blocks == null ||
-            currentArticle.Blocks.Count == 0)
+        int count = Mathf.Min(
+            blockViews.Length,
+            currentArticle.Blocks.Count
+        );
+
+        for (int i = 0; i < count; i++)
         {
-            Debug.LogWarning(
-                "ArticleViewer: Article has no blocks."
-            );
+            ArticleBlockView view = blockViews[i];
+            ArticleBlock data = currentArticle.Blocks[i];
 
-            return;
-        }
-
-        int amountToDisplay =
-            Mathf.Min(
-                currentArticle.Blocks.Count,
-                blockViews.Length
-            );
-
-        for (
-            int i = 0;
-            i < amountToDisplay;
-            i++
-        )
-        {
-            ArticleBlockView blockView =
-                blockViews[i];
-
-            ArticleBlock blockData =
-                currentArticle.Blocks[i];
-
-            if (blockView == null ||
-                blockData == null)
-            {
+            if (view == null || data == null)
                 continue;
-            }
 
-            blockView.Initialize(blockData);
-            blockView.gameObject.SetActive(true);
+            Block block = view.blockComponent;
 
-            Block blockComponent =
-                blockView.GetComponent<Block>();
+            if (block == null)
+                block = view.GetComponent<Block>();
 
-            if (blockComponent == null)
+            if (block == null)
+                block = view.GetComponentInChildren<Block>(true);
+
+            view.blockComponent = block;
+            view.Initialize(data);
+            view.gameObject.SetActive(true);
+
+            if (block != null)
             {
-                blockComponent =
-                    blockView.GetComponentInChildren<
-                        Block
-                    >();
-            }
-
-            if (blockComponent != null)
-            {
-                blockComponent.Initialize(blockData);
-
-                blockComponent.OnBlockSolved -=
-                    OnBlockSolved;
-
-                blockComponent.OnBlockSolved +=
-                    OnBlockSolved;
-
-                blockComponents.Add(
-                    blockComponent
-                );
+                block.OnBlockSolved -= OnBlockSolved;
+                block.OnBlockSolved += OnBlockSolved;
+                blockComponents.Add(block);
             }
         }
 
-        if (currentArticle.Blocks.Count >
-            blockViews.Length)
+        if (currentArticle.Blocks.Count > blockViews.Length)
         {
             Debug.LogWarning(
-                "ArticleViewer: The article has more " +
-                "blocks than available block views."
+                "ArticleViewer: Not enough block views for this article.",
+                this
             );
         }
     }
 
-    public void OnBlockSolved(
-        Block block)
+    public void OnBlockSolved(Block block)
     {
-        bool allSolved = true;
-
-        for (
-            int i = 0;
-            i < blockComponents.Count;
-            i++
-        )
+        foreach (Block current in blockComponents)
         {
-            Block currentBlock =
-                blockComponents[i];
-
-            if (currentBlock == null)
-            {
+            if (current == null || current.ArticleBlock == null)
                 continue;
-            }
 
-            if (currentBlock.ArticleBlock == null)
+            if (!current.IsSolved &&
+                current.ArticleBlock.CheckType != CheckType.True)
             {
-                continue;
-            }
-
-            if (!currentBlock.IsSolved &&
-                currentBlock.ArticleBlock.CheckType !=
-                CheckType.True)
-            {
-                allSolved = false;
-                break;
+                return;
             }
         }
 
-        if (allSolved)
-        {
-            OnAllBlocksSolved();
-        }
+        OnAllBlocksSolved();
     }
 
     private void OnAllBlocksSolved()
     {
-        Debug.Log(
-            "All blocks solved!"
-        );
-
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.AddScore(50);
-        }
+        // ArticleValidator awards the completion score.
+        // Avoid awarding the same completion bonus here too.
+        if (showDebugMessages)
+            Debug.Log("All blocks solved!", this);
     }
 
     public void OnVerifyButtonPressed()
     {
         if (articleValidator == null)
         {
-            Debug.LogError(
-                "ArticleValidator not assigned!"
-            );
-
+            Debug.LogError("ArticleValidator not assigned!", this);
             return;
         }
 
         articleValidator.OnValidateButtonPressed();
     }
 
-    public string GetCheckTypeName(
-        CheckType type)
-    {
-        switch (type)
-        {
-            case CheckType.True:
-                return "True Check";
-
-            case CheckType.Label:
-                return "Label Check";
-
-            case CheckType.Source:
-                return "Source Check";
-
-            case CheckType.AI:
-                return "AI Check";
-
-            case CheckType.Specialist:
-                return "Specialist Check";
-
-            case CheckType.Falacy:
-                return "Fallacy Check";
-
-            case CheckType.None:
-            default:
-                return "None";
-        }
-    }
-
     public List<Block> GetBlockComponents()
     {
         return blockComponents;
+    }
+
+    public string GetCheckTypeName(CheckType type)
+    {
+        switch (type)
+        {
+            case CheckType.True: return "True Check";
+            case CheckType.Label: return "Label Check";
+            case CheckType.Source: return "Source Check";
+            case CheckType.AI: return "AI Check";
+            case CheckType.Specialist: return "Specialist Check";
+            case CheckType.Falacy: return "Fallacy Check";
+            default: return "None";
+        }
+    }
+
+    public void ScrollToTop()
+    {
+        CacheReferences();
+
+        if (!isActiveAndEnabled || articleScrollRect == null)
+            return;
+
+        if (scrollToTopRoutine != null)
+            StopCoroutine(scrollToTopRoutine);
+
+        scrollToTopRoutine = StartCoroutine(ScrollToTopRoutine());
+    }
+
+    private IEnumerator ScrollToTopRoutine()
+    {
+        yield return null;
+
+        Canvas.ForceUpdateCanvases();
+
+        if (articleContent != null)
+        {
+            UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(
+                articleContent
+            );
+        }
+
+        Canvas.ForceUpdateCanvases();
+
+        if (articleScrollRect != null)
+        {
+            articleScrollRect.StopMovement();
+            articleScrollRect.velocity = Vector2.zero;
+            articleScrollRect.verticalNormalizedPosition = 1f;
+        }
+
+        scrollToTopRoutine = null;
     }
 
     private void OnDisable()
@@ -538,20 +329,10 @@ public class ArticleViewer : MonoBehaviour
             );
         }
 
-        for (
-            int i = 0;
-            i < blockComponents.Count;
-            i++
-        )
+        foreach (Block block in blockComponents)
         {
-            Block blockComponent =
-                blockComponents[i];
-
-            if (blockComponent != null)
-            {
-                blockComponent.OnBlockSolved -=
-                    OnBlockSolved;
-            }
+            if (block != null)
+                block.OnBlockSolved -= OnBlockSolved;
         }
     }
 }
