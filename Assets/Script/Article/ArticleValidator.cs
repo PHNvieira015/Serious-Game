@@ -22,7 +22,8 @@ public class ArticleValidator : MonoBehaviour
     [SerializeField] private ArticleViewer articleViewer;
 
     [Header("Article Blocks")]
-    [SerializeField] private List<Block> blocks = new List<Block>();
+    [SerializeField]
+    private List<Block> blocks = new List<Block>();
 
     [Header("Block Dropdowns")]
     [SerializeField]
@@ -35,6 +36,10 @@ public class ArticleValidator : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private ArticleFeedbackPanel feedbackPanel;
 
+    [Header("Score")]
+    [SerializeField] private ArticleScoreManager scoreManager;
+    [SerializeField] private bool openScoreAfterFeedback = true;
+
     [Header("Debug")]
     [SerializeField] private bool showDebugMessages = true;
 
@@ -42,6 +47,7 @@ public class ArticleValidator : MonoBehaviour
         new List<ValidatedBlock>();
 
     private bool feedbackInProgress;
+    private bool changingArticle;
 
     public bool ArticleSolved => articleSolved;
     public List<Block> Blocks => blocks;
@@ -52,16 +58,19 @@ public class ArticleValidator : MonoBehaviour
             articleViewer = GetComponent<ArticleViewer>();
     }
 
-    // Called by ArticleViewer after loading the article.
     public void OnArticleLoaded(ArticleViewer viewer)
     {
-        // Finish the old feedback before replacing its block list.
+        changingArticle = true;
+
         if (feedbackInProgress && feedbackPanel != null)
             feedbackPanel.CloseFeedback();
 
         feedbackInProgress = false;
         articleViewer = viewer;
+
         ResetValidation();
+
+        changingArticle = false;
     }
 
     public void FindBlocks()
@@ -73,7 +82,8 @@ public class ArticleValidator : MonoBehaviour
 
         if (articleViewer != null)
         {
-            List<Block> currentBlocks = articleViewer.GetBlockComponents();
+            List<Block> currentBlocks =
+                articleViewer.GetBlockComponents();
 
             if (currentBlocks != null)
             {
@@ -83,9 +93,10 @@ public class ArticleValidator : MonoBehaviour
         }
         else
         {
-            Block[] found = UnityEngine.Object.FindObjectsByType<Block>(
-                FindObjectsSortMode.None
-            );
+            Block[] found =
+                UnityEngine.Object.FindObjectsByType<Block>(
+                    FindObjectsSortMode.None
+                );
 
             foreach (Block block in found)
                 AddBlock(block);
@@ -118,8 +129,8 @@ public class ArticleValidator : MonoBehaviour
                 continue;
 
             Transform searchRoot = block.transform;
-
             ArticleBlockView view = FindView(block);
+
             if (view != null)
                 searchRoot = view.transform;
 
@@ -137,10 +148,8 @@ public class ArticleValidator : MonoBehaviour
             else
             {
                 Debug.LogWarning(
-                    "[VALIDATION] Block " + block.name +
-                    " has " + found.Length +
-                    " dropdowns under its view. Assign its dropdown " +
-                    "manually in Block Dropdowns.",
+                    "[VALIDATION] Assign the dropdown for " +
+                    block.name + " in Block Dropdowns.",
                     block
                 );
             }
@@ -165,7 +174,8 @@ public class ArticleValidator : MonoBehaviour
             }
         }
 
-        ArticleBlockView ownView = block.GetComponent<ArticleBlockView>();
+        ArticleBlockView ownView =
+            block.GetComponent<ArticleBlockView>();
 
         return ownView != null
             ? ownView
@@ -194,10 +204,33 @@ public class ArticleValidator : MonoBehaviour
 
         ValidationResult result = ValidateArticle();
 
-        if (validatedBlocks.Count == 0)
+        if (result.TotalCount == 0)
         {
-            Debug.LogWarning("[VALIDATION] No article blocks.", this);
+            Debug.LogWarning(
+                "[VALIDATION] No article blocks.",
+                this
+            );
+
             return;
+        }
+
+        // Record the submitted result before feedback can reset marks.
+        if (scoreManager != null &&
+            articleViewer != null &&
+            articleViewer.currentArticle != null)
+        {
+            scoreManager.RecordArticle(
+                articleViewer.currentArticle,
+                result
+            );
+        }
+        else
+        {
+            Debug.LogWarning(
+                "[VALIDATION] Assign Score Manager and Article Viewer " +
+                "to record article points.",
+                this
+            );
         }
 
         feedbackInProgress = true;
@@ -230,7 +263,8 @@ public class ArticleValidator : MonoBehaviour
 
             // Preserve the existing True-block rule.
             bool correct = isTrue
-                ? selected == CheckType.None || selected == CheckType.True
+                ? selected == CheckType.None ||
+                  selected == CheckType.True
                 : selected == expected;
 
             BlockResult item = new BlockResult
@@ -249,6 +283,10 @@ public class ArticleValidator : MonoBehaviour
                         : BlockResultType.Wrong
             };
 
+            // Every block is included in scoring and feedback.
+            result.AllBlockResults.Add(item);
+            result.BlockResults.Add(item);
+
             if (correct)
             {
                 if (!block.IsSolved)
@@ -258,9 +296,6 @@ public class ArticleValidator : MonoBehaviour
             {
                 articleSolved = false;
             }
-
-            if (!isTrue || !correct)
-                result.BlockResults.Add(item);
 
             if (showDebugMessages)
             {
@@ -285,10 +320,9 @@ public class ArticleValidator : MonoBehaviour
 
         feedbackInProgress = false;
 
-        if (articleSolved)
-            OnArticleSolved();
-        else
-            OnArticleIncorrect();
+        Debug.Log(
+            articleSolved ? "ARTICLE SOLVED" : "ARTICLE NOT SOLVED"
+        );
 
         foreach (ValidatedBlock entry in validatedBlocks)
         {
@@ -300,6 +334,13 @@ public class ArticleValidator : MonoBehaviour
         }
 
         validatedBlocks.Clear();
+
+        if (!changingArticle &&
+            openScoreAfterFeedback &&
+            scoreManager != null)
+        {
+            scoreManager.OpenScoreScreen();
+        }
     }
 
     private void ResetBlock(Block block)
@@ -318,6 +359,7 @@ public class ArticleValidator : MonoBehaviour
         block.SetMarkType(CheckType.None);
 
         ArticleBlockView view = FindView(block);
+
         if (view != null)
             view.ClearPlayerSelection();
 
@@ -343,19 +385,6 @@ public class ArticleValidator : MonoBehaviour
 
         validatedBlocks.Clear();
         articleSolved = false;
-    }
-
-    private void OnArticleSolved()
-    {
-        Debug.Log("ARTICLE SOLVED");
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.AddScore(50);
-    }
-
-    private void OnArticleIncorrect()
-    {
-        Debug.Log("ARTICLE NOT SOLVED");
     }
 
     public bool IsArticleSolved()
@@ -439,7 +468,28 @@ public class BlockResult
 public class ValidationResult
 {
     public List<BlockResult> BlockResults = new List<BlockResult>();
+    public List<BlockResult> AllBlockResults = new List<BlockResult>();
+
     public bool IsArticleSolved;
+
+    private List<BlockResult> CountingResults =>
+        AllBlockResults.Count > 0 ? AllBlockResults : BlockResults;
+
+    public int TotalCount
+    {
+        get
+        {
+            int count = 0;
+
+            foreach (BlockResult result in CountingResults)
+            {
+                if (result != null)
+                    count++;
+            }
+
+            return count;
+        }
+    }
 
     public int CorrectCount => CountResults(BlockResultType.Correct);
     public int WrongCount => CountResults(BlockResultType.Wrong);
@@ -449,7 +499,7 @@ public class ValidationResult
     {
         int count = 0;
 
-        foreach (BlockResult result in BlockResults)
+        foreach (BlockResult result in CountingResults)
         {
             if (result != null && result.ResultType == type)
                 count++;

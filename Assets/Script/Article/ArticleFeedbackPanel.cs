@@ -17,6 +17,9 @@ public class ArticleFeedbackPanel : MonoBehaviour
     [Header("Feedback Panel")]
     public GameObject feedbackPanel;
 
+    [Header("Score Feedback")]
+    public ArticleScoreManager scoreManager;
+
     [Header("UI References")]
     public TMP_Text blockText;
     public TMP_Text blockIndexText;
@@ -26,10 +29,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     public TMP_Text explanationText;
 
     [Header("Type Labels")]
-    [Tooltip("Displays the correct answer.")]
     public TMP_Text blockTypeText;
-
-    [Tooltip("Displays the player's answer.")]
     public TMP_Text markedTypeText;
 
     [Header("Answer Prefixes")]
@@ -53,14 +53,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     [Header("Answer Icons")]
     public Image blockTypeIcon;
-
-        public Image markedTypeIcon;
-
+    public Image markedTypeIcon;
     public List<TypeIcon> typeIcons = new List<TypeIcon>();
 
     [Header("Progress")]
     public Image progressFillImage;
-    
     public Slider progressBar;
     public TMP_Text progressText;
 
@@ -98,6 +95,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private bool initialized;
     private bool isBlockDisplayed;
     private bool canGoNext;
+    private bool feedbackSessionActive;
 
     private void Awake()
     {
@@ -152,6 +150,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
         lastNavigationFrame = -1;
         isBlockDisplayed = false;
         canGoNext = false;
+        feedbackSessionActive = true;
+
+        if (scoreManager != null)
+            scoreManager.BeginFeedbackScore(result);
 
         if (results.Count == 0)
         {
@@ -208,6 +210,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         UpdateProgress();
         UpdateBlockButtons();
+
+        // The manager remembers which results were already revealed.
+        if (scoreManager != null)
+            scoreManager.RevealFeedbackBlock(result);
 
         if (backButton != null)
         {
@@ -274,7 +280,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private void DisplayAnswers(BlockResult result)
     {
-        // Use the values captured when validation ran.
         CheckType expected = result.ExpectedCheck;
         CheckType selected = result.PlayerCheck;
 
@@ -311,14 +316,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
         SetImage(markedTypeIcon, GetTypeIcon(selected));
 
         if (blockTypeIcon != null)
-        {
             blockTypeIcon.color = expectedColor;
-        }
 
         if (markedTypeIcon != null)
-        {
             markedTypeIcon.color = selectedColor;
-        }
     }
 
     private ArticleBlockView FindBlockView(Block block)
@@ -399,6 +400,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private void UpdateProgress()
     {
         int position = results.Count > 0 ? currentIndex + 1 : 0;
+
         float progress = results.Count > 0
             ? (float)position / results.Count
             : 0f;
@@ -421,6 +423,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
         for (int i = 0; i < results.Count; i++)
         {
             int index = i;
+
             Button button = Instantiate(
                 blockButtonPrefab,
                 blockButtonsContainer
@@ -429,6 +432,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
             button.gameObject.SetActive(true);
             SetButtonText(button, (i + 1).ToString());
             button.onClick.AddListener(() => ShowFeedbackBlock(index));
+
             spawnedBlockButtons.Add(button);
         }
     }
@@ -456,6 +460,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
             colors.disabledColor = color;
             colors.colorMultiplier = 1f;
             colors.fadeDuration = 0f;
+
             button.colors = colors;
         }
     }
@@ -518,6 +523,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private IEnumerator EnableNextButtonAfterDelay()
     {
         yield return new WaitForSeconds(displayDelay);
+
         enableNextCoroutine = null;
         EnableNextButton();
     }
@@ -553,8 +559,14 @@ public class ArticleFeedbackPanel : MonoBehaviour
     {
         StopNextDelay();
 
+        if (feedbackSessionActive && scoreManager != null)
+            scoreManager.CompleteFeedbackScore();
+
+        feedbackSessionActive = false;
+
         Action callback = onFeedbackComplete;
         onFeedbackComplete = null;
+
         isBlockDisplayed = false;
         canGoNext = false;
         currentIndex = 0;

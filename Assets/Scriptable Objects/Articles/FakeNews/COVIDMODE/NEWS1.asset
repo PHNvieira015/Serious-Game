@@ -16,6 +16,7 @@ MonoBehaviour:
   Subtitle: "Nova Delibera\xE7\xE3o determina multa de R$ 128,00 e perda de 3 pontos
     na CNH para quem dirigir sem m\xE1scara"
   Date: 'Publicado em: 28 de Abril de 2020'
+  ArticleImage: {fileID: 0}
   URL_site: http://www.portaldodetran-oficial-alerta.com.br/nova-regra-mascara-cnh-multa](http://www.portaldodetran-oficial-alerta.com.br/nova-regra-mascara-cnh-multa
   Writer:
     WriterName: "Ag\xEAncia Nacional de Tr\xE2nsito e Not\xEDcias"
