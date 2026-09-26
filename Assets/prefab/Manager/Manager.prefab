@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1403834633045377957}
   - component: {fileID: 907307730929952893}
+  - component: {fileID: 9211985359998994024}
   m_Layer: 0
   m_Name: HistoryManager
   m_TagString: Untagged
@@ -50,17 +51,31 @@ MonoBehaviour:
   articleViewer: {fileID: 8930590536396532341}
   newsArticles:
   - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &9211985359998994024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2203636633066207}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7567044eb72e6914abdc954c6b7d7ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleHistoryManager
+  articleViewer: {fileID: 8930590536396532341}
+  history: []
 --- !u!1 &54970237560269014
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,15 +120,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf9a1f3b71259844885de4e2c667add, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArticleViewer
-  currentArticle: {fileID: 11400000, guid: 4a09ef614594dd7429076fa5378d6d3f, type: 2}
+  currentArticle: {fileID: 11400000, guid: 5e4945541320b2949b5f20afd3abf1e8, type: 2}
   titleText: {fileID: 0}
   subtitleText: {fileID: 0}
+  articleDateText: {fileID: 0}
   authorNameText: {fileID: 0}
   authorDescText: {fileID: 0}
   authorPhotoImage: {fileID: 0}
+  articleImage: {fileID: 0}
+  articleURLText: {fileID: 0}
   articleScrollRect: {fileID: 0}
   articleContent: {fileID: 0}
   blockViews:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -267,7 +287,7 @@ MonoBehaviour:
   optionsContainer: {fileID: 0}
   optionButtonPrefab: {fileID: 1284348504059882099, guid: 7757353b8cfb9c24aa09a97e0cd807ad, type: 3}
   articleViewer: {fileID: 8930590536396532341}
-  openArticleLabel: Abrir Artigo
+  openArticleLabel: Buscar Artigo
   continueLabel: Continuar
   requireContinueButton: 1
   initialDelay: 0.3
@@ -538,6 +558,7 @@ Transform:
   - {fileID: 5555583017880151247}
   - {fileID: 4741756679257311353}
   - {fileID: 7105436115901527312}
+  - {fileID: 3481289417001366435}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4714704326905589282
@@ -687,9 +708,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4614e667039220941ad7fbc25cdc3ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArticleValidator
+  articleViewer: {fileID: 8930590536396532341}
   blocks: []
+  blockDropdowns: []
   articleSolved: 0
   feedbackPanel: {fileID: 2254854656241325533}
+  historyManager: {fileID: 9211985359998994024}
+  scoreManager: {fileID: 7811603911902681967}
+  openScoreAfterFeedback: 1
+  showDebugMessages: 1
 --- !u!1 &7049270715348951582
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,15 +762,77 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
   highlight: {fileID: 0}
+  tutorialText: {fileID: 0}
   steps:
   - target: {fileID: 0}
+    tutorialText: asdasd
     button: {fileID: 0}
     duration: 2
     waitForClick: 1
-  - target: {fileID: 0}
-    button: {fileID: 0}
-    duration: 0
-    waitForClick: 1
+--- !u!1 &7946277100457761631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3481289417001366435}
+  - component: {fileID: 7811603911902681967}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3481289417001366435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946277100457761631}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1718721443310651846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7811603911902681967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946277100457761631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb49c5a417b7b1438e6ea1dc61621a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleScoreManager
+  articleTitleText: {fileID: 0}
+  correctBlocksText: {fileID: 0}
+  totalPointsText: {fileID: 0}
+  credibilitySlider: {fileID: 0}
+  feedbackScoreText: {fileID: 0}
+  feedbackPointsChangeText: {fileID: 0}
+  feedbackMultiplierText: {fileID: 0}
+  pointsForFullBar: 500
+  scoreAnimationDuration: 0.6
+  pointsGainedColor: {r: 0, g: 1, b: 0, a: 1}
+  pointsLostColor: {r: 1, g: 0, b: 0, a: 1}
+  normalMultiplierColor: {r: 1, g: 1, b: 1, a: 1}
+  activeMultiplierColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  pointsPerCorrectBlock: 10
+  pointsPerWrongBlock: -2
+  pointsPerMissedBlock: 0
+  multiplierIncrease: 0.5
+  maximumMultiplier: 3
+  bonusPerStreakStep: 25
+  showDebugMessages: 1
 --- !u!1 &8642594008928045746
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,6 +878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArticleFeedbackPanel
   feedbackPanel: {fileID: 0}
+  scoreManager: {fileID: 7811603911902681967}
   blockText: {fileID: 0}
   blockIndexText: {fileID: 0}
   resultText: {fileID: 0}
@@ -797,6 +887,39 @@ MonoBehaviour:
   explanationText: {fileID: 0}
   blockTypeText: {fileID: 0}
   markedTypeText: {fileID: 0}
+  correctAnswerPrefix: 'Checagem Correta: '
+  playerAnswerPrefix: 'Sua marcacao: '
+  correctResultText: Correto
+  wrongResultText: Errado
+  missedResultText: Errado
+  feedbackResultImage: {fileID: 0}
+  correctResultSprite: {fileID: 21300000, guid: bbcd1be6085f47a44b422a718eabf985, type: 3}
+  missedResultSprite: {fileID: 21300000, guid: 7719f045df8a6a74ca0f311db668577b, type: 3}
+  feedbackResultBackground: {fileID: 0}
+  correctBackgroundSprite: {fileID: 21300000, guid: 6eea76e98c16ed04c8f52d86c05afaab, type: 3}
+  wrongBackgroundSprite: {fileID: 386698468832485169, guid: 07ca69f7f26266a47b8c3fc2a2556be8, type: 3}
+  blockTypeIcon: {fileID: 0}
+  markedTypeIcon: {fileID: 0}
+  typeIcons:
+  - type: 0
+    icon: {fileID: 21300000, guid: f242e4dbaf873fb419dbbdc4698498df, type: 3}
+  - type: 1
+    icon: {fileID: 21300000, guid: f242e4dbaf873fb419dbbdc4698498df, type: 3}
+  - type: 2
+    icon: {fileID: 21300000, guid: 1dc9ac00b9e5a6d4594a522406a74051, type: 3}
+  - type: 3
+    icon: {fileID: 21300000, guid: 52260e6054bc34447ba074ba13695586, type: 3}
+  - type: 4
+    icon: {fileID: 21300000, guid: ce103fba64e251843b472f5d76dd3282, type: 3}
+  - type: 5
+    icon: {fileID: 21300000, guid: 73f589ba90db2ca48a7e13c8f344777f, type: 3}
+  progressFillImage: {fileID: 0}
+  progressBar: {fileID: 0}
+  progressText: {fileID: 0}
+  blockButtonsContainer: {fileID: 0}
+  blockButtonPrefab: {fileID: 0}
+  normalBlockButtonColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedBlockButtonColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   backButton: {fileID: 0}
   nextButton: {fileID: 0}
   closeButton: {fileID: 0}

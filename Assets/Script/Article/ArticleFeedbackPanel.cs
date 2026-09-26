@@ -14,6 +14,13 @@ public class ArticleFeedbackPanel : MonoBehaviour
         public Sprite icon;
     }
 
+    [Serializable]
+    public class TypeLabel
+    {
+        public CheckType type;
+        public string label;
+    }
+
     [Header("Feedback Panel")]
     public GameObject feedbackPanel;
 
@@ -31,6 +38,9 @@ public class ArticleFeedbackPanel : MonoBehaviour
     [Header("Type Labels")]
     public TMP_Text blockTypeText;
     public TMP_Text markedTypeText;
+
+    [Tooltip("Labels displayed for each CheckType.")]
+    public List<TypeLabel> typeLabels = new List<TypeLabel>();
 
     [Header("Answer Prefixes")]
     public string correctAnswerPrefix = "Checagem Correta: ";
@@ -218,7 +228,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
         if (backButton != null)
         {
             backButton.interactable = true;
-            SetButtonText(backButton, index == 0 ? "Return" : "Back");
+            SetButtonText(
+                backButton,
+                index == 0 ? "Return" : "Back"
+            );
         }
 
         if (nextButton != null)
@@ -327,35 +340,56 @@ public class ArticleFeedbackPanel : MonoBehaviour
         if (block == null)
             return null;
 
-        ArticleBlockView view = block.GetComponent<ArticleBlockView>();
+        ArticleBlockView view =
+            block.GetComponent<ArticleBlockView>();
 
         if (view == null)
-            view = block.GetComponentInParent<ArticleBlockView>();
+            view =
+                block.GetComponentInParent<ArticleBlockView>();
 
         if (view == null)
-            view = block.GetComponentInChildren<ArticleBlockView>(true);
+            view =
+                block.GetComponentInChildren<ArticleBlockView>(true);
 
         return view;
     }
 
-    private Color GetTypeColor(ArticleBlockView view, CheckType type)
+    private Color GetTypeColor(
+        ArticleBlockView view,
+        CheckType type)
     {
         if (view == null)
             return Color.white;
 
         switch (type)
         {
-            case CheckType.True: return view.trueColor;
-            case CheckType.Label: return view.labelColor;
-            case CheckType.Source: return view.sourceColor;
-            case CheckType.AI: return view.aiColor;
-            case CheckType.Specialist: return view.specialistColor;
-            case CheckType.Falacy: return view.falacyColor;
-            default: return view.defaultTextColor;
+            case CheckType.True:
+                return view.trueColor;
+
+            case CheckType.Label:
+                return view.labelColor;
+
+            case CheckType.Source:
+                return view.sourceColor;
+
+            case CheckType.AI:
+                return view.aiColor;
+
+            case CheckType.Specialist:
+                return view.specialistColor;
+
+            case CheckType.Falacy:
+                return view.falacyColor;
+
+            default:
+                return view.defaultTextColor;
         }
     }
 
-    private void SetAnswerText(TMP_Text target, string text, Color color)
+    private void SetAnswerText(
+        TMP_Text target,
+        string text,
+        Color color)
     {
         if (target == null)
             return;
@@ -364,7 +398,9 @@ public class ArticleFeedbackPanel : MonoBehaviour
         target.color = color;
     }
 
-    private void SetImage(Image target, Sprite sprite)
+    private void SetImage(
+        Image target,
+        Sprite sprite)
     {
         if (target == null)
             return;
@@ -387,23 +423,32 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private string GetTypeLabel(CheckType type)
     {
-        switch (type)
+        foreach (TypeLabel entry in typeLabels)
         {
-            case CheckType.None: return "Fato";
-            case CheckType.Label: return "Fraude";
-            case CheckType.Source: return "Fonte";
-            case CheckType.Specialist: return "Consulta";
-            default: return type.ToString();
+            if (entry != null && entry.type == type)
+            {
+                if (!string.IsNullOrEmpty(entry.label))
+                    return entry.label;
+
+                break;
+            }
         }
+
+        // Fallback if no label was configured in the Inspector.
+        return type.ToString();
     }
 
     private void UpdateProgress()
     {
-        int position = results.Count > 0 ? currentIndex + 1 : 0;
+        int position =
+            results.Count > 0
+                ? currentIndex + 1
+                : 0;
 
-        float progress = results.Count > 0
-            ? (float)position / results.Count
-            : 0f;
+        float progress =
+            results.Count > 0
+                ? (float)position / results.Count
+                : 0f;
 
         if (progressFillImage != null)
             progressFillImage.fillAmount = progress;
@@ -412,12 +457,14 @@ public class ArticleFeedbackPanel : MonoBehaviour
             progressBar.SetValueWithoutNotify(progress);
 
         if (progressText != null)
-            progressText.text = position + " / " + results.Count;
+            progressText.text =
+                position + " / " + results.Count;
     }
 
     private void CreateBlockButtons()
     {
-        if (blockButtonsContainer == null || blockButtonPrefab == null)
+        if (blockButtonsContainer == null ||
+            blockButtonPrefab == null)
             return;
 
         for (int i = 0; i < results.Count; i++)
@@ -430,8 +477,15 @@ public class ArticleFeedbackPanel : MonoBehaviour
             );
 
             button.gameObject.SetActive(true);
-            SetButtonText(button, (i + 1).ToString());
-            button.onClick.AddListener(() => ShowFeedbackBlock(index));
+
+            SetButtonText(
+                button,
+                (i + 1).ToString()
+            );
+
+            button.onClick.AddListener(
+                () => ShowFeedbackBlock(index)
+            );
 
             spawnedBlockButtons.Add(button);
         }
@@ -439,20 +493,27 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private void UpdateBlockButtons()
     {
-        for (int i = 0; i < spawnedBlockButtons.Count; i++)
+        for (int i = 0;
+             i < spawnedBlockButtons.Count;
+             i++)
         {
-            Button button = spawnedBlockButtons[i];
+            Button button =
+                spawnedBlockButtons[i];
 
             if (button == null)
                 continue;
 
-            Color color = i == currentIndex
-                ? selectedBlockButtonColor
-                : normalBlockButtonColor;
+            Color color =
+                i == currentIndex
+                    ? selectedBlockButtonColor
+                    : normalBlockButtonColor;
 
-            button.transition = Selectable.Transition.ColorTint;
+            button.transition =
+                Selectable.Transition.ColorTint;
 
-            ColorBlock colors = button.colors;
+            ColorBlock colors =
+                button.colors;
+
             colors.normalColor = color;
             colors.highlightedColor = color;
             colors.pressedColor = color;
@@ -494,7 +555,8 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     public void ShowPreviousBlock()
     {
-        if (!isBlockDisplayed || lastNavigationFrame == Time.frameCount)
+        if (!isBlockDisplayed ||
+            lastNavigationFrame == Time.frameCount)
             return;
 
         lastNavigationFrame = Time.frameCount;
@@ -559,8 +621,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
     {
         StopNextDelay();
 
-        if (feedbackSessionActive && scoreManager != null)
+        if (feedbackSessionActive &&
+            scoreManager != null)
+        {
             scoreManager.CompleteFeedbackScore();
+        }
 
         feedbackSessionActive = false;
 
@@ -584,15 +649,23 @@ public class ArticleFeedbackPanel : MonoBehaviour
         if (feedbackPanel != null)
             feedbackPanel.SetActive(false);
 
-        if (returnToChat && UIManager.Instance != null)
-            UIManager.Instance.ShowScreen(UIManager.Screens.Chat);
+        if (returnToChat &&
+            UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowScreen(
+                UIManager.Screens.Chat
+            );
+        }
 
         callback?.Invoke();
     }
 
-    private void SetButtonText(Button button, string value)
+    private void SetButtonText(
+        Button button,
+        string value)
     {
-        TMP_Text text = button.GetComponentInChildren<TMP_Text>(true);
+        TMP_Text text =
+            button.GetComponentInChildren<TMP_Text>(true);
 
         if (text != null)
             text.text = value;
@@ -600,8 +673,11 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        if (isBlockDisplayed && results.Count > 0)
+        if (isBlockDisplayed &&
+            results.Count > 0)
+        {
             ShowBlock(currentIndex);
+        }
     }
 
     private void OnDisable()
@@ -612,13 +688,25 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private void OnDestroy()
     {
         if (backButton != null)
-            backButton.onClick.RemoveListener(ShowPreviousBlock);
+        {
+            backButton.onClick.RemoveListener(
+                ShowPreviousBlock
+            );
+        }
 
         if (nextButton != null)
-            nextButton.onClick.RemoveListener(ShowNextBlock);
+        {
+            nextButton.onClick.RemoveListener(
+                ShowNextBlock
+            );
+        }
 
         if (closeButton != null)
-            closeButton.onClick.RemoveListener(CloseFeedback);
+        {
+            closeButton.onClick.RemoveListener(
+                CloseFeedback
+            );
+        }
 
         ClearBlockButtons();
     }
