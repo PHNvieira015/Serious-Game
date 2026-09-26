@@ -7049,10 +7049,6 @@ PrefabInstance:
       propertyPath: feedbackFrame
       value: 
       objectReference: {fileID: 1749639924}
-    - target: {fileID: 211336302219707884, guid: ba090726b841a024684682d834c878a5, type: 3}
-      propertyPath: transitionTimer
-      value: 0.35
-      objectReference: {fileID: 0}
     - target: {fileID: 839739787510509771, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: conversationTitleText
       value: 
