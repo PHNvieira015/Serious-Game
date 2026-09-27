@@ -9,6 +9,8 @@ public class ArticleScoreManager : MonoBehaviour
     [Header("Score Screen")]
     public TMP_Text articleTitleText;
     public TMP_Text correctBlocksText;
+
+    [Tooltip("Displays points earned from the current article only.")]
     public TMP_Text totalPointsText;
 
     [Header("Credibility Bar")]
@@ -52,13 +54,17 @@ public class ArticleScoreManager : MonoBehaviour
         public string title;
         public int totalBlocks;
         public int correctBlocks;
+
+        public int articlePoints;
         public int startingPoints;
         public int endingPoints;
         public int streakBonus;
+
         public float startingMultiplier;
         public int[] blockPoints;
         public float[] blockMultipliers;
         public bool[] viewed;
+
         public int viewedCount;
         public bool visualCompleted;
     }
@@ -87,6 +93,10 @@ public class ArticleScoreManager : MonoBehaviour
     private Coroutine scoreAnimation;
 
     public int TotalPoints => totalPoints;
+
+    public int LastArticlePoints =>
+        lastArticle != null ? lastArticle.articlePoints : 0;
+
     public int CurrentStreak => currentStreak;
     public int BestStreak => bestStreak;
     public int TotalCorrectBlocks => totalCorrectBlocks;
@@ -109,7 +119,6 @@ public class ArticleScoreManager : MonoBehaviour
         );
     }
 
-    // Preserved for existing callers.
     public bool RecordArticle(
         ArticleData article,
         ValidationResult result)
@@ -141,12 +150,15 @@ public class ArticleScoreManager : MonoBehaviour
 
         if (replayingArticle)
         {
-            // Display the new attempt, not the old saved count.
             lastArticle = new ArticleScore
             {
                 title = article.Title,
                 totalBlocks = result.TotalCount,
                 correctBlocks = result.CorrectCount,
+
+                // Retries award no points.
+                articlePoints = 0,
+
                 startingPoints = totalPoints,
                 endingPoints = totalPoints,
                 startingMultiplier = GetMultiplier(currentStreak),
@@ -185,13 +197,16 @@ public class ArticleScoreManager : MonoBehaviour
 
         int startingPoints = totalPoints;
         float startingMultiplier = GetMultiplier(currentStreak);
+
         int[] blockPoints = new int[validResults.Count];
         float[] multipliers = new float[validResults.Count];
+
         int earnedBlockPoints = 0;
 
         for (int i = 0; i < validResults.Count; i++)
         {
             BlockResult item = validResults[i];
+
             int points;
             float multiplier;
 
@@ -199,7 +214,9 @@ public class ArticleScoreManager : MonoBehaviour
             {
                 currentStreak++;
                 bestStreak = Mathf.Max(bestStreak, currentStreak);
+
                 multiplier = GetMultiplier(currentStreak);
+
                 points = Mathf.RoundToInt(
                     pointsPerCorrectBlock * multiplier
                 );
@@ -208,6 +225,7 @@ public class ArticleScoreManager : MonoBehaviour
             {
                 currentStreak = 0;
                 multiplier = 1f;
+
                 points = item.ResultType == BlockResultType.Missed
                     ? pointsPerMissedBlock
                     : pointsPerWrongBlock;
@@ -216,6 +234,7 @@ public class ArticleScoreManager : MonoBehaviour
             blockPoints[i] = points;
             multipliers[i] = multiplier;
             resultIndices[item] = i;
+
             earnedBlockPoints += points;
         }
 
@@ -223,9 +242,12 @@ public class ArticleScoreManager : MonoBehaviour
             Mathf.Max(0, currentStreak - 1) *
             Mathf.Max(0, bonusPerStreakStep);
 
+        int earnedArticlePoints = earnedBlockPoints + bonus;
+
+        // Credibility remains the accumulated score, with a zero floor.
         totalPoints = Mathf.Max(
             0,
-            totalPoints + earnedBlockPoints + bonus
+            totalPoints + earnedArticlePoints
         );
 
         lastArticle = new ArticleScore
@@ -233,6 +255,10 @@ public class ArticleScoreManager : MonoBehaviour
             title = article.Title,
             totalBlocks = result.TotalCount,
             correctBlocks = result.CorrectCount,
+
+            // The score screen displays this article's result.
+            articlePoints = earnedArticlePoints,
+
             startingPoints = startingPoints,
             endingPoints = totalPoints,
             streakBonus = bonus,
@@ -258,9 +284,9 @@ public class ArticleScoreManager : MonoBehaviour
         {
             Debug.Log(
                 "[SCORE] " + article.Title +
-                " | Points: " + earnedBlockPoints +
-                " | Bonus: " + bonus +
-                " | Total: " + totalPoints,
+                " | Article points: " + earnedArticlePoints +
+                " | Bonus included: " + bonus +
+                " | Credibility total: " + totalPoints,
                 this
             );
         }
@@ -493,7 +519,11 @@ public class ArticleScoreManager : MonoBehaviour
         }
 
         if (totalPointsText != null)
-            totalPointsText.text = totalPoints.ToString();
+        {
+            totalPointsText.text = lastArticle != null
+                ? lastArticle.articlePoints.ToString()
+                : "0";
+        }
     }
 
     public void OpenScoreScreen()
