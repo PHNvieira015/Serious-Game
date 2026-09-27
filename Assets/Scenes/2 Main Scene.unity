@@ -7174,7 +7174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3297550261576449913, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4027008924796289246, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -7411,6 +7411,14 @@ PrefabInstance:
     - target: {fileID: 7780423717282546987, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809235581328407533, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167914888920908242, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8448683635229031814, guid: f8cd607860e31e74594f062665d86fdb, type: 3}
       propertyPath: m_fontColor.a
@@ -8144,7 +8152,7 @@ PrefabInstance:
       objectReference: {fileID: 591576521}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: feedbackResultBackground
@@ -8156,14 +8164,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.data[2].type
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.data[3].type
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.data[4].type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
+      propertyPath: typeLabels.Array.data[5].type
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
@@ -8176,14 +8188,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.data[2].label
-      value: Fonte
+      value: Alterado
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.data[3].label
-      value: A.I.
+      value: Fonte
       objectReference: {fileID: 0}
     - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: typeLabels.Array.data[4].label
+      value: A.I.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
+      propertyPath: typeLabels.Array.data[5].label
       value: Ajuda
       objectReference: {fileID: 0}
     - target: {fileID: 4648950945584636482, guid: ba090726b841a024684682d834c878a5, type: 3}
