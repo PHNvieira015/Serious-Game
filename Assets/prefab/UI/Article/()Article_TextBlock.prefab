@@ -139,7 +139,7 @@ MonoBehaviour:
     - m_Text: Fato
       m_Image: {fileID: 21300000, guid: 8b4a6a0a08142ba42a3a25c2682c5192, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Fraude
+    - m_Text: Forjado
       m_Image: {fileID: 21300000, guid: 3608cbc624914ea429b914027c9e4801, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Fonte
@@ -147,9 +147,6 @@ MonoBehaviour:
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: I.A.
       m_Image: {fileID: 21300000, guid: 02a3473fb80a7534eb3c24abb40b417a, type: 3}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Ajuda
-      m_Image: {fileID: 21300000, guid: 5585d8f0017df354383d0a679be0d7fd, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: 
       m_Image: {fileID: 0}
