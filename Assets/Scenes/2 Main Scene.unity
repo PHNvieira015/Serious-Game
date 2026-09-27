@@ -2855,6 +2855,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &933669449 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2254854656241325533, guid: ba090726b841a024684682d834c878a5, type: 3}
+  m_PrefabInstance: {fileID: 534547773714537345}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba332a799f1a0514e8d2052660afdfc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleFeedbackPanel
 --- !u!1 &944210307
 GameObject:
   m_ObjectHideFlags: 0
@@ -7588,6 +7599,10 @@ PrefabInstance:
       propertyPath: targetParent
       value: 
       objectReference: {fileID: 1507169763}
+    - target: {fileID: 907307730929952893, guid: ba090726b841a024684682d834c878a5, type: 3}
+      propertyPath: 'newsArticles.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1102775521598368603, guid: ba090726b841a024684682d834c878a5, type: 3}
       propertyPath: highlight
       value: 
@@ -7936,6 +7951,14 @@ PrefabInstance:
       propertyPath: 'blockViews.Array.data[10]'
       value: 
       objectReference: {fileID: 1534107879}
+    - target: {fileID: 9211985359998994024, guid: ba090726b841a024684682d834c878a5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211985359998994024, guid: ba090726b841a024684682d834c878a5, type: 3}
+      propertyPath: feedbackPanel
+      value: 
+      objectReference: {fileID: 933669449}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

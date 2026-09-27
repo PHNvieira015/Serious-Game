@@ -406,7 +406,7 @@ MonoBehaviour:
   layoutElement: {fileID: 6880629171490255164}
   bubbleButton: {fileID: 0}
   typingAudioSource: {fileID: 2155394474928522961}
-  typingAudioClip: {fileID: 8300000, guid: 9c51d5b022cc88e4889a3cc22de41c8a, type: 3}
+  typingAudioClip: {fileID: 8300000, guid: a112e2a5f2ddbf945b4f441192614c25, type: 3}
   typingAudioVolume: 0.5
   typingAudioNPCOnly: 1
   npcBubbleColor: {r: 1, g: 1, b: 1, a: 1}

@@ -1,7 +1,7 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
 
 public class NewsGridPopulator : MonoBehaviour
 {
@@ -10,114 +10,183 @@ public class NewsGridPopulator : MonoBehaviour
     public GameObject cellPrefab;
 
     [Header("Target Parent")]
-    public Transform targetParent; // Where cells will be spawned
+    public Transform targetParent;
 
-    [Header("Article Viewer")]
-    public ArticleViewer articleViewer;
+    [Header("History")]
+    public ArticleHistoryManager historyManager;
 
-    [Header("News Data")]
-    public List<ArticleData> newsArticles = new List<ArticleData>();
+    private ArticleHistoryManager subscribedHistory;
 
-    private void Start()
+    private readonly List<GameObject> spawnedCells =
+        new List<GameObject>();
+
+    private void Awake()
     {
-        if (gridLayout == null)
-        {
-            gridLayout = GetComponent<GridLayoutGroup>();
-        }
+        CacheReferences();
+    }
 
+    private void OnEnable()
+    {
+        CacheReferences();
+        SubscribeToHistory();
+        PopulateGrid();
+    }
+
+    private void CacheReferences()
+    {
         if (targetParent == null)
         {
             targetParent = transform;
         }
 
-        if (articleViewer == null)
+        if (gridLayout == null)
         {
-            articleViewer = FindFirstObjectByType<ArticleViewer>();
+            gridLayout = targetParent.GetComponent<GridLayoutGroup>();
         }
 
-        PopulateGrid();
+        if (historyManager == null)
+        {
+            historyManager = GetComponent<ArticleHistoryManager>();
+        }
+    }
+
+    private void SubscribeToHistory()
+    {
+        if (subscribedHistory == historyManager)
+        {
+            return;
+        }
+
+        UnsubscribeFromHistory();
+
+        subscribedHistory = historyManager;
+
+        if (subscribedHistory != null)
+        {
+            subscribedHistory.OnHistoryChanged += PopulateGrid;
+        }
+    }
+
+    private void UnsubscribeFromHistory()
+    {
+        if (subscribedHistory != null)
+        {
+            subscribedHistory.OnHistoryChanged -= PopulateGrid;
+        }
+
+        subscribedHistory = null;
     }
 
     public void PopulateGrid()
     {
-        if (gridLayout == null)
+        CacheReferences();
+
+        if (historyManager == null)
         {
-            gridLayout = GetComponent<GridLayoutGroup>();
+            Debug.LogError(
+                "[HISTORY GRID] Assign Article History Manager.",
+                this
+            );
+            return;
         }
 
         if (cellPrefab == null)
         {
-            Debug.LogError("Cell Prefab not assigned!");
+            Debug.LogError(
+                "[HISTORY GRID] Assign Cell Prefab.",
+                this
+            );
             return;
         }
 
-        if (articleViewer == null)
-        {
-            Debug.LogError("ArticleViewer not assigned!");
-            return;
-        }
+        ClearSpawnedCells();
 
-        if (targetParent == null)
-        {
-            targetParent = transform;
-        }
+        IReadOnlyList<ArticleHistoryManager.ArticleRecord> records =
+            historyManager.History;
 
-        // Clear existing cells from target parent
-        foreach (Transform child in targetParent)
+        foreach (ArticleHistoryManager.ArticleRecord record in records)
         {
-            Destroy(child.gameObject);
-        }
-
-        // Create cells from news articles
-        foreach (ArticleData article in newsArticles)
-        {
-            if (article == null)
+            if (record == null || record.article == null)
+            {
                 continue;
+            }
 
             GameObject cell = Instantiate(cellPrefab, targetParent);
+            spawnedCells.Add(cell);
             cell.SetActive(true);
 
             NewsCell newsCell = cell.GetComponent<NewsCell>();
+
             if (newsCell != null)
             {
-                newsCell.Initialize(article, OnCellClicked);
+                newsCell.Initialize(record.article, OnCellClicked);
+                continue;
             }
-            else
-            {
-                TMP_Text text = cell.GetComponentInChildren<TMP_Text>();
-                if (text != null)
-                {
-                    text.text = article.Title;
-                }
 
-                Button button = cell.GetComponent<Button>();
-                if (button != null)
-                {
-                    ArticleData articleRef = article;
-                    button.onClick.AddListener(() => OnCellClicked(articleRef));
-                }
+            TMP_Text title = cell.GetComponentInChildren<TMP_Text>(true);
+
+            if (title != null)
+            {
+                title.text = record.title;
             }
+
+            Button button = cell.GetComponent<Button>();
+
+            if (button == null)
+            {
+                Debug.LogWarning(
+                    "[HISTORY GRID] Cell needs NewsCell or Button.",
+                    cell
+                );
+                continue;
+            }
+
+            ArticleData capturedArticle = record.article;
+
+            button.onClick.AddListener(
+                () => OnCellClicked(capturedArticle)
+            );
         }
     }
 
     private void OnCellClicked(ArticleData article)
     {
-        if (articleViewer != null && article != null)
+        if (historyManager != null)
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowScreen(UIManager.Screens.Article);
-            }
-
-
-            articleViewer.LoadArticle(article);
-            Debug.Log("Loaded article: " + article.Title);
+            historyManager.OpenArticleFeedback(article);
         }
     }
 
+    private void ClearSpawnedCells()
+    {
+        foreach (GameObject cell in spawnedCells)
+        {
+            if (cell == null)
+            {
+                continue;
+            }
+
+            cell.SetActive(false);
+            Destroy(cell);
+        }
+
+        spawnedCells.Clear();
+    }
+
+    // Kept for compatibility with existing callers.
+    // The grid now gets its articles from saved history.
     public void SetNewsData(List<ArticleData> articles)
     {
-        newsArticles = articles;
         PopulateGrid();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromHistory();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromHistory();
     }
 }

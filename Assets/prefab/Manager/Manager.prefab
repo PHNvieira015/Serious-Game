@@ -148,7 +148,6 @@ MonoBehaviour:
   pointsPerCorrect: 10
   penaltyPerWrong: 5
   penaltyPerMissed: 5
-  showDebugMessages: 1
 --- !u!1 &839102118069022250
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +297,6 @@ MonoBehaviour:
   lockOptionsUntilTypingDone: 1
   disableOptionOnClick: 1
   closeIfOptionTargetInvalid: 0
-  showDebugMessages: 1
 --- !u!114 &8682722360795272479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,11 +552,11 @@ Transform:
   - {fileID: 4534279984863187339}
   - {fileID: 657209634895626554}
   - {fileID: 1406598072767672828}
-  - {fileID: 1403834633045377957}
   - {fileID: 5555583017880151247}
   - {fileID: 4741756679257311353}
   - {fileID: 7105436115901527312}
   - {fileID: 3481289417001366435}
+  - {fileID: 1403834633045377957}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4714704326905589282
@@ -716,7 +714,6 @@ MonoBehaviour:
   historyManager: {fileID: 9211985359998994024}
   scoreManager: {fileID: 7811603911902681967}
   openScoreAfterFeedback: 1
-  showDebugMessages: 1
 --- !u!1 &7049270715348951582
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,7 +829,6 @@ MonoBehaviour:
   multiplierIncrease: 0.5
   maximumMultiplier: 3
   bonusPerStreakStep: 25
-  showDebugMessages: 1
 --- !u!1 &8642594008928045746
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +883,7 @@ MonoBehaviour:
   explanationText: {fileID: 0}
   blockTypeText: {fileID: 0}
   markedTypeText: {fileID: 0}
+  typeLabels: []
   correctAnswerPrefix: 'Checagem Correta: '
   playerAnswerPrefix: 'Sua marcacao: '
   correctResultText: Correto
@@ -1042,6 +1039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
   currentScreen: 1
+  transitionTimer: 0.5
   chatFrame: {fileID: 0}
   articleFrame: {fileID: 0}
   feedbackFrame: {fileID: 0}
