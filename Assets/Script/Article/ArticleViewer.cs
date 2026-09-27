@@ -40,10 +40,8 @@ public class ArticleViewer : MonoBehaviour
     public int penaltyPerWrong = 5;
     public int penaltyPerMissed = 5;
 
-    [Header("Debug")]
-    public bool showDebugMessages = true;
-
     private readonly List<Block> blockComponents = new List<Block>();
+
     private Coroutine scrollToTopRoutine;
     private bool hasLoadedArticle;
 
@@ -121,9 +119,6 @@ public class ArticleViewer : MonoBehaviour
         }
 
         ScrollToTop();
-
-        if (showDebugMessages)
-            Debug.Log("ArticleViewer: Loaded " + article.Title, this);
     }
 
     private void ClearCurrentArticle()
@@ -217,63 +212,6 @@ public class ArticleViewer : MonoBehaviour
         }
 
         target.text = value ?? string.Empty;
-
-        if (!showDebugMessages)
-            return;
-
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            Debug.LogWarning(
-                "[ARTICLE HEADER] " + fieldName +
-                " is empty in ArticleData: " + currentArticle.name,
-                currentArticle
-            );
-        }
-        else
-        {
-            Debug.Log(
-                "[ARTICLE HEADER] " + fieldName +
-                " assigned to " + target.name +
-                ": " + value,
-                target
-            );
-        }
-
-        if (!target.enabled)
-        {
-            Debug.LogWarning(
-                "[ARTICLE HEADER] " + fieldName +
-                ": TMP component is disabled.",
-                target
-            );
-        }
-
-        if (!target.gameObject.activeSelf)
-        {
-            Debug.LogWarning(
-                "[ARTICLE HEADER] " + fieldName +
-                ": text GameObject is inactive.",
-                target
-            );
-        }
-        else if (!target.gameObject.activeInHierarchy)
-        {
-            Debug.Log(
-                "[ARTICLE HEADER] " + fieldName +
-                ": a parent is inactive. This is expected if " +
-                "the article screen has not opened yet.",
-                target
-            );
-        }
-
-        if (target.color.a <= 0f)
-        {
-            Debug.LogWarning(
-                "[ARTICLE HEADER] " + fieldName +
-                ": text color alpha is zero.",
-                target
-            );
-        }
     }
 
     private void DisplayBlocks()
@@ -342,9 +280,7 @@ public class ArticleViewer : MonoBehaviour
 
     private void OnAllBlocksSolved()
     {
-        // ArticleValidator awards the completion score.
-        if (showDebugMessages)
-            Debug.Log("All blocks solved!", this);
+        // Scoring is handled through ArticleValidator.
     }
 
     public void OnVerifyButtonPressed()

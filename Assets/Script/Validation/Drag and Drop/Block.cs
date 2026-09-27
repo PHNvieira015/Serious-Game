@@ -30,7 +30,6 @@ public class Block : MonoBehaviour,
     public ArticleBlock ArticleBlock => articleBlock;
     public bool IsSolved => isSolved;
     public DraggableObject CurrentDraggable => currentDraggable;
-
     public CheckType BlockType => blockType;
     public CheckType MarkType => markType;
 
@@ -69,8 +68,6 @@ public class Block : MonoBehaviour,
             : CheckType.None;
 
         UpdateVisuals();
-
-        // Reset the answer, text color and selection label.
         SetMarkType(CheckType.None);
 
         if (articleBlock == null)
@@ -101,7 +98,6 @@ public class Block : MonoBehaviour,
         }
     }
 
-    // Connect this to TMP_Dropdown's Dynamic int event.
     public void SetMarkTypeFromDropdown(int value)
     {
         if (!System.Enum.IsDefined(typeof(CheckType), value))
@@ -114,13 +110,7 @@ public class Block : MonoBehaviour,
             return;
         }
 
-        // Update both the answer and its visual appearance.
         SetMarkType((CheckType)value);
-
-        Debug.Log(
-            "[BLOCK] " + name + " Mark Type: " + markType,
-            this
-        );
     }
 
     public bool ValidateMark()
@@ -205,7 +195,6 @@ public class Block : MonoBehaviour,
     }
 
     // Compatibility methods for existing callers.
-    // Dropdown marking does not use these methods.
 
     public bool ValidateCheck(DraggableObject action)
     {

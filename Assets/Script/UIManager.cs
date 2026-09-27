@@ -34,39 +34,30 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
         DetectCurrentScreen();
     }
 
     public void ShowScreen(Screens screen)
     {
-        Debug.Log("Showing screen: " + screen);
-
-        // Cancel any existing transition
         if (transitionCoroutine != null)
         {
             StopCoroutine(transitionCoroutine);
         }
 
-        transitionCoroutine = StartCoroutine(TransitionToScreen(screen));
+        transitionCoroutine =
+            StartCoroutine(TransitionToScreen(screen));
     }
 
     private IEnumerator TransitionToScreen(Screens screen)
     {
-        // Keep the current screen visible during the transition
         if (transitionTimer > 0f)
         {
             yield return new WaitForSeconds(transitionTimer);
         }
 
-        // Transition is finished.
-        // Now hide the old screen.
         HideAllScreens();
-
-        // Update current screen
         currentScreen = screen;
 
-        // Show the new screen
         switch (currentScreen)
         {
             case Screens.None:
@@ -165,16 +156,10 @@ public class UIManager : MonoBehaviour
         {
             currentScreen = Screens.None;
         }
-
-        Debug.Log("Current screen: " + currentScreen);
     }
 
     public void OpenChat()
     {
-        Debug.LogWarning(
-            $"[UIMANAGER] OpenChat called from:\n{System.Environment.StackTrace}"
-        );
-
         ShowScreen(Screens.Chat);
     }
 
@@ -246,4 +231,3 @@ public class UIManager : MonoBehaviour
         }
     }
 }
-

@@ -13,6 +13,18 @@ public class ChatBubble : MonoBehaviour
     public LayoutElement layoutElement;
     public Button bubbleButton;
 
+    [Header("Typing Audio")]
+    [Tooltip("Use a dedicated AudioSource on this bubble prefab.")]
+    public AudioSource typingAudioSource;
+
+    public AudioClip typingAudioClip;
+
+    [Range(0f, 1f)]
+    public float typingAudioVolume = 0.5f;
+
+    [Tooltip("When enabled, only NPC bubbles play typing audio.")]
+    public bool typingAudioNPCOnly = true;
+
     [Header("Colors")]
     public Color npcBubbleColor =
         new Color(1f, 1f, 1f, 1f);
@@ -33,6 +45,7 @@ public class ChatBubble : MonoBehaviour
     public float verticalPadding = 40f;
 
     private Coroutine typingRoutine;
+    private bool isTyping;
 
     private ArticleData linkedArticle;
     private string linkedURL;
@@ -59,9 +72,16 @@ public class ChatBubble : MonoBehaviour
             if (bubbleButton.targetGraphic == null &&
                 bubbleBackground != null)
             {
-                bubbleButton.targetGraphic =
-                    bubbleBackground;
+                bubbleButton.targetGraphic = bubbleBackground;
             }
+        }
+
+        if (typingAudioSource != null)
+        {
+            typingAudioSource.playOnAwake = false;
+            typingAudioSource.loop = true;
+            typingAudioSource.spatialBlend = 0f;
+            typingAudioSource.Stop();
         }
     }
 
@@ -71,32 +91,18 @@ public class ChatBubble : MonoBehaviour
 
         if (bubbleBackground != null)
         {
-            if (isNPC)
-            {
-                bubbleBackground.color =
-                    npcBubbleColor;
-            }
-            else
-            {
-                bubbleBackground.color =
-                    playerBubbleColor;
-            }
+            bubbleBackground.color = isNPC
+                ? npcBubbleColor
+                : playerBubbleColor;
         }
 
         if (messageText != null)
         {
-            if (isLinkBubble)
-            {
-                messageText.color = linkTextColor;
-            }
-            else if (isNPC)
-            {
-                messageText.color = npcTextColor;
-            }
-            else
-            {
-                messageText.color = playerTextColor;
-            }
+            messageText.color = isLinkBubble
+                ? linkTextColor
+                : isNPC
+                    ? npcTextColor
+                    : playerTextColor;
 
             messageText.text = text;
             messageText.ForceMeshUpdate();
@@ -104,43 +110,21 @@ public class ChatBubble : MonoBehaviour
 
         if (bubbleRect != null)
         {
-            if (isNPC)
-            {
-                bubbleRect.anchorMin =
-                    new Vector2(0f, 0f);
+            Vector2 alignment = isNPC
+                ? new Vector2(0f, 0f)
+                : new Vector2(1f, 0f);
 
-                bubbleRect.anchorMax =
-                    new Vector2(0f, 0f);
+            bubbleRect.anchorMin = alignment;
+            bubbleRect.anchorMax = alignment;
+            bubbleRect.pivot = alignment;
 
-                bubbleRect.pivot =
-                    new Vector2(0f, 0f);
-            }
-            else
-            {
-                bubbleRect.anchorMin =
-                    new Vector2(1f, 0f);
+            Vector2 position = bubbleRect.anchoredPosition;
 
-                bubbleRect.anchorMax =
-                    new Vector2(1f, 0f);
+            position.x = isNPC
+                ? sidePadding
+                : -sidePadding;
 
-                bubbleRect.pivot =
-                    new Vector2(1f, 0f);
-            }
-
-            Vector2 position =
-                bubbleRect.anchoredPosition;
-
-            if (isNPC)
-            {
-                position.x = sidePadding;
-            }
-            else
-            {
-                position.x = -sidePadding;
-            }
-
-            bubbleRect.anchoredPosition =
-                position;
+            bubbleRect.anchoredPosition = position;
         }
 
         UpdateLayoutElement();
@@ -159,22 +143,12 @@ public class ChatBubble : MonoBehaviour
         if (messageText != null)
         {
             messageText.color = linkTextColor;
-
-            messageText.fontStyle =
-                messageText.fontStyle |
-                FontStyles.Underline;
+            messageText.fontStyle |= FontStyles.Underline;
         }
 
         if (bubbleButton != null)
         {
-            if (typingRoutine == null)
-            {
-                bubbleButton.interactable = true;
-            }
-            else
-            {
-                bubbleButton.interactable = false;
-            }
+            bubbleButton.interactable = !isTyping;
         }
     }
 
@@ -187,18 +161,11 @@ public class ChatBubble : MonoBehaviour
 
         if (messageText != null)
         {
-            messageText.fontStyle =
-                messageText.fontStyle &
-                ~FontStyles.Underline;
+            messageText.fontStyle &= ~FontStyles.Underline;
 
-            if (isNPCBubble)
-            {
-                messageText.color = npcTextColor;
-            }
-            else
-            {
-                messageText.color = playerTextColor;
-            }
+            messageText.color = isNPCBubble
+                ? npcTextColor
+                : playerTextColor;
         }
 
         if (bubbleButton != null)
@@ -212,19 +179,35 @@ public class ChatBubble : MonoBehaviour
         bool isNPC,
         float charInterval)
     {
-        if (!gameObject.activeInHierarchy)
+        StopTyping();
+
+        if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
         }
 
-        StopTyping();
+        if (!isActiveAndEnabled)
+        {
+            SetMessage(fullText ?? string.Empty, isNPC);
+            return;
+        }
+
+        if (messageText == null ||
+            string.IsNullOrEmpty(fullText))
+        {
+            SetMessage(fullText ?? string.Empty, isNPC);
+            return;
+        }
+
+        isTyping = true;
+
+        if (bubbleButton != null)
+        {
+            bubbleButton.interactable = false;
+        }
 
         typingRoutine = StartCoroutine(
-            TypeRoutine(
-                fullText,
-                isNPC,
-                charInterval
-            )
+            TypeRoutine(fullText, isNPC, charInterval)
         );
     }
 
@@ -236,10 +219,12 @@ public class ChatBubble : MonoBehaviour
             typingRoutine = null;
         }
 
+        isTyping = false;
+        StopTypingAudio();
+
         if (bubbleButton != null)
         {
-            bubbleButton.interactable =
-                isLinkBubble;
+            bubbleButton.interactable = isLinkBubble;
         }
     }
 
@@ -248,57 +233,83 @@ public class ChatBubble : MonoBehaviour
         bool isNPC,
         float charInterval)
     {
-        if (fullText == null)
-        {
-            fullText = string.Empty;
-        }
-
         SetMessage(string.Empty, isNPC);
 
-        if (messageText == null)
+        if (!string.IsNullOrWhiteSpace(fullText))
         {
-            typingRoutine = null;
-            yield break;
+            StartTypingAudio(isNPC);
         }
 
-        for (int i = 0; i <= fullText.Length; i++)
+        for (int i = 1; i <= fullText.Length; i++)
         {
-            messageText.text =
-                fullText.Substring(0, i);
-
+            messageText.text = fullText.Substring(0, i);
             messageText.ForceMeshUpdate();
-
             UpdateLayoutElement();
 
-            if (charInterval > 0f)
+            if (i < fullText.Length)
             {
-                yield return new WaitForSeconds(
-                    charInterval
-                );
-            }
-            else
-            {
-                yield return null;
+                if (charInterval > 0f)
+                {
+                    yield return new WaitForSeconds(charInterval);
+                }
+                else
+                {
+                    yield return null;
+                }
             }
         }
 
-        messageText.text = fullText;
-        messageText.ForceMeshUpdate();
-
-        UpdateLayoutElement();
-
-        typingRoutine = null;
+        StopTypingAudio();
+        isTyping = false;
 
         if (bubbleButton != null)
         {
-            bubbleButton.interactable =
-                isLinkBubble;
+            bubbleButton.interactable = isLinkBubble;
+        }
+
+        // Ensure even a one-character message yields before
+        // clearing the coroutine reference.
+        yield return null;
+        typingRoutine = null;
+    }
+
+    private void StartTypingAudio(bool isNPC)
+    {
+        if (typingAudioSource == null ||
+            typingAudioClip == null)
+        {
+            return;
+        }
+
+        if (typingAudioNPCOnly && !isNPC)
+        {
+            return;
+        }
+
+        if (!typingAudioSource.isActiveAndEnabled)
+        {
+            return;
+        }
+
+        typingAudioSource.Stop();
+        typingAudioSource.clip = typingAudioClip;
+        typingAudioSource.volume = typingAudioVolume;
+        typingAudioSource.loop = true;
+        typingAudioSource.spatialBlend = 0f;
+        typingAudioSource.Play();
+    }
+
+    private void StopTypingAudio()
+    {
+        if (typingAudioSource != null)
+        {
+            typingAudioSource.Stop();
         }
     }
 
     private void HandleBubbleClicked()
     {
-        if (!isLinkBubble)
+        if (!isLinkBubble || isTyping)
         {
             return;
         }
@@ -306,49 +317,48 @@ public class ChatBubble : MonoBehaviour
         if (linkCallback == null)
         {
             Debug.LogWarning(
-                "[CHAT] Link bubble has no callback."
+                "[CHAT] Link bubble has no callback.",
+                this
             );
 
             return;
         }
 
-        linkCallback.Invoke(
-            linkedArticle,
-            linkedURL
-        );
+        linkCallback.Invoke(linkedArticle, linkedURL);
     }
 
     private void UpdateLayoutElement()
     {
-        if (layoutElement == null ||
-            messageText == null)
+        if (layoutElement == null || messageText == null)
         {
             return;
         }
 
         float preferredHeight =
-            messageText.preferredHeight +
-            verticalPadding;
+            messageText.preferredHeight + verticalPadding;
 
-        float preferredWidth =
-            Mathf.Min(
-                messageText.preferredWidth +
-                verticalPadding,
-                maxBubbleWidth
-            );
+        float preferredWidth = Mathf.Min(
+            messageText.preferredWidth + verticalPadding,
+            maxBubbleWidth
+        );
 
-        layoutElement.preferredHeight =
-            Mathf.Max(
-                minBubbleHeight,
-                preferredHeight
-            );
+        layoutElement.preferredHeight = Mathf.Max(
+            minBubbleHeight,
+            preferredHeight
+        );
 
-        layoutElement.preferredWidth =
-            preferredWidth;
+        layoutElement.preferredWidth = preferredWidth;
+    }
+
+    private void OnDisable()
+    {
+        StopTyping();
     }
 
     private void OnDestroy()
     {
+        StopTypingAudio();
+
         if (bubbleButton != null)
         {
             bubbleButton.onClick.RemoveListener(

@@ -34,7 +34,6 @@ public class TutorialManager : MonoBehaviour
                 continue;
             }
 
-            // Show the text for this step
             tutorialText.text = step.tutorialText;
 
             if (step.waitForClick && step.button != null)
@@ -54,10 +53,6 @@ public class TutorialManager : MonoBehaviour
         }
 
         highlight.Hide();
-
-        // Clear tutorial text
         tutorialText.text = "";
-
-        Debug.Log("Tutorial finished.");
     }
 }

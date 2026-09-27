@@ -51,9 +51,6 @@ public class ConversationViewer : MonoBehaviour
     public bool disableOptionOnClick = true;
     public bool closeIfOptionTargetInvalid = false;
 
-    [Header("Debug")]
-    public bool showDebugMessages = true;
-
     [Header("Events")]
     public Action<ConversationData> OnConversationOpened;
     public Action<ConversationData> OnConversationSwitched;
@@ -148,7 +145,10 @@ public class ConversationViewer : MonoBehaviour
             conversation.Nodes == null ||
             conversation.Nodes.Count == 0)
         {
-            Debug.LogError("[CHAT] Conversation is null or has no nodes.");
+            Debug.LogError(
+                "[CHAT] Conversation is null or has no nodes.",
+                this
+            );
             return;
         }
 
@@ -158,7 +158,6 @@ public class ConversationViewer : MonoBehaviour
             conversationPanel.activeInHierarchy;
 
         Teardown();
-
         currentConversation = conversation;
 
         if (!conversationProgress.TryGetValue(
@@ -183,15 +182,6 @@ public class ConversationViewer : MonoBehaviour
 
         UpdateHeader();
         RestoreBubbles();
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[CHAT] Opening " + conversation.name +
-                " at node " + currentNodeIndex,
-                this
-            );
-        }
 
         if (wasOpen)
             OnConversationSwitched?.Invoke(conversation);
@@ -313,16 +303,6 @@ public class ConversationViewer : MonoBehaviour
                 continue;
             }
 
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[CHAT] Node: " + currentNodeIndex +
-                    " | Type: " + node.DisplayType +
-                    " | End: " + node.IsEndNode,
-                    this
-                );
-            }
-
             if (node.IsEndNode)
             {
                 if (node.DisplayType == BlockType.Link)
@@ -423,7 +403,6 @@ public class ConversationViewer : MonoBehaviour
     private IEnumerator PlayPlayerNode(ConversationNode node)
     {
         ClearOptions();
-
         yield return DisplayNodeBubble(node);
 
         if (node.PlayerOptions != null &&
@@ -564,50 +543,12 @@ public class ConversationViewer : MonoBehaviour
         }
 
         openingArticle = true;
-
-        // Stop the conversation before loading or changing screens.
         SuspendConversation();
 
         try
         {
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[CHAT ARTICLE] Loading: " + article.name +
-                    " | Viewer: " + articleViewer.name,
-                    articleViewer
-                );
-            }
-
-            // Completed articles use exactly the same loading path.
             articleViewer.LoadArticle(article);
-
-            // Explicitly select the screen after loading completes.
             manager.OpenArticle();
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[CHAT ARTICLE] Screen: " +
-                    manager.GetCurrentScreen() +
-                    " | Viewer active: " +
-                    articleViewer.gameObject.activeInHierarchy +
-                    " | Expected article loaded: " +
-                    (articleViewer.currentArticle == article),
-                    articleViewer
-                );
-            }
-
-            if (!manager.IsArticleOpen() ||
-                !articleViewer.gameObject.activeInHierarchy)
-            {
-                Debug.LogError(
-                    "[CHAT ARTICLE] The article was loaded, but its " +
-                    "screen or viewer is inactive. Check UIManager's " +
-                    "Article Frame and the ArticleViewer hierarchy.",
-                    articleViewer
-                );
-            }
         }
         catch (Exception exception)
         {
@@ -629,7 +570,6 @@ public class ConversationViewer : MonoBehaviour
         if (preparedArticle != null)
             return;
 
-        // Recover an article from a link the player actually saw.
         if (activeProgress != null)
         {
             for (int i = activeProgress.Bubbles.Count - 1; i >= 0; i--)
@@ -685,8 +625,6 @@ public class ConversationViewer : MonoBehaviour
         {
             if (canOpenArticle)
             {
-                // Capture this button's target instead of reading
-                // mutable prepared fields when the player clicks.
                 ArticleData targetArticle = preparedArticle;
                 string targetURL = preparedURL;
 
@@ -892,7 +830,6 @@ public class ConversationViewer : MonoBehaviour
         if (node.DisplayType != BlockType.Link)
             return text;
 
-        // Do not append a second URL to an existing message.
         if (!string.IsNullOrWhiteSpace(text))
             return text;
 

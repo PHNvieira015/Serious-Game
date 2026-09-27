@@ -46,9 +46,6 @@ public class ArticleScoreManager : MonoBehaviour
     [Min(0)]
     public int bonusPerStreakStep = 25;
 
-    [Header("Debug")]
-    public bool showDebugMessages = true;
-
     private class ArticleScore
     {
         public string title;
@@ -155,10 +152,7 @@ public class ArticleScoreManager : MonoBehaviour
                 title = article.Title,
                 totalBlocks = result.TotalCount,
                 correctBlocks = result.CorrectCount,
-
-                // Retries award no points.
                 articlePoints = 0,
-
                 startingPoints = totalPoints,
                 endingPoints = totalPoints,
                 startingMultiplier = GetMultiplier(currentStreak),
@@ -170,15 +164,6 @@ public class ArticleScoreManager : MonoBehaviour
 
             scoredArticles.Add(article);
             RefreshUI();
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[SCORE] Retry: results updated, no points or " +
-                    "streak changes for " + article.Title,
-                    this
-                );
-            }
 
             return false;
         }
@@ -244,7 +229,6 @@ public class ArticleScoreManager : MonoBehaviour
 
         int earnedArticlePoints = earnedBlockPoints + bonus;
 
-        // Credibility remains the accumulated score, with a zero floor.
         totalPoints = Mathf.Max(
             0,
             totalPoints + earnedArticlePoints
@@ -255,10 +239,7 @@ public class ArticleScoreManager : MonoBehaviour
             title = article.Title,
             totalBlocks = result.TotalCount,
             correctBlocks = result.CorrectCount,
-
-            // The score screen displays this article's result.
             articlePoints = earnedArticlePoints,
-
             startingPoints = startingPoints,
             endingPoints = totalPoints,
             streakBonus = bonus,
@@ -279,18 +260,6 @@ public class ArticleScoreManager : MonoBehaviour
         }
 
         RefreshUI();
-
-        if (showDebugMessages)
-        {
-            Debug.Log(
-                "[SCORE] " + article.Title +
-                " | Article points: " + earnedArticlePoints +
-                " | Bonus included: " + bonus +
-                " | Credibility total: " + totalPoints,
-                this
-            );
-        }
-
         return true;
     }
 

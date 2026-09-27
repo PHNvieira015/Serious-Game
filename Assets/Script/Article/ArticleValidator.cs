@@ -43,9 +43,6 @@ public class ArticleValidator : MonoBehaviour
     [SerializeField] private ArticleScoreManager scoreManager;
     [SerializeField] private bool openScoreAfterFeedback = true;
 
-    [Header("Debug")]
-    [SerializeField] private bool showDebugMessages = true;
-
     private readonly List<ValidatedBlock> validatedBlocks =
         new List<ValidatedBlock>();
 
@@ -291,17 +288,6 @@ public class ArticleValidator : MonoBehaviour
             {
                 articleSolved = false;
             }
-
-            if (showDebugMessages)
-            {
-                Debug.Log(
-                    "[VALIDATION] " + block.name +
-                    " | Expected: " + expected +
-                    " | Marked: " + selected +
-                    " | Result: " + item.ResultType,
-                    block
-                );
-            }
         }
 
         result.IsArticleSolved = articleSolved;
@@ -315,8 +301,7 @@ public class ArticleValidator : MonoBehaviour
 
         feedbackInProgress = false;
 
-        // OnArticleLoaded runs after the viewer replaces block data.
-        // Do not reset those newly loaded blocks through old feedback.
+        // Avoid resetting newly loaded blocks through old feedback.
         if (!changingArticle)
         {
             foreach (ValidatedBlock entry in validatedBlocks)

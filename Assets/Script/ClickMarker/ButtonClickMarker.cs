@@ -18,7 +18,6 @@ public class ButtonClickMarker :
     public GameObject selectedFeedback;
 
     private bool isSelected;
-
     private static ButtonClickMarker currentlySelected;
 
     private void Awake()
@@ -33,13 +32,6 @@ public class ButtonClickMarker :
         {
             selectedFeedback.SetActive(false);
         }
-
-        Debug.Log(
-            "[BUTTON MARKER] " +
-            gameObject.name +
-            " initialized with CheckType: " +
-            checkType
-        );
     }
 
     private void FindCheckTypeSource()
@@ -49,8 +41,7 @@ public class ButtonClickMarker :
             return;
         }
 
-        checkTypeSource =
-            GetComponent<DraggableObject>();
+        checkTypeSource = GetComponent<DraggableObject>();
 
         if (checkTypeSource == null)
         {
@@ -61,31 +52,13 @@ public class ButtonClickMarker :
 
     private void SynchronizeCheckType()
     {
-        if (checkTypeSource == null)
+        if (checkTypeSource != null)
         {
-            Debug.LogWarning(
-                "[BUTTON MARKER] No DraggableObject assigned " +
-                "to " +
-                gameObject.name +
-                ". The Inspector Check Type will be used: " +
-                checkType
-            );
-
-            return;
+            checkType = checkTypeSource.CheckType;
         }
-
-        checkType = checkTypeSource.CheckType;
-
-        Debug.Log(
-            "[BUTTON MARKER] " +
-            gameObject.name +
-            " copied CheckType from DraggableObject: " +
-            checkType
-        );
     }
 
-    public void OnPointerClick(
-        PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         SynchronizeCheckType();
 
@@ -114,13 +87,6 @@ public class ButtonClickMarker :
         {
             selectedFeedback.SetActive(true);
         }
-
-        Debug.Log(
-            "[BUTTON MARKER] Selected button: " +
-            gameObject.name +
-            " | CheckType: " +
-            checkType
-        );
     }
 
     private void Deselect()
@@ -136,13 +102,6 @@ public class ButtonClickMarker :
         {
             selectedFeedback.SetActive(false);
         }
-
-        Debug.Log(
-            "[BUTTON MARKER] Deselected button: " +
-            gameObject.name +
-            " | CheckType: " +
-            checkType
-        );
     }
 
     public bool IsSelected()
@@ -153,7 +112,6 @@ public class ButtonClickMarker :
     public CheckType GetCheckType()
     {
         SynchronizeCheckType();
-
         return checkType;
     }
 
@@ -170,28 +128,4 @@ public class ButtonClickMarker :
         }
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (checkTypeSource == null)
-        {
-            checkTypeSource =
-                GetComponent<DraggableObject>();
-
-            if (checkTypeSource == null)
-            {
-                checkTypeSource =
-                    GetComponentInChildren<DraggableObject>(
-                        true
-                    );
-            }
-        }
-
-        if (checkTypeSource != null)
-        {
-            checkType =
-                checkTypeSource.CheckType;
-        }
-    }
-#endif
 }

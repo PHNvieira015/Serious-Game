@@ -152,10 +152,6 @@ public class ArticleBlockView : MonoBehaviour
                 );
             }
 
-            Debug.Log(
-                "[ARTICLE BLOCK VIEW] Checklist reset on " +
-                gameObject.name
-            );
         }
         finally
         {
