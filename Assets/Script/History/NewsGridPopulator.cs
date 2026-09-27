@@ -1,24 +1,22 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class NewsGridPopulator : MonoBehaviour
 {
-    [Header("Grid Settings")]
-    public GridLayoutGroup gridLayout;
-    public GameObject cellPrefab;
-
-    [Header("Target Parent")]
-    public Transform targetParent;
-
     [Header("History")]
     public ArticleHistoryManager historyManager;
 
+    [Header("Existing Cells")]
+    [Tooltip("Assign the 12 existing cell objects in display order.")]
+    public GameObject[] cells = new GameObject[12];
+
     private ArticleHistoryManager subscribedHistory;
 
-    private readonly List<GameObject> spawnedCells =
-        new List<GameObject>();
+    private readonly Dictionary<Button, UnityAction> buttonListeners =
+        new Dictionary<Button, UnityAction>();
 
     private void Awake()
     {
@@ -34,16 +32,6 @@ public class NewsGridPopulator : MonoBehaviour
 
     private void CacheReferences()
     {
-        if (targetParent == null)
-        {
-            targetParent = transform;
-        }
-
-        if (gridLayout == null)
-        {
-            gridLayout = targetParent.GetComponent<GridLayoutGroup>();
-        }
-
         if (historyManager == null)
         {
             historyManager = GetComponent<ArticleHistoryManager>();
@@ -58,7 +46,6 @@ public class NewsGridPopulator : MonoBehaviour
         }
 
         UnsubscribeFromHistory();
-
         subscribedHistory = historyManager;
 
         if (subscribedHistory != null)
@@ -81,41 +68,69 @@ public class NewsGridPopulator : MonoBehaviour
     {
         CacheReferences();
 
+        if (isActiveAndEnabled)
+        {
+            SubscribeToHistory();
+        }
+
         if (historyManager == null)
         {
             Debug.LogError(
-                "[HISTORY GRID] Assign Article History Manager.",
+                "[HISTORY] Assign Article History Manager.",
                 this
             );
             return;
         }
 
-        if (cellPrefab == null)
+        ClearButtonListeners();
+
+        if (cells == null)
         {
-            Debug.LogError(
-                "[HISTORY GRID] Assign Cell Prefab.",
-                this
-            );
             return;
         }
-
-        ClearSpawnedCells();
 
         IReadOnlyList<ArticleHistoryManager.ArticleRecord> records =
             historyManager.History;
 
-        foreach (ArticleHistoryManager.ArticleRecord record in records)
+        int recordIndex = 0;
+
+        foreach (GameObject cell in cells)
         {
-            if (record == null || record.article == null)
+            if (cell == null)
             {
                 continue;
             }
 
-            GameObject cell = Instantiate(cellPrefab, targetParent);
-            spawnedCells.Add(cell);
+            ArticleHistoryManager.ArticleRecord record = null;
+
+            while (recordIndex < records.Count)
+            {
+                ArticleHistoryManager.ArticleRecord candidate =
+                    records[recordIndex];
+
+                recordIndex++;
+
+                if (candidate != null && candidate.article != null)
+                {
+                    record = candidate;
+                    break;
+                }
+            }
+
+            if (record == null)
+            {
+                cell.SetActive(false);
+                continue;
+            }
+
             cell.SetActive(true);
 
             NewsCell newsCell = cell.GetComponent<NewsCell>();
+
+            if (newsCell == null)
+            {
+                newsCell = cell.GetComponentInChildren<NewsCell>(true);
+            }
 
             if (newsCell != null)
             {
@@ -123,58 +138,61 @@ public class NewsGridPopulator : MonoBehaviour
                 continue;
             }
 
+            // Fallback for cells without a NewsCell component.
             TMP_Text title = cell.GetComponentInChildren<TMP_Text>(true);
+            Button button = cell.GetComponentInChildren<Button>(true);
 
             if (title != null)
             {
                 title.text = record.title;
             }
 
-            Button button = cell.GetComponent<Button>();
-
             if (button == null)
             {
                 Debug.LogWarning(
-                    "[HISTORY GRID] Cell needs NewsCell or Button.",
+                    "[HISTORY] Cell needs a NewsCell or Button: " +
+                    cell.name,
                     cell
                 );
                 continue;
             }
 
             ArticleData capturedArticle = record.article;
+            UnityAction action = () => OnCellClicked(capturedArticle);
 
-            button.onClick.AddListener(
-                () => OnCellClicked(capturedArticle)
-            );
+            // Prevent duplicate listeners if a cell was assigned twice.
+            if (buttonListeners.TryGetValue(button, out UnityAction oldAction))
+            {
+                button.onClick.RemoveListener(oldAction);
+            }
+
+            buttonListeners[button] = action;
+            button.onClick.AddListener(action);
         }
     }
 
     private void OnCellClicked(ArticleData article)
     {
-        if (historyManager != null)
+        if (historyManager != null && article != null)
         {
             historyManager.OpenArticleFeedback(article);
         }
     }
 
-    private void ClearSpawnedCells()
+    private void ClearButtonListeners()
     {
-        foreach (GameObject cell in spawnedCells)
+        foreach (KeyValuePair<Button, UnityAction> entry in buttonListeners)
         {
-            if (cell == null)
+            if (entry.Key != null)
             {
-                continue;
+                entry.Key.onClick.RemoveListener(entry.Value);
             }
-
-            cell.SetActive(false);
-            Destroy(cell);
         }
 
-        spawnedCells.Clear();
+        buttonListeners.Clear();
     }
 
-    // Kept for compatibility with existing callers.
-    // The grid now gets its articles from saved history.
+    // Retained for existing callers.
     public void SetNewsData(List<ArticleData> articles)
     {
         PopulateGrid();
@@ -188,5 +206,6 @@ public class NewsGridPopulator : MonoBehaviour
     private void OnDestroy()
     {
         UnsubscribeFromHistory();
+        ClearButtonListeners();
     }
 }
