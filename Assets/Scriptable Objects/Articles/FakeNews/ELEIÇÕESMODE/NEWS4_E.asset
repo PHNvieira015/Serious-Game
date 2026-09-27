@@ -17,6 +17,7 @@ MonoBehaviour:
   Subtitle: "Mensagem questiona se os mecanismos de seguran\xE7a das urnas acompanham
     o avan\xE7o das novas tecnologias."
   Date: 'Publicado em: 18 de setembro de 2026'
+  ArticleImage: {fileID: -1565247173639568291, guid: 0986f19fa9faad84595656024098dc89, type: 3}
   URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
     WriterName: "Reda\xE7\xE3o Observador Digital"
@@ -32,10 +33,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tFraudes em contas banc\xE1rias n\xE3o demonstram acesso \xE0s
-      urnas. S\xE3o sistemas diferentes. A urna n\xE3o possui internet, wi-fi ou
-      conex\xE3o celular. Dizer que uma IA \xE9 poderosa n\xE3o explica como ela
-      conseguiria entrar no equipamento."
+    Explanation: "\t<color=#ffc83c>Fraudes em contas banc\xE1rias n\xE3o demonstram
+      acesso \xE0s urnas. S\xE3o sistemas diferentes.</color> A urna n\xE3o possui
+      <color=#ffc83c>internet, wi-fi ou conex\xE3o celular.</color> Dizer que uma
+      IA \xE9 poderosa n\xE3o explica como ela conseguiria entrar no equipamento."
   - Type: 1
     Text: "\tA aus\xEAncia de internet durante a vota\xE7\xE3o n\xE3o impediria a
       a\xE7\xE3o. A intelig\xEAncia artificial poderia acessar a urna remotamente
@@ -44,10 +45,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tA not\xEDcia inventa uma forma de acesso: as urnas n\xE3o recebem
-      atualiza\xE7\xF5es pela internet. Os programas s\xE3o preparados e lacrados
-      antes da elei\xE7\xE3o, com fiscaliza\xE7\xE3o. Confira como a instala\xE7\xE3o
-      realmente acontece nos canais da Justi\xE7a Eleitoral."
+    Explanation: "\tA not\xEDcia <color=#ffc83c>inventa</color> uma forma de acesso:
+      as urnas <color=#ffc83c>n\xE3o recebem atualiza\xE7\xF5es pela internet.</color>
+      Os programas s\xE3o preparados e lacrados antes da elei\xE7\xE3o, com fiscaliza\xE7\xE3o.
+      Confira como a instala\xE7\xE3o realmente acontece nos canais da Justi\xE7a
+      Eleitoral."
   - Type: 1
     Text: "\tNesse cen\xE1rio, a tela mostraria normalmente o nome e a foto escolhidos,
       mas o programa registraria o voto para outra candidatura. Como as verifica\xE7\xF5es
@@ -56,11 +58,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tO texto descreve uma troca de votos sem apresentar evid\xEAncia
-      e reduz a fiscaliza\xE7\xE3o a uma checagem anterior. Existem diferentes etapas
-      de auditoria, e os programas recebem assinaturas digitais que permitem verificar
-      altera\xE7\xF5es. Imaginar uma fraude n\xE3o comprova que ela aconteceu ou
-      que funciona."
+    Explanation: "\tO texto descreve uma troca de votos <color=#ffc83c>sem apresentar
+      evid\xEAncia e reduz a fiscaliza\xE7\xE3o a uma checagem anterior.</color>
+      Existem diferentes etapas de auditoria, e os programas recebem assinaturas
+      digitais que permitem verificar altera\xE7\xF5es. Imaginar uma fraude <color=#ffc83c>n\xE3o
+      comprova</color> que ela aconteceu ou que funciona."
   - Type: 1
     Text: "\tO boletim impresso ao final apenas repetiria os n\xFAmeros j\xE1 modificados
       pelo programa. Sem um comprovante individual de cada voto, n\xE3o existiria
@@ -69,8 +71,8 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\t\xC9 falso que n\xE3o exista fiscaliza\xE7\xE3o sem comprovante
-      individual. O Boletim de Urna apresenta os totais daquela se\xE7\xE3o e pode
-      ser comparado com os dados da totaliza\xE7\xE3o. Ele faz parte de um conjunto
-      de verifica\xE7\xF5es; a not\xEDcia ignora esse conjunto para declarar o resultado
-      imposs\xEDvel de conferir."
+    Explanation: "\t<color=#ffc83c>\xC9 falso que n\xE3o exista fiscaliza\xE7\xE3o
+      sem comprovante individual.</color> O Boletim de Urna apresenta os totais daquela
+      se\xE7\xE3o e pode ser comparado com os dados da totaliza\xE7\xE3o. Ele faz
+      parte de um conjunto de verifica\xE7\xF5es; <color=#ffc83c>a not\xEDcia ignora
+      esse conjunto para declarar o resultado imposs\xEDvel de conferir.</color>"

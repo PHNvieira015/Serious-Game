@@ -17,6 +17,7 @@ MonoBehaviour:
   Subtitle: "Medida tamb\xE9m prev\xEA multa para familiares e busca reduzir a circula\xE7\xE3o
     de idosos durante a emerg\xEAncia sanit\xE1ria."
   Date: "Publicado em: 20 de mar\xE7o de 2020"
+  ArticleImage: {fileID: -5995690379845115192, guid: cb9ffbe6508461a4898ee637798094db, type: 3}
   URL_site: https://boletimprevidenciario.example/beneficios/novas-regras-isolamento
   Writer:
     WriterName: "Reda\xE7\xE3o Boletim Previdenci\xE1rio"
@@ -31,10 +32,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tA MP n\xBA 922 existiu, mas \xE9 de 28 de fevereiro de 2020,
-      n\xE3o de 18 de mar\xE7o. Ela tratava, entre outros assuntos, da contrata\xE7\xE3o
-      tempor\xE1ria de servidores aposentados. N\xE3o determinava suspens\xE3o de
-      aposentadoria por sair de casa. Confira a data e o texto da norma."
+    Explanation: "\tA MP n\xBA 922 existiu, mas \xE9 de <color=#FFC83C>28 de fevereiro
+      de 2020, n\xE3o de 18 de mar\xE7o.</color> Ela tratava, entre outros assuntos,
+      da contrata\xE7\xE3o tempor\xE1ria de servidores aposentados. <color=#FFC83C>N\xE3o
+      determinava suspens\xE3o de aposentadoria por sair de casa.</color> Confira
+      a data e o texto da norma."
   - Type: 1
     Text: "\tA determina\xE7\xE3o integra as a\xE7\xF5es de prote\xE7\xE3o aos idosos,
       considerados mais vulner\xE1veis \xE0 doen\xE7a. O bloqueio ser\xE1 aplicado
@@ -43,10 +45,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tO boato usa uma orienta\xE7\xE3o real de prote\xE7\xE3o aos idosos
-      para tornar o bloqueio convincente. Por\xE9m, recomendar ficar em casa n\xE3o
-      significa autorizar o corte da aposentadoria. A medida citada n\xE3o previa
-      essa puni\xE7\xE3o."
+    Explanation: "\tO boato <color=#2BA23D>usa uma orienta\xE7\xE3o real de prote\xE7\xE3o
+      aos idosos</color> para tornar o bloqueio <color=#FFC83C>convincente.</color>
+      Por\xE9m, recomendar ficar em casa <color=#FFC83C>n\xE3o significa autorizar
+      o corte da aposentadoria.</color> A medida citada n\xE3o previa essa puni\xE7\xE3o."
   - Type: 1
     Text: "\tO comunicado tamb\xE9m prev\xEA responsabiliza\xE7\xE3o de filhos e
       netos maiores de 18 anos. A multa ser\xE1 de R$ 1.045 para familiares que permitirem
@@ -55,9 +57,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tA MP n\xE3o estabelecia essa multa para filhos ou netos. O valor
-      de R$ 1.045 d\xE1 apar\xEAncia de precis\xE3o, mas um n\xFAmero exato tamb\xE9m
-      pode ser inventado. Procure o artigo da norma que supostamente prev\xEA a cobran\xE7a."
+    Explanation: "\t<color=#FFC83C>A MP n\xE3o estabelecia essa multa para filhos
+      ou netos.</color> O valor de R$ 1.045 d\xE1 apar\xEAncia de precis\xE3o, mas
+      um n\xFAmero exato <color=#FFC83C>tamb\xE9m pode ser inventado.</color> Procure
+      o artigo da norma que supostamente prev\xEA a cobran\xE7a."
   - Type: 1
     Text: "\tComo medidas provis\xF3rias t\xEAm for\xE7a de lei desde sua publica\xE7\xE3o,
       as regras j\xE1 est\xE3o valendo, mesmo antes da vota\xE7\xE3o no Congresso.
@@ -66,7 +69,7 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tMedidas provis\xF3rias realmente t\xEAm for\xE7a de lei desde
-      a publica\xE7\xE3o. Isso, por\xE9m, n\xE3o torna verdadeiras as puni\xE7\xF5es
-      inventadas pela not\xEDcia. \xC9 preciso conferir o que a MP determina, n\xE3o
-      apenas se ela est\xE1 em vigor."
+    Explanation: "\tMedidas provis\xF3rias <color=#2BA23D>realmente t\xEAm for\xE7a
+      de lei desde a publica\xE7\xE3o.</color> Isso, por\xE9m, <color=#FFC83C>n\xE3o
+      torna verdadeiras as puni\xE7\xF5es inventadas pela not\xEDcia.</color> \xC9
+      preciso conferir o que a MP determina, n\xE3o apenas se ela est\xE1 em vigor."

@@ -17,10 +17,11 @@ MonoBehaviour:
   Subtitle: "Levantamento digital aponta mudan\xE7a no perfil desejado pelos eleitores
     para as pr\xF3ximas elei\xE7\xF5es. "
   Date: 'Publicado em: 18 de setembro de 2026'
+  ArticleImage: {fileID: 21300000, guid: c9ef7815a362d0744920f7686dcc47d7, type: 3}
   URL_site: 'https://panoramaeleitoral.example/pesquisas/renovacao-nacional '
   Writer:
     WriterName: "Reda\xE7\xE3o Panorama Eleitoral"
-    WriterPhoto: {fileID: 21300000, guid: c9ef7815a362d0744920f7686dcc47d7, type: 3}
+    WriterPhoto: {fileID: 0}
     WriterDescription: 
   Blocks:
   - Type: 1
@@ -32,10 +33,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tA pergunta fala em \u201Crenova\xE7\xE3o\u201D, mas a manchete
-      afirma prefer\xEAncia por candidatos sem experi\xEAncia. Uma coisa n\xE3o significa
-      necessariamente a outra. Compare sempre o que foi perguntado com a conclus\xE3o
-      publicada."
+    Explanation: "\tA pergunta fala em <color=#ffc83c>\u201Crenova\xE7\xE3o\u201D,</color>
+      mas a manchete afirma <color=#ffc83c>prefer\xEAncia por candidatos sem experi\xEAncia.</color>
+      Uma coisa n\xE3o significa necessariamente a outra. Compare sempre o que foi
+      perguntado com a conclus\xE3o publicada."
   - Type: 1
     Text: "\tUma pesquisa do Instituto Panorama Cidad\xE3o revelou que 82% dos brasileiros
       preferem candidatos que nunca ocuparam cargos pol\xEDticos. O levantamento
@@ -44,10 +45,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\t2.400 respostas em um formul\xE1rio aberto n\xE3o demonstram
-      o que todos os brasileiros pensam. Quem decidiu participar pode ter opini\xF5es
-      diferentes de quem n\xE3o viu a enquete. Ter respostas das cinco regi\xF5es
-      n\xE3o resolve esse problema."
+    Explanation: "\t<color=#ffc83c>2.400 respostas em um formul\xE1rio aberto n\xE3o
+      demonstram o que todos os brasileiros pensam.</color> Quem decidiu participar
+      pode ter opini\xF5es diferentes de quem n\xE3o viu a enquete. Ter respostas
+      das cinco regi\xF5es n\xE3o resolve esse problema."
   - Type: 1
     Text: "\tA coleta pela internet garantiu uma participa\xE7\xE3o ampla e democr\xE1tica.
       Como qualquer pessoa podia responder, o resultado representa o eleitorado nacional,
@@ -56,9 +57,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tPermitir que qualquer pessoa responda n\xE3o torna a enquete
-      representativa. A margem de erro de dois pontos \xE9 apresentada sem explicar
-      seu c\xE1lculo. Um n\xFAmero preciso n\xE3o corrige uma coleta inadequada."
+    Explanation: "\tPermitir que qualquer pessoa responda <color=#ffc83c>n\xE3o torna
+      a enquete representativa.</color> A margem de erro de dois pontos \xE9 apresentada
+      <color=#ffc83c>sem explicar seu c\xE1lculo.</color> Um n\xFAmero preciso n\xE3o
+      corrige uma coleta inadequada."
   - Type: 1
     Text: "\tEspecialistas em comportamento eleitoral avaliam que o resultado confirma
       uma tend\xEAncia nacional de renova\xE7\xE3o. Nesse contexto, o levantamento
@@ -67,8 +69,9 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 4
     Hint: 
-    Explanation: "\t\u201CCen\xE1rio de mudan\xE7a\u201D e \u201Ctend\xEAncia de
-      renova\xE7\xE3o\u201D repetem a conclus\xE3o sem acrescentar evid\xEAncias.
-      Os especialistas tamb\xE9m n\xE3o s\xE3o identificados. Esse estilo pode aparecer
-      em textos de IA ou humanos: o problema \xE9 a falta de sustenta\xE7\xE3o, n\xE3o
+    Explanation: "\t<color=#B464FF>\u201CCen\xE1rio de mudan\xE7a\u201D</color> e
+      <color=#B464FF>\u201Ctend\xEAncia de renova\xE7\xE3o\u201D</color> repetem
+      a conclus\xE3o sem acrescentar evid\xEAncias. Os especialistas tamb\xE9m n\xE3o
+      s\xE3o identificados. Esse estilo pode aparecer em <color=#B464FF>textos de
+      IA</color> ou humanos: o problema \xE9 a falta de sustenta\xE7\xE3o, n\xE3o
       quem escreveu."

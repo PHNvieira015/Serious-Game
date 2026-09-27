@@ -17,6 +17,7 @@ MonoBehaviour:
   Subtitle: "Romance de Dean Koontz voltou a chamar aten\xE7\xE3o ap\xF3s leitores
     encontrarem passagens que coincidem com a emerg\xEAncia sanit\xE1ria atual."
   Date: 'Publicado em: 26 de fevereiro de 2020'
+  ArticleImage: {fileID: 1336982578806489659, guid: 3d71c5ae0cca6ec41a6552fe397045a9, type: 3}
   URL_site: https://arquivoatual.example/cultura/livro-dean-koontz-coronavirus
   Writer:
     WriterName: "Reda\xE7\xE3o Arquivo Atual"
@@ -34,10 +35,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tO livro \xE9 de 1981, mas o nome original era Gorki-400. Wuhan-400
-      apareceu em edi\xE7\xF5es posteriores. A not\xEDcia mistura a data da primeira
-      publica\xE7\xE3o com um texto modificado depois. Para conferir, compare as
-      edi\xE7\xF5es."
+    Explanation: "\tO livro \xE9 de 1981, mas o nome original era <color=#FFC83C>Gorki-400.</color>
+      Wuhan-400 apareceu em edi\xE7\xF5es posteriores. A not\xEDcia <color=#FFC83C>mistura
+      a data da primeira publica\xE7\xE3o com um texto modificado depois.</color>
+      Para conferir, compare as edi\xE7\xF5es."
   - Type: 1
     Text: "\tO material compartilhado re\xFAne a capa do romance e fotografias de
       p\xE1ginas em ingl\xEAs. Em uma delas, aparece o nome Wuhan-400; em outra,
@@ -49,9 +50,9 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tA passagem sobre 2020 vem de End of Days, de Sylvia Browne, publicado
-      em 2008, n\xE3o do livro de Koontz. Colocar as p\xE1ginas juntas n\xE3o faz
-      delas uma \xFAnica obra. Confira a origem de cada trecho."
+    Explanation: "\tA passagem sobre 2020 <color=#FFC83C>vem de End of Days, de Sylvia
+      Browne, publicado em 2008, n\xE3o do livro de Koontz.</color> Colocar as p\xE1ginas
+      juntas n\xE3o faz delas uma \xFAnica obra. Confira a origem de cada trecho."
   - Type: 1
     Text: "\tH\xE1 diferen\xE7as entre o agente descrito na narrativa e o coronav\xEDrus
       identificado pelas autoridades. No romance, os efeitos s\xE3o mais r\xE1pidos
@@ -64,10 +65,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tO v\xEDrus fict\xEDcio mata 100% dos infectados, o que n\xE3o
-      corresponde \xE0 covid-19. A not\xEDcia descarta essa diferen\xE7a e destaca
-      apenas as semelhan\xE7as. Uma coincid\xEAncia n\xE3o comprova uma previs\xE3o:
-      \xE9 preciso comparar tamb\xE9m o que n\xE3o combina."
+    Explanation: "\t<color=#FFC83C>O v\xEDrus fict\xEDcio mata 100% dos infectados,
+      o que n\xE3o corresponde \xE0 covid-19.</color> A not\xEDcia <color=#FFC83C>descarta
+      essa diferen\xE7a</color> e destaca apenas as semelhan\xE7as. Uma coincid\xEAncia
+      n\xE3o comprova uma previs\xE3o: \xE9 preciso comparar tamb\xE9m o que n\xE3o
+      combina."
   - Type: 1
     Text: "\tN\xE3o \xE9 poss\xEDvel afirmar como Koontz teria chegado a essa combina\xE7\xE3o
       de informa\xE7\xF5es. A publica\xE7\xE3o, entretanto, oferece um registro anterior
@@ -79,6 +81,6 @@ MonoBehaviour:
     CheckType: 2
     Hint: 
     Explanation: "\tO texto afirma que o livro previu o local e o ano, mas essas
-      informa\xE7\xF5es vieram de obras diferentes. Antes de perguntar como o autor
-      previu, confira se ele realmente previu. As p\xE1ginas apresentadas n\xE3o
-      demonstram isso."
+      informa\xE7\xF5es <color=#FFC83C>vieram de obras diferentes.</color> Antes
+      de perguntar como o autor previu, confira se ele realmente previu. <color=#FFC83C>As
+      p\xE1ginas apresentadas n\xE3o demonstram isso.</color>"

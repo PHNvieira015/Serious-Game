@@ -17,6 +17,7 @@ MonoBehaviour:
   Subtitle: "Ferramenta analisa tomografias e tamb\xE9m \xE9 utilizada em pesquisas
     sobre Covid longa."
   Date: 'Publicado em: 25 de junho de 2023'
+  ArticleImage: {fileID: 21300000, guid: a28486b3beb8b95469532ba85d53891b, type: 3}
   URL_site: 'https://noticiascampinas.example/saude/inteligencia-artificial-unicamp-danos-covid-pulmoes '
   Writer:
     WriterName: "Gabriella Ramos, g1 Campinas e Regi\xE3o"
@@ -31,10 +32,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tO texto apresenta uma pesquisa da Unicamp e explica seu objetivo:
-      medir \xE1reas afetadas nos pulm\xF5es. Essas informa\xE7\xF5es correspondem
-      \xE0 reportagem original. N\xE3o promete cura nem afirma que a ferramenta substitui
-      m\xE9dicos."
+    Explanation: "\tO texto <color=#2BA23D>apresenta uma pesquisa da Unicamp e explica
+      seu objetivo:</color> medir \xE1reas afetadas nos pulm\xF5es. Essas informa\xE7\xF5es
+      correspondem \xE0 reportagem original. N\xE3o promete cura nem afirma que a
+      ferramenta substitui m\xE9dicos."
   - Type: 1
     Text: "\tO programa identifica os limites dos pulm\xF5es e calcula o volume das
       regi\xF5es alteradas. Segundo a professora Let\xEDcia Rittner, essas altera\xE7\xF5es
@@ -44,9 +45,10 @@ MonoBehaviour:
     CheckType: 1
     Hint: 
     Explanation: "\tO programa mede altera\xE7\xF5es nas imagens, mas elas tamb\xE9m
-      podem ocorrer em outras doen\xE7as. Essa diferen\xE7a \xE9 importante: identificar
-      uma \xE1rea alterada n\xE3o \xE9 o mesmo que descobrir sua causa. A explica\xE7\xE3o
-      respeita o limite apresentado pela pesquisadora."
+      <color=#2BA23D>podem ocorrer em outras doen\xE7as.</color> Essa diferen\xE7a
+      \xE9 importante: identificar uma \xE1rea alterada n\xE3o \xE9 o mesmo que descobrir
+      sua causa. A explica\xE7\xE3o <color=#2BA23D>respeita o limite apresentado
+      pela pesquisadora.</color>"
   - Type: 1
     Text: "\tO m\xE9todo foi desenvolvido por Diedre Santos do Carmo, orientado por
       Let\xEDcia Rittner e Roberto de Alencar Lotufo. A equipe utilizou imagens de
@@ -55,10 +57,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tOs nomes permitem verificar quem desenvolveu a pesquisa. O texto
-      tamb\xE9m explica como o programa foi treinado e por que precisava analisar
-      exames de diferentes equipamentos. S\xE3o informa\xE7\xF5es confer\xEDveis,
-      n\xE3o apenas uma refer\xEAncia vaga a \u201Ccientistas\u201D."
+    Explanation: "\t<color=#2BA23D>Os nomes permitem verificar quem desenvolveu a
+      pesquisa.</color> O texto tamb\xE9m explica como o programa foi treinado e
+      por que precisava analisar exames de diferentes equipamentos. S\xE3o informa\xE7\xF5es
+      confer\xEDveis, n\xE3o apenas uma refer\xEAncia vaga a \u201Ccientistas\u201D."
   - Type: 1
     Text: "\tNa \xE9poca da reportagem, a ferramenta estava dispon\xEDvel para pesquisadores
       e era estudada para acompanhar efeitos da Covid longa. Esses resultados ainda
@@ -67,7 +69,7 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tA reportagem distingue o uso em pesquisa da aplica\xE7\xE3o ampla
-      nos servi\xE7os de sa\xFAde. Tamb\xE9m informa que os estudos sobre Covid longa
-      eram preliminares. Esses limites evitam apresentar uma possibilidade como resultado
-      definitivo."
+    Explanation: "\tA reportagem <color=#2BA23D>distingue o uso em pesquisa da aplica\xE7\xE3o
+      ampla nos servi\xE7os de sa\xFAde.</color> Tamb\xE9m informa que os estudos
+      sobre Covid longa eram preliminares. Esses limites <color=#2BA23D>evitam apresentar
+      uma possibilidade como resultado definitivo.</color>"

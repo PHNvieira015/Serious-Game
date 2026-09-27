@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
   m_Name: NEWS2_E
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
-  Title: "Helena Duarte ou Marcos Valen\xE7a"
-  Subtitle: "Nova pesquisa mostra quem tem a maior rejei\xE7\xE3o na largada da campanha "
+  Title: "Helena Duarte ou Marcos Valen\xE7a?Quem pode ganhar?"
+  Subtitle: "Nova pesquisa mostra quem tem a maior rejei\xE7\xE3o na largada da campanha
+    eleitoral. "
   Date: 'Publicado em: Segunda-feira, 17 de Agosto de 2026'
+  ArticleImage: {fileID: -3783720738782827703, guid: 6760946fef45cec4d8dc1a1239ee23e1, type: 3}
   URL_site: https://politicaemfoco.example/eleicoes/pesquisa-rejeicao-helena-duarte-marcos-valenca
   Writer:
     WriterName: "Reda\xE7\xE3o Pol\xEDtica"
@@ -32,10 +34,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tA diferen\xE7a entre 50% e 48% est\xE1 dentro da margem informada.
-      Por isso, n\xE3o cabe afirmar uma vantagem clara na rejei\xE7\xE3o. Citar instituto,
-      data e margem ajuda a conferir o levantamento, mas esses dados tamb\xE9m precisam
-      ser verificados na fonte."
+    Explanation: "\t<color=#2BA23D>A diferen\xE7a entre 50% e 48% est\xE1 dentro
+      da margem informada.</color> Por isso, n\xE3o cabe afirmar uma vantagem clara
+      na rejei\xE7\xE3o. <color=#2BA23D>Citar instituto, data e margem ajuda a conferir
+      o levantamento,</color> mas esses dados tamb\xE9m precisam ser verificados
+      na fonte."
   - Type: 1
     Text: "\tO dado ajuda a dimensionar a resist\xEAncia aos dois principais nomes
       da corrida presidencial. Na inten\xE7\xE3o de voto, Helena aparece \xE0 frente
@@ -46,9 +49,9 @@ MonoBehaviour:
     CheckType: 1
     Hint: 
     Explanation: "\tRejei\xE7\xE3o indica em quem a pessoa n\xE3o votaria; inten\xE7\xE3o
-      de voto indica sua escolha. O texto separa essas perguntas e os cen\xE1rios
-      de primeiro e segundo turno. Pesquisa retrata um momento, n\xE3o garante o
-      resultado da elei\xE7\xE3o."
+      de voto indica sua escolha. O texto <color=#2BA23D>separa essas perguntas e
+      os cen\xE1rios de primeiro e segundo turno.</color> Uma pesquisa retrata um
+      momento, n\xE3o garante o resultado da elei\xE7\xE3o."
   - Type: 1
     Text: "\tO \xEDndice de 50% coloca Marcos Valen\xE7a no patamar mais alto de
       rejei\xE7\xE3o entre os pr\xE9-candidatos considerados no levantamento. Helena
@@ -58,9 +61,9 @@ MonoBehaviour:
     CheckType: 1
     Hint: 
     Explanation: "\tMarcos apresenta o maior n\xFAmero de rejei\xE7\xE3o, mas a diferen\xE7a
-      para Helena permanece dentro da margem de erro. Al\xE9m disso, confirmar que
-      eles t\xEAm os maiores \xEDndices exige consultar os resultados dos outros
-      candidatos."
+      para Helena <color=#2BA23D>permanece dentro da margem de erro.</color> Al\xE9m
+      disso, confirmar que eles t\xEAm os maiores \xEDndices exige consultar os resultados
+      dos outros candidatos."
   - Type: 1
     Text: "\tA proximidade dos percentuais e a estabilidade dos n\xFAmeros refor\xE7am
       a caracter\xEDstica polarizada da disputa: os dois candidatos concentram simultaneamente
@@ -69,7 +72,8 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tA concentra\xE7\xE3o de votos pode sustentar uma an\xE1lise de
-      polariza\xE7\xE3o. Por\xE9m, dizer que n\xE3o h\xE1 espa\xE7o para uma terceira
-      candidatura \xE9 uma interpreta\xE7\xE3o, n\xE3o um resultado garantido. A
-      afirma\xE7\xE3o de estabilidade tamb\xE9m exige comparar diferentes rodadas."
+    Explanation: "\tA concentra\xE7\xE3o de votos<color=#2BA23D> pode sustentar uma
+      an\xE1lise de polariza\xE7\xE3o.</color> Por\xE9m, dizer que n\xE3o h\xE1 espa\xE7o
+      para uma terceira candidatura \xE9 uma interpreta\xE7\xE3o, n\xE3o um resultado
+      garantido. A afirma\xE7\xE3o de estabilidade tamb\xE9m exige comparar diferentes
+      rodadas."

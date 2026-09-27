@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConversationData
   ConversationTitle: Matilda Xavier
   NPCSpeakerName: Matilda Xavier
-  NPCSpeakerAvatar: {fileID: 21300000, guid: a0289f97e92e87c49aa4a25a88dd47c2, type: 3}
+  NPCSpeakerAvatar: {fileID: 21300000, guid: 585eb1fac63e82e4989ff3605334bb58, type: 3}
   NPCSpeakerBackground: {fileID: 21300000, guid: 4e21eba47bd37504a8cb094c0ada4ab7, type: 3}
   Nodes:
   - IsNPC: 0

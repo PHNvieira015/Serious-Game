@@ -16,7 +16,7 @@ MonoBehaviour:
   Subtitle: "Nova Delibera\xE7\xE3o determina multa de R$ 128,00 e perda de 3 pontos
     na CNH para quem dirigir sem m\xE1scara"
   Date: 'Publicado em: 28 de Abril de 2020'
-  ArticleImage: {fileID: 0}
+  ArticleImage: {fileID: -6491465088943349919, guid: f0c5a7086c1884d48b0c65fdf6b49351, type: 3}
   URL_site: http://www.portaldodetran-oficial-alerta.com.br/nova-regra-mascara-cnh-multa
   Writer:
     WriterName: "Ag\xEAncia Nacional de Tr\xE2nsito e Not\xEDcias"
@@ -33,11 +33,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tUsurpa\xE7\xE3o de Legisla\xE7\xE3o. No Brasil, apenas a Uni\xE3o
-      (Lei Federal) tem compet\xEAncia para alterar o CTB e criar infra\xE7\xF5es
-      de tr\xE2nsito ou pontos na CNH. Estados e prefeituras n\xE3o podem criar multas
-      de tr\xE2nsito por conta pr\xF3pria, mesmo em momentos de pandemia ou emerg\xEAncia
-      sanit\xE1ria."
+    Explanation: "\t<color=#ffc83c>Usurpa\xE7\xE3o de Legisla\xE7\xE3o.</color> No
+      Brasil, apenas a Uni\xE3o (Lei Federal) tem compet\xEAncia para alterar o CTB
+      e criar infra\xE7\xF5es de tr\xE2nsito ou pontos na CNH. Estados e prefeituras
+      n\xE3o podem criar multas de tr\xE2nsito por conta pr\xF3pria, mesmo em momentos
+      de pandemia ou emerg\xEAncia sanit\xE1ria."
   - Type: 1
     Text: "\tA infra\xE7\xE3o foi classificada como leve, mas acarreta a perda imediata
       de 3 pontos na Carteira Nacional de Habilita\xE7\xE3o (CNH), al\xE9m de uma
@@ -48,11 +48,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tVerossimilhan\xE7a por Detalhamento. Fake news s\xE9rias utilizam
-      n\xFAmeros espec\xEDficos e termos burocr\xE1ticos para soar aut\xEAnticas
-      e gerar p\xE2nico financeiro. Na realidade, cidades que exigiram m\xE1scaras
-      aplicavam apenas san\xE7\xF5es administrativas/sanit\xE1rias na rua, jamais
-      pontua\xE7\xE3o na CNH."
+    Explanation: "\tVerossimilhan\xE7a por Detalhamento. <color=#ffc83c>Fake news
+      s\xE9rias utilizam n\xFAmeros espec\xEDficos e termos burocr\xE1ticos para
+      soar aut\xEAnticas e gerar p\xE2nico financeiro.</color> Na realidade, cidades
+      que exigiram m\xE1scaras aplicavam apenas san\xE7\xF5es administrativas/sanit\xE1rias
+      na rua, jamais pontua\xE7\xE3o na CNH."
   - Type: 1
     Text: "\tO jurista e especialista em direito sanit\xE1rio, Dr. Marcus Vance,
       declarou que a Portaria Interministerial n\xBA 894/2020 autorizou estados e
@@ -63,11 +63,12 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 3
     Hint: 
-    Explanation: "\tAlucina\xE7\xE3o de Autoridade e Falso Embasamento Jur\xEDdico.
-      Estrutura muito comum em textos redigidos por golpistas: cria-se um nome de
-      especialista e um n\xFAmero de que n\xE3o existem para impossibilitar que o
-      leitor comum questione. Al\xE9m disso, afirma que \"recursos ser\xE3o indeferidos
-      automaticamente\", o que fere o direito constitucional \xE0 ampla defesa."
+    Explanation: "\t<color=#317FFF>Alucina\xE7\xE3o de Autoridade e Falso Embasamento
+      Jur\xEDdico.</color> Estrutura muito comum em textos redigidos por golpistas:
+      cria-se um nome de especialista e um n\xFAmero de que n\xE3o existem para impossibilitar
+      que o leitor comum questione. Al\xE9m disso, afirma que \"recursos ser\xE3o
+      indeferidos automaticamente\", o que fere o direito constitucional \xE0 ampla
+      defesa. "
   - Type: 1
     Text: "\tAvisem urgentemente seus parentes, amigos e grupos de motoristas de
       aplicativo! As blitze come\xE7aram hoje cedo e muitos condutores est\xE3o sendo
@@ -78,6 +79,6 @@ MonoBehaviour:
     CheckType: 2
     Hint: 
     Explanation: "\tDiferente de boatos alarmistas apelativos, as fake news \"s\xE9rias\"
-      usam o desejo da v\xEDtima de ajudar o pr\xF3ximo (\"avise seus amigos para
-      n\xE3o tomarem multa\").Isso faz com que a pessoa compartilhe a informa\xE7\xE3o
-      rapidamente sem checar no Google se a lei realmente existe."
+      usam o desejo da v\xEDtima de ajudar o pr\xF3ximo <color=#ffc83c>(\"avise seus
+      amigos para n\xE3o tomarem multa\"). </color> Isso faz com que a pessoa compartilhe
+      a informa\xE7\xE3o rapidamente sem checar no Google se a lei realmente existe."

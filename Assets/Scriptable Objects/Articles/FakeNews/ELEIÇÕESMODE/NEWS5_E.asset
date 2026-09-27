@@ -17,6 +17,7 @@ MonoBehaviour:
   Subtitle: "Decis\xE3o diferencia manipula\xE7\xF5es capazes de enganar o eleitor
     de outros usos de intelig\xEAncia artificial"
   Date: "1\xBA de setembro de 2026"
+  ArticleImage: {fileID: -293824968729970190, guid: 66ff95b8a105c76448d3e2f347bdbcf3, type: 3}
   URL_site: 'https://politicaemfoco.example/eleicoes/tse-proibicao-deepfakes-campanha-2026 '
   Writer:
     WriterName: "M\xE1rcio Falc\xE3o e Luiz Felipe Barbi\xE9ri, TV Globo/g1"
@@ -31,10 +32,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tO texto informa que a proibi\xE7\xE3o considera o realismo e
-      o uso em campanha eleitoral. N\xE3o transforma a decis\xE3o em uma proibi\xE7\xE3o
-      geral de intelig\xEAncia artificial nem anuncia que todos os deepfakes foram
-      liberados."
+    Explanation: "\tO texto informa que a proibi\xE7\xE3o <color=#2BA23D>considera
+      o realismo e o uso em campanha eleitoral. N\xE3o transforma a decis\xE3o em
+      uma proibi\xE7\xE3o geral de intelig\xEAncia artificial nem anuncia que todos
+      os deepfakes foram liberados.</color>"
   - Type: 1
     Text: "\tDeepfakes s\xE3o conte\xFAdos criados ou alterados com intelig\xEAncia
       artificial que imitam imagens, vozes ou falas de maneira realista. A decis\xE3o
@@ -42,10 +43,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tA descri\xE7\xE3o mostra como a tecnologia pode simular imagens
-      e falas. Tamb\xE9m mant\xE9m o alcance informado na decis\xE3o: pessoas vivas,
-      falecidas ou fict\xEDcias. Uma pessoa parecer real na tela n\xE3o comprova
-      que a grava\xE7\xE3o \xE9 aut\xEAntica."
+    Explanation: "\tA descri\xE7\xE3o <color=#2BA23D>mostra como a tecnologia pode
+      simular imagens e falas.</color> Tamb\xE9m mant\xE9m o alcance informado na
+      decis\xE3o: <color=#2BA23D>pessoas vivas, falecidas ou fict\xEDcias.</color>
+      Uma pessoa parecer real na tela n\xE3o comprova que a grava\xE7\xE3o \xE9 aut\xEAntica."
   - Type: 1
     Text: "\tA regra n\xE3o pro\xEDbe automaticamente qualquer v\xEDdeo feito com
       intelig\xEAncia artificial. O grau de realismo e o contexto precisam ser analisados.
@@ -54,9 +55,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 1
     Hint: 
-    Explanation: "\tNem todo v\xEDdeo com IA se enquadra nessa proibi\xE7\xE3o. Isso
-      n\xE3o significa que qualquer montagem seja permitida. O texto explica os crit\xE9rios
-      e esclarece que a autoriza\xE7\xE3o da pessoa n\xE3o elimina, sozinha, a irregularidade."
+    Explanation: "\t<color=#2BA23D>Nem todo v\xEDdeo com IA se enquadra nessa proibi\xE7\xE3o.</color>
+      Isso n\xE3o significa que qualquer montagem seja permitida. O texto <color=#2BA23D>explica
+      os crit\xE9rios e esclarece que a autoriza\xE7\xE3o da pessoa <color=#2BA23D>n\xE3o
+      elimina, sozinha, a irregularidade.</color>"
   - Type: 1
     Text: "\tNo mesmo julgamento, o tribunal esclareceu que transmitir uma conven\xE7\xE3o
       partid\xE1ria pela internet n\xE3o transforma automaticamente o evento em propaganda
@@ -67,5 +69,5 @@ MonoBehaviour:
     Hint: 
     Explanation: "\tA decis\xE3o exige analisar o contexto da conven\xE7\xE3o. O
       trecho n\xE3o afirma que tudo pode ser exibido nesse evento: explica apenas
-      que a transmiss\xE3o pela internet, sozinha, n\xE3o caracteriza propaganda
-      antecipada."
+      que a <color=#2BA23D>transmiss\xE3o pela internet, sozinha, n\xE3o caracteriza
+      propaganda antecipada.</color>"

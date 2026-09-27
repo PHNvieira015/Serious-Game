@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a0289f97e92e87c49aa4a25a88dd47c2
+guid: 4442e89e98a2fcd4e837bad619baf14c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2569334852969290900
-    second: Matilda_Ramos_Xavier.webp_0
+      213: -3059355185875145734
+    second: Rectangle 296 (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,56 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Matilda_Ramos_Xavier.webp_0
+      name: Rectangle 296 (1)_0
       rect:
         serializedVersion: 2
-        x: 60
+        x: 0
         y: 0
-        width: 258
-        height: 227
+        width: 3044
+        height: 436
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c632cbb6093e75cd0800000000000000
-      internalID: -2569334852969290900
+      spriteID: afba928eaacfa85d0800000000000000
+      internalID: -3059355185875145734
       vertices: []
       indices: 
       edges: []
@@ -174,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Matilda_Ramos_Xavier.webp_0: -2569334852969290900
+      Rectangle 296 (1)_0: -3059355185875145734
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

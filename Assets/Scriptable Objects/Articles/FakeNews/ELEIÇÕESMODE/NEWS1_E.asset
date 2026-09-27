@@ -17,6 +17,7 @@ MonoBehaviour:
   Subtitle: "Suposta opera\xE7\xE3o afirma ter encontrado urnas adulteradas e acusa
     autoridades eleitorais de tentar esconder o caso."
   Date: 'Publicado em: 02 de Outubro de 2026'
+  ArticleImage: {fileID: -3105372467667314581, guid: 2aa3083fa4511a048b1eb47fc01fc40a, type: 3}
   URL_site: http://www.eleicoeslimpas2026-verdade.com.br/urgente-fraude-urnas-bundowisk-revelada
   Writer:
     WriterName: Portal Verdade na Urna
@@ -33,11 +34,11 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 3
     Hint: 
-    Explanation: "\tReaproveitamento de Lenda Urbana Eleitoral. Essa \xE9 uma mentira
-      que reaparece em quase todas as elei\xE7\xF5es municipais e federais. O texto
-      n\xE3o informa a cidade, a delegacia que fez a apreens\xE3o, a rodovia nem
-      o n\xFAmero do boletim de ocorr\xEAncia, tornando imposs\xEDvel qualquer checagem
-      factual."
+    Explanation: "\t<color=#317FFF>Reaproveitamento de Lenda Urbana Eleitoral.</color>
+      Essa \xE9 uma mentira que reaparece em quase todas as elei\xE7\xF5es municipais
+      e federais. O texto <color=#317FFF>n\xE3o informa a cidade, a delegacia que
+      fez a apreens\xE3o, a rodovia nem o n\xFAmero do boletim de ocorr\xEAncia</color>,
+      tornando imposs\xEDvel qualquer checagem factual."
   - Type: 1
     Text: "\tUm v\xEDdeo gravado por um motorista que prefere n\xE3o se identificar
       por medo de morte mostra o momento exato em que os fiscais do Tribunal Superior
@@ -47,9 +48,10 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 3
     Hint: 
-    Explanation: "\tAo dizer que \"a m\xEDdia foi proibida de mostrar\" e que o \"v\xEDdeo
-      \xE9 secreto\", o criador da fake news cria um escudo para que o leitor n\xE3o
-      desconfie quando procurar a not\xEDcia nos jornais e n\xE3o encontrar nada."
+    Explanation: "\tAo dizer que <color=#317FFF>\"a m\xEDdia foi proibida de mostrar\"</color>
+      e que o <color=#317FFF>\"v\xEDdeo \xE9 secreto\"</color>, o criador da fake
+      news cria um escudo para que o leitor <color=#317FFF>n\xE3o desconfie quando
+      procurar a not\xEDcia nos jornais e n\xE3o encontrar nada.</color>"
   - Type: 1
     Text: "\tO engenheiro de software e especialista em ciberseguran\xE7a do Pent\xE1gono,
       Dr. Alexander Petrov, analisou o c\xF3digo-fonte vazado e confirmou o golpe:
@@ -59,10 +61,12 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 4
     Hint: 
-    Explanation: "\tFabrica\xE7\xE3o de Autoridade Externa. Usar nomes estrangeiros
-      gen\xE9ricos e termos como \"Pent\xE1gono\" busca intimidar o leitor pelo excesso
-      de autoridade inventada. O detalhe matem\xE1tico (\"1 a cada 3 votos \xE0s
-      17h\") \xE9 uma estrutura t\xEDpica de textos de correntes de WhatsApp."
+    Explanation: "\t<color=#B464FF>Fabrica\xE7\xE3o de Autoridade Externa.</color>
+      Usar nomes estrangeiros gen\xE9ricos e termos como \"Pent\xE1gono\" busca intimidar
+      o leitor pelo <color=#B464FF>excesso de autoridade inventada.</color> O detalhe
+      matem\xE1tico <color=#B464FF>(\"1 a cada 3 votos \xE0s 17h\")</color> \xE9
+      uma estrutura t\xEDpica de textos de correntes de WhatsApp e <color=#B464FF>gera\xE7\xE3o
+      de I.A.</color>"
   - Type: 1
     Text: "\tPovo brasileiro, exijam o comprovante impresso no seu tribunal regional
       antes de votar! Repassem essa den\xFAncia agora mesmo nos grupos da sua fam\xEDlia,
@@ -72,7 +76,7 @@ MonoBehaviour:
     Image: {fileID: 0}
     CheckType: 2
     Hint: 
-    Explanation: "\tGatilho de Urg\xEAncia / Desinforma\xE7\xE3o Operacional. Al\xE9m
-      do prazo absurdo de 10 minutos para coagir a pessoa a compartilhar pelo medo
-      de \"cumplicidade\", o texto induz o eleitor a causar tumulto na se\xE7\xE3o
-      eleitoral pedindo procedimentos inexistentes."
+    Explanation: "\t<color=#ffc83c>Gatilho de Urg\xEAncia / Desinforma\xE7\xE3o Operacional.</color>
+      Al\xE9m do prazo absurdo de 10 minutos para <color=#ffc83c>coagir a pessoa
+      a compartilhar</color> pelo medo de \"cumplicidade\", o texto induz o eleitor
+      a causar tumulto na se\xE7\xE3o eleitoral pedindo procedimentos inexistentes."
