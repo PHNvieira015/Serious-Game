@@ -101,6 +101,9 @@ public class NewsGridPopulator : MonoBehaviour
                 continue;
             }
 
+            // Keep the cell container active, even without an article.
+            cell.SetActive(true);
+
             ArticleHistoryManager.ArticleRecord record = null;
 
             while (recordIndex < records.Count)
@@ -119,11 +122,9 @@ public class NewsGridPopulator : MonoBehaviour
 
             if (record == null)
             {
-                cell.SetActive(false);
+                SetCellInteractable(cell, false);
                 continue;
             }
-
-            cell.SetActive(true);
 
             NewsCell newsCell = cell.GetComponent<NewsCell>();
 
@@ -135,10 +136,10 @@ public class NewsGridPopulator : MonoBehaviour
             if (newsCell != null)
             {
                 newsCell.Initialize(record.article, OnCellClicked);
+                SetCellInteractable(cell, true);
                 continue;
             }
 
-            // Fallback for cells without a NewsCell component.
             TMP_Text title = cell.GetComponentInChildren<TMP_Text>(true);
             Button button = cell.GetComponentInChildren<Button>(true);
 
@@ -160,20 +161,35 @@ public class NewsGridPopulator : MonoBehaviour
             ArticleData capturedArticle = record.article;
             UnityAction action = () => OnCellClicked(capturedArticle);
 
-            // Prevent duplicate listeners if a cell was assigned twice.
-            if (buttonListeners.TryGetValue(button, out UnityAction oldAction))
+            if (buttonListeners.TryGetValue(
+                button,
+                out UnityAction oldAction))
             {
                 button.onClick.RemoveListener(oldAction);
             }
 
             buttonListeners[button] = action;
             button.onClick.AddListener(action);
+
+            SetCellInteractable(cell, true);
+        }
+    }
+
+    private void SetCellInteractable(GameObject cell, bool value)
+    {
+        Button[] buttons = cell.GetComponentsInChildren<Button>(true);
+
+        foreach (Button button in buttons)
+        {
+            button.interactable = value;
         }
     }
 
     private void OnCellClicked(ArticleData article)
     {
-        if (historyManager != null && article != null)
+        if (historyManager != null &&
+            article != null &&
+            historyManager.ContainsArticle(article))
         {
             historyManager.OpenArticleFeedback(article);
         }
