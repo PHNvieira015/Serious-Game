@@ -19,9 +19,9 @@ MonoBehaviour:
   ArticleImage: {fileID: 0}
   URL_site: http://Zonadaverdade.com.br/tutorial
   Writer:
-    WriterName: Blake
+    WriterName: Blakeley
     WriterPhoto: {fileID: 21300000, guid: ae97b3365a493454ba71d9ca39dabf1d, type: 3}
-    WriterDescription: "Blake faz parte da zona da verdade e ensina novos jogadores
+    WriterDescription: "Blakeley faz parte da zona da verdade e ensina novos jogadores
       a identificarem noticias falsas e n\xE3o cairem em golpes. "
   Blocks:
   - Type: 0
