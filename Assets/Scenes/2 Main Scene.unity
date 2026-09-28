@@ -6103,13 +6103,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.295
+  m_Volume: 0.051
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 18
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -11168,15 +11168,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7948273742541724502, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7948273742541724502, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.9878434
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7948273742541724502, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.6192159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8003197224141843765, guid: 87ae6504cc3f5a64b8e1109e989d97e6, type: 3}
       propertyPath: m_AnchorMax.y
