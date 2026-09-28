@@ -107,9 +107,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private bool canGoNext;
     private bool feedbackSessionActive;
 
-
-   
-
     private void Awake()
     {
         InitializeControls();
@@ -599,8 +596,8 @@ public class ArticleFeedbackPanel : MonoBehaviour
     }
 
     private void EndFeedback(
-    bool returnToChat,
-    bool forceChatAfterCallback = false)
+        bool returnToChat,
+        bool forceChatAfterCallback = false)
     {
         StopNextDelay();
 
@@ -610,8 +607,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
         }
 
         feedbackSessionActive = false;
-
-        bool victory = scoreManager != null && scoreManager.VictoryTriggered;
 
         Action callback = onFeedbackComplete;
         onFeedbackComplete = null;
@@ -633,12 +628,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
         if (feedbackPanel != null)
             feedbackPanel.SetActive(false);
 
-        if (victory)
-        {
-            // Não sobrescreve a tela de vitória com Chat/Score.
-            return;
-        }
-
         if (returnToChat && UIManager.Instance != null)
         {
             UIManager.Instance.ShowScreen(UIManager.Screens.Chat);
@@ -646,10 +635,14 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
         try
         {
+            // The validator uses this to clear its pending state
+            // and reset marks. History also supplies a callback.
             callback?.Invoke();
         }
         finally
         {
+            // UIManager cancels its previous pending transition.
+            // This overrides Score or History requested by the callback.
             if (forceChatAfterCallback && UIManager.Instance != null)
             {
                 UIManager.Instance.OpenChat();
