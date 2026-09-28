@@ -28,8 +28,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: "Se liga, a Zona da Verdade \xE9 uma org respons\xE1vel por desmentir
-      as fofocas e desinforma\xE7\xF5es da internet. "
+    Message: "Se liga, por aqui, nosso trampo \xE9 simples: ca\xE7ar fofoca, mentira
+      e desinforma\xE7\xE3o antes que elas tomem conta da rede.  "
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -39,9 +39,9 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: "Antes de come\xE7ar, preciso te ensinar como funciona uma investiga\xE7\xE3o.
-      Mas aqui, voc\xEA n\xE3o precisa decidir se uma not\xEDcia \xE9 verdadeira
-      s\xF3 pelo que ela diz. Voc\xEA precisa encontrar as pistas."
+    Message: "Antes de te jogar no fogo, vou te mostrar como funciona uma investiga\xE7\xE3o.
+      E esquece essa de olhar uma not\xEDcia e confiar no instinto. Aqui, a gente
+      procura pistas.  "
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
@@ -51,8 +51,8 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: "Primeiro, olha esse link aqui, clica nele e eu j\xE1 te ensino a primeira
-      coisa."
+    Message: "Vamos come\xE7ar pelo b\xE1sico. T\xE1 vendo esse link? Abre ele pra
+      mim. Quero te mostrar a primeira coisa que voc\xEA precisa ficar de olho.  "
     DisplayType: 1
     Image: {fileID: 0}
     LinkedArticle: {fileID: 0}
