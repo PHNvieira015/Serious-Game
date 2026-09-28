@@ -14,7 +14,8 @@ public class UIManager : MonoBehaviour
         Feedback,
         History,
         Score,
-        Tutorial
+        Tutorial,
+        Victory
     }
 
     [Header("Current Screen")]
@@ -30,6 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject historyFrame;
     [SerializeField] private GameObject scoreFrame;
     [SerializeField] private GameObject tutorialFrame;
+    [SerializeField] private GameObject victoryFrame;
 
     private Coroutine transitionCoroutine;
 
@@ -52,6 +54,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator TransitionToScreen(Screens screen)
     {
+        Debug.Log("TransitionToScreen iniciado: " + screen);
         if (transitionTimer > 0f)
         {
             yield return new WaitForSeconds(transitionTimer);
@@ -106,6 +109,12 @@ public class UIManager : MonoBehaviour
                     tutorialFrame.SetActive(true);
                 }
                 break;
+            case Screens.Victory:
+                if (victoryFrame != null)
+                {
+                    victoryFrame.SetActive(true);
+                }
+                break;
         }
 
         transitionCoroutine = null;
@@ -142,6 +151,10 @@ public class UIManager : MonoBehaviour
         {
             tutorialFrame.SetActive(false);
         }
+        if (victoryFrame != null)
+        {
+            victoryFrame.SetActive(false);
+        }
     }
 
     private void DetectCurrentScreen()
@@ -170,10 +183,15 @@ public class UIManager : MonoBehaviour
         {
             currentScreen = Screens.Tutorial;
         }
+        else if (victoryFrame != null && victoryFrame.activeSelf)
+        {
+            currentScreen = Screens.Victory;
+        }
         else
         {
             currentScreen = Screens.None;
         }
+
     }
 
     public void OpenChat()
@@ -249,6 +267,15 @@ public class UIManager : MonoBehaviour
     public Screens GetCurrentScreen()
     {
         return currentScreen;
+    }
+    public void OpenVictory()
+    {
+        ShowScreen(Screens.Victory);
+    }
+
+    public bool IsVictoryOpen()
+    {
+        return currentScreen == Screens.Victory;
     }
 
     private void OnDestroy()

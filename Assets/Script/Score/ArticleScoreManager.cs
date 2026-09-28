@@ -100,6 +100,29 @@ public class ArticleScoreManager : MonoBehaviour
     public int CompletedArticles => completedArticles;
     public int CorrectArticles => correctArticles;
 
+    [Header("Victory Screen")]
+    public GameObject victoryPanel;
+    public AudioSource victorySound;
+    private bool victoryTriggered = false;
+
+    [SerializeField] private int victoryPoints;
+    public bool VictoryTriggered => victoryTriggered;
+
+    public bool CheckVictory(int currentScore)
+    {
+        Debug.Log("CheckVictory: score=" + currentScore + " triggered=" + victoryTriggered + " UIManager=" + (UIManager.Instance != null));
+        if (!victoryTriggered && currentScore >= victoryPoints)
+        {
+            victoryTriggered = true;
+
+            if (UIManager.Instance != null)
+                UIManager.Instance.OpenVictory();
+
+            victorySound.Play();
+            return true;
+        }
+        return victoryTriggered;
+    }
     private void OnEnable()
     {
         RefreshUI();
@@ -233,7 +256,7 @@ public class ArticleScoreManager : MonoBehaviour
             0,
             totalPoints + earnedArticlePoints
         );
-
+       
         lastArticle = new ArticleScore
         {
             title = article.Title,
@@ -460,6 +483,8 @@ public class ArticleScoreManager : MonoBehaviour
         ClearPointsChange();
         UpdateFeedbackBar();
         UpdateMultiplierText();
+
+        CheckVictory(totalPoints);
     }
 
     private void StopScoreAnimation()
@@ -497,6 +522,11 @@ public class ArticleScoreManager : MonoBehaviour
 
     public void OpenScoreScreen()
     {
+        if (victoryTriggered)
+        {
+            // não abre a tela de score, a de vitória já está ativa
+            return;
+        }
         RefreshUI();
 
         if (UIManager.Instance != null)
