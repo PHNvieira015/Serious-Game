@@ -221,7 +221,6 @@ public class ArticleFeedbackPanel : MonoBehaviour
         UpdateProgress();
         UpdateBlockButtons();
 
-        // The manager remembers which results were already revealed.
         if (scoreManager != null)
             scoreManager.RevealFeedbackBlock(result);
 
@@ -344,12 +343,10 @@ public class ArticleFeedbackPanel : MonoBehaviour
             block.GetComponent<ArticleBlockView>();
 
         if (view == null)
-            view =
-                block.GetComponentInParent<ArticleBlockView>();
+            view = block.GetComponentInParent<ArticleBlockView>();
 
         if (view == null)
-            view =
-                block.GetComponentInChildren<ArticleBlockView>(true);
+            view = block.GetComponentInChildren<ArticleBlockView>(true);
 
         return view;
     }
@@ -365,22 +362,16 @@ public class ArticleFeedbackPanel : MonoBehaviour
         {
             case CheckType.True:
                 return view.trueColor;
-
             case CheckType.Label:
                 return view.labelColor;
-
             case CheckType.Source:
                 return view.sourceColor;
-
             case CheckType.AI:
                 return view.aiColor;
-
             case CheckType.Specialist:
                 return view.specialistColor;
-
             case CheckType.Falacy:
                 return view.falacyColor;
-
             default:
                 return view.defaultTextColor;
         }
@@ -398,9 +389,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
         target.color = color;
     }
 
-    private void SetImage(
-        Image target,
-        Sprite sprite)
+    private void SetImage(Image target, Sprite sprite)
     {
         if (target == null)
             return;
@@ -434,21 +423,18 @@ public class ArticleFeedbackPanel : MonoBehaviour
             }
         }
 
-        // Fallback if no label was configured in the Inspector.
         return type.ToString();
     }
 
     private void UpdateProgress()
     {
-        int position =
-            results.Count > 0
-                ? currentIndex + 1
-                : 0;
+        int position = results.Count > 0
+            ? currentIndex + 1
+            : 0;
 
-        float progress =
-            results.Count > 0
-                ? (float)position / results.Count
-                : 0f;
+        float progress = results.Count > 0
+            ? (float)position / results.Count
+            : 0f;
 
         if (progressFillImage != null)
             progressFillImage.fillAmount = progress;
@@ -457,14 +443,12 @@ public class ArticleFeedbackPanel : MonoBehaviour
             progressBar.SetValueWithoutNotify(progress);
 
         if (progressText != null)
-            progressText.text =
-                position + " / " + results.Count;
+            progressText.text = position + " / " + results.Count;
     }
 
     private void CreateBlockButtons()
     {
-        if (blockButtonsContainer == null ||
-            blockButtonPrefab == null)
+        if (blockButtonsContainer == null || blockButtonPrefab == null)
             return;
 
         for (int i = 0; i < results.Count; i++)
@@ -477,11 +461,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
             );
 
             button.gameObject.SetActive(true);
-
-            SetButtonText(
-                button,
-                (i + 1).ToString()
-            );
+            SetButtonText(button, (i + 1).ToString());
 
             button.onClick.AddListener(
                 () => ShowFeedbackBlock(index)
@@ -493,27 +473,20 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private void UpdateBlockButtons()
     {
-        for (int i = 0;
-             i < spawnedBlockButtons.Count;
-             i++)
+        for (int i = 0; i < spawnedBlockButtons.Count; i++)
         {
-            Button button =
-                spawnedBlockButtons[i];
+            Button button = spawnedBlockButtons[i];
 
             if (button == null)
                 continue;
 
-            Color color =
-                i == currentIndex
-                    ? selectedBlockButtonColor
-                    : normalBlockButtonColor;
+            Color color = i == currentIndex
+                ? selectedBlockButtonColor
+                : normalBlockButtonColor;
 
-            button.transition =
-                Selectable.Transition.ColorTint;
+            button.transition = Selectable.Transition.ColorTint;
 
-            ColorBlock colors =
-                button.colors;
-
+            ColorBlock colors = button.colors;
             colors.normalColor = color;
             colors.highlightedColor = color;
             colors.pressedColor = color;
@@ -562,9 +535,14 @@ public class ArticleFeedbackPanel : MonoBehaviour
         lastNavigationFrame = Time.frameCount;
 
         if (currentIndex == 0)
-            FinishFeedback();
+        {
+            // Run cleanup, then make Chat the final destination.
+            EndFeedback(false, true);
+        }
         else
+        {
             ShowBlock(currentIndex - 1);
+        }
     }
 
     public void ShowNextBlock()
@@ -617,12 +595,13 @@ public class ArticleFeedbackPanel : MonoBehaviour
         EndFeedback(false);
     }
 
-    private void EndFeedback(bool returnToChat)
+    private void EndFeedback(
+        bool returnToChat,
+        bool forceChatAfterCallback = false)
     {
         StopNextDelay();
 
-        if (feedbackSessionActive &&
-            scoreManager != null)
+        if (feedbackSessionActive && scoreManager != null)
         {
             scoreManager.CompleteFeedbackScore();
         }
@@ -649,23 +628,31 @@ public class ArticleFeedbackPanel : MonoBehaviour
         if (feedbackPanel != null)
             feedbackPanel.SetActive(false);
 
-        if (returnToChat &&
-            UIManager.Instance != null)
+        if (returnToChat && UIManager.Instance != null)
         {
-            UIManager.Instance.ShowScreen(
-                UIManager.Screens.Chat
-            );
+            UIManager.Instance.ShowScreen(UIManager.Screens.Chat);
         }
 
-        callback?.Invoke();
+        try
+        {
+            // The validator uses this to clear its pending state
+            // and reset marks. History also supplies a callback.
+            callback?.Invoke();
+        }
+        finally
+        {
+            // UIManager cancels its previous pending transition.
+            // This overrides Score or History requested by the callback.
+            if (forceChatAfterCallback && UIManager.Instance != null)
+            {
+                UIManager.Instance.OpenChat();
+            }
+        }
     }
 
-    private void SetButtonText(
-        Button button,
-        string value)
+    private void SetButtonText(Button button, string value)
     {
-        TMP_Text text =
-            button.GetComponentInChildren<TMP_Text>(true);
+        TMP_Text text = button.GetComponentInChildren<TMP_Text>(true);
 
         if (text != null)
             text.text = value;
@@ -673,8 +660,7 @@ public class ArticleFeedbackPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        if (isBlockDisplayed &&
-            results.Count > 0)
+        if (isBlockDisplayed && results.Count > 0)
         {
             ShowBlock(currentIndex);
         }
@@ -688,25 +674,13 @@ public class ArticleFeedbackPanel : MonoBehaviour
     private void OnDestroy()
     {
         if (backButton != null)
-        {
-            backButton.onClick.RemoveListener(
-                ShowPreviousBlock
-            );
-        }
+            backButton.onClick.RemoveListener(ShowPreviousBlock);
 
         if (nextButton != null)
-        {
-            nextButton.onClick.RemoveListener(
-                ShowNextBlock
-            );
-        }
+            nextButton.onClick.RemoveListener(ShowNextBlock);
 
         if (closeButton != null)
-        {
-            closeButton.onClick.RemoveListener(
-                CloseFeedback
-            );
-        }
+            closeButton.onClick.RemoveListener(CloseFeedback);
 
         ClearBlockButtons();
     }

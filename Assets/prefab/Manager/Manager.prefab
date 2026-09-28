@@ -45,12 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc96273e54c23540845f8c2cfed71e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewsGridPopulator
-  gridLayout: {fileID: 0}
-  cellPrefab: {fileID: 6500881324077639059, guid: 8927c71cc32ad0a408107d27d59eadcb, type: 3}
-  targetParent: {fileID: 0}
-  articleViewer: {fileID: 8930590536396532341}
-  newsArticles:
-  - {fileID: 11400000, guid: 30bb90dc4324a3f4c8b8e453a5adfa20, type: 2}
+  historyManager: {fileID: 0}
+  cells:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -75,6 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArticleHistoryManager
   articleViewer: {fileID: 8930590536396532341}
+  feedbackPanel: {fileID: 0}
   history: []
 --- !u!1 &54970237560269014
 GameObject:
@@ -554,9 +552,9 @@ Transform:
   - {fileID: 1406598072767672828}
   - {fileID: 5555583017880151247}
   - {fileID: 4741756679257311353}
-  - {fileID: 7105436115901527312}
   - {fileID: 3481289417001366435}
   - {fileID: 1403834633045377957}
+  - {fileID: 7105436115901527312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4714704326905589282

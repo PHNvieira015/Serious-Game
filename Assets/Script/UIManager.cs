@@ -13,7 +13,8 @@ public class UIManager : MonoBehaviour
         Article,
         Feedback,
         History,
-        Score
+        Score,
+        Tutorial
     }
 
     [Header("Current Screen")]
@@ -28,6 +29,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject feedbackFrame;
     [SerializeField] private GameObject historyFrame;
     [SerializeField] private GameObject scoreFrame;
+    [SerializeField] private GameObject tutorialFrame;
 
     private Coroutine transitionCoroutine;
 
@@ -97,6 +99,13 @@ public class UIManager : MonoBehaviour
                     scoreFrame.SetActive(true);
                 }
                 break;
+
+            case Screens.Tutorial:
+                if (tutorialFrame != null)
+                {
+                    tutorialFrame.SetActive(true);
+                }
+                break;
         }
 
         transitionCoroutine = null;
@@ -128,6 +137,11 @@ public class UIManager : MonoBehaviour
         {
             scoreFrame.SetActive(false);
         }
+
+        if (tutorialFrame != null)
+        {
+            tutorialFrame.SetActive(false);
+        }
     }
 
     private void DetectCurrentScreen()
@@ -151,6 +165,10 @@ public class UIManager : MonoBehaviour
         else if (scoreFrame != null && scoreFrame.activeSelf)
         {
             currentScreen = Screens.Score;
+        }
+        else if (tutorialFrame != null && tutorialFrame.activeSelf)
+        {
+            currentScreen = Screens.Tutorial;
         }
         else
         {
@@ -181,6 +199,11 @@ public class UIManager : MonoBehaviour
     public void OpenScore()
     {
         ShowScreen(Screens.Score);
+    }
+
+    public void OpenTutorial()
+    {
+        ShowScreen(Screens.Tutorial);
     }
 
     public void CloseCurrentScreen()
@@ -216,6 +239,11 @@ public class UIManager : MonoBehaviour
     public bool IsScoreOpen()
     {
         return currentScreen == Screens.Score;
+    }
+
+    public bool IsTutorialOpen()
+    {
+        return currentScreen == Screens.Tutorial;
     }
 
     public Screens GetCurrentScreen()

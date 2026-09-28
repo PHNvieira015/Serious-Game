@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
-  m_Name: Tutorial
+  m_Name: Teste1
   m_EditorClassIdentifier: Assembly-CSharp::ArticleData
   Title: "Metade do Senado apoia PEC alternativa \xE0 da C\xE2mara da escala 6 x
     1"

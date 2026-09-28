@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5cff6993a849541bb73b40be25bcc9, type: 3}
+  m_Name: Tutorial Article
+  m_EditorClassIdentifier: Assembly-CSharp::ArticleData
+  Title: Tutorial
+  Subtitle: "Estamos aqui para lhe ensinar a conjurar a zona da verdade e descobrir
+    quais noticias s\xE3o falsas e mais importante, o porque!"
+  Date: 27/09/2026
+  ArticleImage: {fileID: 0}
+  URL_site: http://Zonadaverdade.com.br/tutorial
+  Writer:
+    WriterName: Blake
+    WriterPhoto: {fileID: 21300000, guid: ae97b3365a493454ba71d9ca39dabf1d, type: 3}
+    WriterDescription: "Blake faz parte da zona da verdade e ensina novos jogadores
+      a identificarem noticias falsas e n\xE3o cairem em golpes. "
+  Blocks:
+  - Type: 0
+    Text: "Primeiramente vamos ver os tipos de verifica\xE7\xF5es. Lembre-se sempre
+      de reler uma informa\xE7\xE3o antes de responder ou compartilhar, ensinaremos
+      algumas dicas para ver se algo \xE9 falso."
+    Image: {fileID: 0}
+    CheckType: 0
+    Hint: 
+    Explanation: 
+  - Type: 0
+    Text: "Use o marcador \"Fato\" quando a informa\xE7\xE3o \xE9 verdadeira e pode
+      ser comprovada por fontes confi\xE1veis.\nN\xE3o confie em links desconhecidos,
+      sempre confirme se quem est\xE1 enviando um link \xE9 realmente quem diz ser."
+    Image: {fileID: 0}
+    CheckType: 1
+    Hint: 
+    Explanation: "Ex.: \u201CO estudo foi publicado pela universidade em mar\xE7o
+      de 2024.\u201D"
+  - Type: 0
+    Text: "Use o marcador \"Forjado\" quando o fato em si \xE9 real, mas a forma
+      como foi contado favorece um lado, omite contexto ou usa linguagem carregada
+      de opini\xE3o. Se pergunte porque escolheram contar a noticia desta forma?"
+    Image: {fileID: 0}
+    CheckType: 2
+    Hint: 
+    Explanation: "Ex.: \u201CGra\xE7as \xE0 nova lei\u201D em vez de \u201CAp\xF3s
+      a aprova\xE7\xE3o da nova lei.\u201D"
+  - Type: 0
+    Text: "Use o marcador \"Fonte quando falta indica\xE7\xE3o de quem disse, publicou
+      ou pesquisou aquilo - a afirma\xE7\xE3o existe, mas n\xE3o d\xE1 para rastrear
+      de onde veio.\nSempre veja quem est\xE1 dizendo."
+    Image: {fileID: 0}
+    CheckType: 3
+    Hint: 
+    Explanation: "Ex.: \u201CEspecialistas afirmam...\u201D  quais especialistas?
+      Sem nome, institui\xE7\xE3o ou link"
+  - Type: 0
+    Text: "Use o marcador \"I.A.\" Quando o texto ou a imagem tem sinais de ter sido
+      criado por uso de Intelig\xEAncia Artificial"
+    Image: {fileID: 0}
+    CheckType: 4
+    Hint: 
+    Explanation: "Ex.: Uma \u201Cfoto\u201D do evento com m\xE3os ou letreiros deformados.\nAs
+      I.A. tem evoluido r\xE1pido, importante estar atualizado para n\xE3o cair em
+      golpes!\nVeja inconsistencias ou padr\xF5es estranhos de dialogo."
+  - Type: 0
+    Text: "Agora Vamos validar a noticia, sempre releia, e se pergunte\nO qu\xEA?\nPara
+      quem?\nQuem disse?\nPor qu\xEA? "
+    Image: {fileID: 0}
+    CheckType: 0
+    Hint: 
+    Explanation: Sempre releia e pense antes de responder.

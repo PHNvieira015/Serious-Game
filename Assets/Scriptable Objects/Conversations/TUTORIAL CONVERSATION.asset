@@ -62,11 +62,11 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 0
   - IsNPC: 1
-    Message: https://www.cnnbrasil.com.br/blogs/caio-junqueira/politica/metade-do-senado-apoia-pec-alternativa-a-da-camara-da-escala-6-x-1/
+    Message: http://Zonadaverdade.com.br/tutorial
     DisplayType: 5
     Image: {fileID: 0}
-    LinkedArticle: {fileID: 11400000, guid: 1594fcc7289fc9d4babb835dc6669e80, type: 2}
-    LinkURL: https://www.cnnbrasil.com.br/blogs/caio-junqueira/politica/metade-do-senado-apoia-pec-alternativa-a-da-camara-da-escala-6-x-1/
+    LinkedArticle: {fileID: 11400000, guid: 1dd939c8f567a13429366e526abd7af4, type: 2}
+    LinkURL: http://Zonadaverdade.com.br/tutorial
     PlayerOptions: []
     IsEndNode: 0
     AutoAdvance: 0
